@@ -6,7 +6,7 @@ import '../../utils/app_styles.dart';
 import '../../widgets/custom_button.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
-  ForgotPasswordScreen({super.key});
+  const ForgotPasswordScreen({super.key});
 
   @override
   State<ForgotPasswordScreen> createState() => ForgotPasswordScreenState();
