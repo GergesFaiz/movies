@@ -10,4 +10,10 @@ class AppColors {
   static const Color amber = Color(0xFFF6BD00);
   static const Color lightGreyColor = Color(0xFF9E9E9E);
   static const Color blackColor = Color(0xFF000000);
+
+  static const kBg     = Color(0xFF1A1A1A);
+  static const kCard   = Color(0xFF2E2E2E);
+  static const kText   = Color(0xFFCCCCCC);
+  static  const kIcon   = Color(0xFF888888);
+
 }
