@@ -12,7 +12,6 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget{
     return AppBar(
       leading: IconButton(
         icon: Icon(Icons.arrow_back,color: AppColors.amber,),onPressed: () => Navigator.pop(context),),
-      backgroundColor: AppColors.backgroundDark,
       elevation: 0,
       title: Text(
         title,

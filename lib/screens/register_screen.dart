@@ -26,7 +26,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     var height = context.height;
     return Scaffold(
-      backgroundColor: AppColors.kBg,
       appBar: BackAppBar(title: 'Register'),
       body: SafeArea(
         child: SingleChildScrollView(

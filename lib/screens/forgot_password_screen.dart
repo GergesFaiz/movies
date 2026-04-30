@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:movies/utils/app_assets.dart';
 import 'package:movies/utils/app_colors.dart';
+import 'package:movies/widgets/back_app_bar.dart';
 
 import '../../utils/app_styles.dart';
 import '../widgets/primary_button_widget.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
-  ForgotPasswordScreen({super.key});
+  const ForgotPasswordScreen({super.key});
 
   @override
   State<ForgotPasswordScreen> createState() => ForgotPasswordScreenState();
@@ -19,18 +20,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundDark,
-      appBar: AppBar(
-        leading: IconButton(icon: Icon(Icons.arrow_back,color: AppColors.amber,),onPressed: () => Navigator.pop(context),),
-        backgroundColor: AppColors.backgroundDark,
-        elevation: 0,
-        title: Text(
-          "Forget Password",
-          style: AppStyles.bold16White.copyWith(color: AppColors.amber),
-        ),
-        centerTitle: true,
-        iconTheme: IconThemeData(color: AppColors.white),
-      ),
+      appBar: BackAppBar(title: "Forget Password"),
       body: Padding(
         padding: EdgeInsets.all(20.0),
         child: SingleChildScrollView(
@@ -61,11 +51,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 keyboardType: TextInputType.emailAddress,
               ),
               SizedBox(height: 20),
-              PrimaryButtonWidget(
-                label: "Verify Email",
-                onPressed: () {},
-
-              ),
+              PrimaryButtonWidget(label: "Verify Email", onPressed: () {}),
             ],
           ),
         ),
