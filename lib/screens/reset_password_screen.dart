@@ -3,34 +3,27 @@ import 'package:movies/utils/app_assets.dart';
 import 'package:movies/utils/app_colors.dart';
 
 import '../../utils/app_styles.dart';
-import '../../widgets/custom_button.dart';
+import '../utils/screen_utils.dart';
+import '../widgets/back_app_bar.dart';
+import '../widgets/primary_button_widget.dart';
 
-class ForgotPasswordScreen extends StatefulWidget {
-  ForgotPasswordScreen({super.key});
+class ResetPasswordScreen extends StatefulWidget {
+  const ResetPasswordScreen({super.key});
 
   @override
-  State<ForgotPasswordScreen> createState() => ForgotPasswordScreenState();
+  State<ResetPasswordScreen> createState() => ResetPasswordScreenState();
 }
 
-class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+class ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final emailController = TextEditingController();
   bool emailSent = false;
 
   @override
   Widget build(BuildContext context) {
+    var height = context.height;
     return Scaffold(
       backgroundColor: AppColors.backgroundDark,
-      appBar: AppBar(
-        leading: IconButton(icon: Icon(Icons.arrow_back,color: AppColors.amber,),onPressed: () => Navigator.pop(context),),
-        backgroundColor: AppColors.backgroundDark,
-        elevation: 0,
-        title: Text(
-          "Forget Password",
-          style: AppStyles.bold16White.copyWith(color: AppColors.amber),
-        ),
-        centerTitle: true,
-        iconTheme: IconThemeData(color: AppColors.white),
-      ),
+      appBar: BackAppBar(title: 'Forget Password'),
       body: Padding(
         padding: EdgeInsets.all(20.0),
         child: SingleChildScrollView(
@@ -48,11 +41,11 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   labelStyle: AppStyles.medium16white,
                   prefixIcon: ImageIcon(
                     AssetImage(AppAssets.emailIcon),
-                    size: 31,
+                    size: 25,
                     color: AppColors.white,
                   ),
                   filled: true,
-                  fillColor: AppColors.gray.withOpacity(0.2),
+                  fillColor: AppColors.gray,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(color: AppColors.gray),
@@ -60,8 +53,8 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 ),
                 keyboardType: TextInputType.emailAddress,
               ),
-              SizedBox(height: 20),
-              CustomButton(
+              SizedBox(height: height*0.02),
+              PrimaryButtonWidget(
                 label: "Verify Email",
                 onPressed: () {},
 
@@ -73,78 +66,3 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     );
   }
 }
-
-//
-// import 'package:flutter/material.dart';
-//
-// class ForgotPasswordScreen extends StatefulWidget {
-//    ForgotPasswordScreen({Key? key}) : super(key: key);
-//
-//   @override
-//   State<ForgotPasswordScreen> createState() => ForgotPasswordScreenState();
-// }
-//
-// class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-//   final TextEditingController emailController = TextEditingController();
-//
-//   void verifyEmail() {
-//     final email = emailController.text.trim();
-//     if (email.isEmpty) {
-//       ScaffoldMessenger.of(context).showSnackBar(
-//          SnackBar(content: Text("Please enter your email")),
-//       );
-//     } else {
-//       // TODO: Add your reset password logic here (API call / Firebase)
-//       ScaffoldMessenger.of(context).showSnackBar(
-//         SnackBar(content: Text("Verification link sent to $email")),
-//       );
-//     }
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title:  Text("Forget Password"),
-//         leading: IconButton(
-//           icon:  Icon(Icons.arrow_back),
-//           onPressed: () => Navigator.pop(context),
-//         ),
-//       ),
-//       body: Padding(
-//         padding:  EdgeInsets.all(20.0),
-//         child: Column(
-//           children: [
-//              SizedBox(height: 40),
-//             // Illustration placeholder
-//             SizedBox(
-//               height: 200,
-//               child: Center(
-//                 child: Icon(Icons.lock_reset, size: 100, color: Colors.amber),
-//               ),
-//             ),
-//              SizedBox(height: 30),
-//             TextField(
-//               controller: emailController,
-//               decoration:  InputDecoration(
-//                 labelText: "Email",
-//                 prefixIcon: Icon(Icons.email),
-//                 border: OutlineInputBorder(),
-//               ),
-//               keyboardType: TextInputType.emailAddress,
-//             ),
-//              SizedBox(height: 20),
-//             ElevatedButton(
-//               onPressed: verifyEmail,
-//               style: ElevatedButton.styleFrom(
-//                 backgroundColor: Colors.amber,
-//                 minimumSize:  Size(double.infinity, 50),
-//               ),
-//               child:  Text("Verify Email"),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
