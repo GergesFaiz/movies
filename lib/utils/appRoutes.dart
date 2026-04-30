@@ -1,6 +1,8 @@
 class AppRoutes {
-  static const String homeRouteName = 'home_screen';
-  // static const String ResetPasswordScreenRouteName = 'ResetPasswordScreen';
-  static const String ForgotPasswordScreen = 'ForgotPasswordScreen';
+  static const String homeScreen = 'home_screen';
+  static const String loginScreen = 'loginScreen';
+  static const String forgotPasswordScreen = 'ForgotPasswordScreen';
+  static const String registerScreen = 'RegisterScreen';
+  static const String UpdateProfileScreen = 'UpdateProfileScreen';
 
 }

@@ -9,7 +9,6 @@ import '../utils/screen_utils.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/back_app_bar.dart';
 import '../widgets/primary_button_widget.dart';
-import 'login_screen.dart' hide BackAppBar;
 
 class RegisterScreen extends StatefulWidget {
   RegisterScreen({super.key});

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movies/screens/reset_password_screen.dart';
+import 'package:movies/screens/forgot_password_screen.dart';
 
 import '../utils/app_colors.dart';
 import '../widgets/app_text_field.dart';
@@ -89,7 +89,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
               // ── Reset Password ──────────────────────
               GestureDetector(
-                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) =>  ResetPasswordScreen())),
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) =>  ForgotPasswordScreen())),
                 child: const Text(
                   'Reset Password',
                   style: TextStyle(color: AppColors.kText, fontSize: 14),

@@ -47,6 +47,16 @@ class AppStyles {
     fontWeight: FontWeight.w500,
     color: AppColors.white,
   );
+  static TextStyle medium16Black = GoogleFonts.poppins(
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+    color: AppColors.blackColor,
+  );
+  static TextStyle regular16white = GoogleFonts.roboto(
+    fontSize: 16,
+    fontWeight: FontWeight.normal,
+    color: AppColors.white,
+  );
   static const TextStyle bold16White = TextStyle(
     fontSize: 16,
     color: AppColors.white,

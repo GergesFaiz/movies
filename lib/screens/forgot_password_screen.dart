@@ -3,7 +3,7 @@ import 'package:movies/utils/app_assets.dart';
 import 'package:movies/utils/app_colors.dart';
 
 import '../../utils/app_styles.dart';
-import '../../widgets/custom_button.dart';
+import '../widgets/primary_button_widget.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   ForgotPasswordScreen({super.key});
@@ -61,7 +61,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 keyboardType: TextInputType.emailAddress,
               ),
               SizedBox(height: 20),
-              CustomButton(
+              PrimaryButtonWidget(
                 label: "Verify Email",
                 onPressed: () {},
 
