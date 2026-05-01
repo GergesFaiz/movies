@@ -22,8 +22,8 @@ class AppStyles {
   );
 
   static TextStyle bold20White = GoogleFonts.inter(
-    fontSize: 20,
-    fontWeight: FontWeight.bold,
+    fontSize: 18,
+    fontWeight: FontWeight.w400,
     color: AppColors.white,
   );
   static TextStyle bold18White = GoogleFonts.poppins(
@@ -31,9 +31,9 @@ class AppStyles {
     fontWeight: FontWeight.w600,
     color: AppColors.white,
   );
-  static const TextStyle bold18Gray = TextStyle(
-    fontSize: 18,
-    fontWeight: FontWeight.w600,
+  static const TextStyle simibold20Gray = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w400,
     color: AppColors.gray,
   );
   static TextStyle bold16Black = GoogleFonts.inter(
@@ -84,9 +84,24 @@ class AppStyles {
     fontWeight: FontWeight.w500,
     color: AppColors.gray,
   );
+   static TextStyle medium36white = GoogleFonts.poppins(
+    fontSize: 34,
+    fontWeight: FontWeight.w500,
+    color: AppColors.white,
+  );
   static TextStyle medium12Gray = GoogleFonts.inter(
     fontSize: 12,
     fontWeight: FontWeight.w500,
     color: AppColors.gray,
   );
+  static TextStyle bold20black      =GoogleFonts.roboto(
+ fontSize: 20,
+ fontWeight: FontWeight.w500,
+ color: AppColors.blackColor
+ );
+  static TextStyle bold20Gray       =GoogleFonts.roboto(
+ fontSize: 20,
+ fontWeight: FontWeight.w400,
+ color: AppColors.gray
+ );
 }

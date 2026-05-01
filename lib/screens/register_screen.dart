@@ -11,7 +11,7 @@ import '../widgets/back_app_bar.dart';
 import '../widgets/primary_button_widget.dart';
 
 class RegisterScreen extends StatefulWidget {
-  RegisterScreen({super.key});
+  const RegisterScreen({super.key});
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();

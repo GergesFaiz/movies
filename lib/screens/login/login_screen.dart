@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:movies/utils/appRoutes.dart';
 import 'package:movies/utils/app_assets.dart';
 import 'package:movies/utils/app_colors.dart';
+import 'package:movies/utils/app_styles.dart';
 import 'package:movies/widgets/custom_divider.dart';
 import 'package:movies/widgets/custom_elevatedbutton.dart';
 import 'package:movies/widgets/custom_text_field.dart';
@@ -87,7 +88,8 @@ class _LoginScreenState extends State<LoginScreen> {
  fontWeight: FontWeight.w400,
  color: AppColors.amber
          ) ,),)),
-         CustomElevatedbutton(text: 'Login'),
+         CustomElevatedbutton(text: 'Login', textStyle: AppStyles.bold20Gray,
+         navigator: () => Navigator.pushNamed(context,AppRoutes.updateProfileScreen),),
          Row( mainAxisAlignment: MainAxisAlignment.center,
          
           children: [
@@ -96,14 +98,17 @@ class _LoginScreenState extends State<LoginScreen> {
  fontWeight: FontWeight.w400,
  color: AppColors.white
          ) ),
-         TextButton(onPressed: (){},
+         TextButton(onPressed: (){
+           Navigator.pushNamed(context, AppRoutes.registerScreen);
+         },
         child: Text("Create One ",style:GoogleFonts.roboto(
  fontSize: 14,
  fontWeight: FontWeight.w600,
  color: AppColors.amber
          ) ,),)]),
          CustomDivider(),
-         CustomElevatedbutton(text: 'Login With Google',isIcon: true,),
+         CustomElevatedbutton(text: 'Login With Google',isIcon: true, textStyle: AppStyles.bold20black,
+          navigator: () => Navigator),
          
          LanguageSwitch()
         // SizedBox.expand()

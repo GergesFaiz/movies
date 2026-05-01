@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:movies/screens/forgot_password_screen.dart';
 import 'package:movies/screens/login/login_screen.dart';
+import 'package:movies/screens/onboarding/onboarding.dart';
 import 'package:movies/screens/register_screen.dart';
 import 'package:movies/screens/update_profile_screen.dart';
 import 'package:movies/utils/appRoutes.dart';
-import 'package:movies/utils/app_theme.dart';
+
 
 import 'home_screen.dart';
 
@@ -19,13 +20,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.loginScreen,
+      initialRoute: AppRoutes.onBoarding,
       routes: {
+        AppRoutes.onBoarding:(context)=>Onboarding(),
         AppRoutes.homeScreen: (context) => HomeScreen(),
         AppRoutes.loginScreen: (context) => LoginScreen(),
         AppRoutes.forgotPasswordScreen: (context) => ForgotPasswordScreen(),
         AppRoutes.registerScreen: (context) => RegisterScreen(),
-        AppRoutes.UpdateProfileScreen: (context) => UpdateProfileScreen(),
+        AppRoutes.updateProfileScreen: (context) => UpdateProfileScreen(),
 
       },
     );

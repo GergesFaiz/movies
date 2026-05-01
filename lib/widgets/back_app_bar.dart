@@ -4,8 +4,8 @@ import '../utils/app_colors.dart';
 import '../utils/app_styles.dart';
 
 class BackAppBar extends StatelessWidget implements PreferredSizeWidget{
-  String title;
-   BackAppBar({super.key,required this.title});
+  final String title;
+   const BackAppBar({super.key,required this.title});
 
   @override
   Widget build(BuildContext context) {

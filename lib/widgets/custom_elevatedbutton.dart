@@ -4,16 +4,23 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:movies/utils/app_assets.dart';
 import 'package:movies/utils/app_colors.dart';
 
+
 class CustomElevatedbutton  extends StatelessWidget
 { 
 final  String text ;
   final bool isIcon;
-
- const CustomElevatedbutton({super.key,required this.text,this.isIcon=false});
+  final TextStyle textStyle;
+  final VoidCallback?  navigator;
+ 
+ const CustomElevatedbutton({super.key,required this.text,this.isIcon=false,
+ required  this.textStyle ,required this.navigator });
   
   @override
   Widget build(BuildContext context) {
-  return ElevatedButton(onPressed: (){},
+  return ElevatedButton(onPressed: (){
+   navigator!();
+    // Navigator.pushNamed(context, AppRoutes.updateProfileScreen);
+  },
  style:  ElevatedButton.styleFrom(
   backgroundColor: AppColors.amber,
   padding: EdgeInsets.all(15),
@@ -42,10 +49,6 @@ alignment: Alignment.center
      ],
    )
    :
-  Text(text,style:  GoogleFonts.roboto(
- fontSize: 20,
- fontWeight: FontWeight.w400,
- color: AppColors.gray
- ),))
+  Text(text,style:textStyle,))
   ;
   }}
