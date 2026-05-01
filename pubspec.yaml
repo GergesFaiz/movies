@@ -42,7 +42,7 @@ dependencies:
   go_router: ^13.2.0
   shimmer: ^3.0.0
   flutter_svg: ^2.2.4
-  introduction_screen: ^4.0.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
