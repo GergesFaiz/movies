@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:movies/utils/appRoutes.dart';
 import 'package:movies/utils/app_colors.dart';
 import 'package:movies/utils/app_styles.dart';
 import 'package:movies/widgets/custom_elevatedbutton.dart';
@@ -38,8 +39,14 @@ class OnboardingBottomsheet  extends StatelessWidget
         Text(bottomSheetTitle,style: AppStyles.medium36white,textAlign: TextAlign.center,),
         Text(bottomSheetDiscribtion,style: AppStyles.bold20White,textAlign:  TextAlign.center,),
         
-        CustomElevatedbutton(text: buttonText, textStyle: AppStyles.bold20black,navigator:() {
-          navigatornext();
+        CustomElevatedbutton(text: buttonText, textStyle: AppStyles.bold20black,
+        navigator:() {
+       if (buttonText == "Next") {
+      navigatornext();
+    } else {
+      
+      Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
+    }
         },),
         if(isFirstPage==false)
         ElevatedButton(

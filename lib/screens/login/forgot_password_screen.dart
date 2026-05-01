@@ -3,8 +3,8 @@ import 'package:movies/utils/app_assets.dart';
 import 'package:movies/utils/app_colors.dart';
 import 'package:movies/widgets/back_app_bar.dart';
 
-import '../../utils/app_styles.dart';
-import '../widgets/primary_button_widget.dart';
+import '../../../utils/app_styles.dart';
+import '../../widgets/primary_button_widget.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -20,7 +20,9 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BackAppBar(title: "Forget Password"),
+      backgroundColor: AppColors.blackColor,
+      appBar: BackAppBar(title: "Forget Password",
+      ),
       body: Padding(
         padding: EdgeInsets.all(20.0),
         child: SingleChildScrollView(

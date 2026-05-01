@@ -67,7 +67,15 @@ class _CustomTextFieldState extends State<CustomTextField> {
     ,
     prefixIcon:widget.ispassword?
     Icon(Icons.lock,color: AppColors.white)
-     :Icon( Icons.email,color: AppColors.white,),
+     ://(Icon( Icons.email,color: AppColors.white)),
+     (widget.hinttext == "Email" )
+        ? const Icon(Icons.email, color: AppColors.white) // حالة الإيميل
+        : (widget.hinttext == "Name" ||widget.hinttext == "John Safwat")
+            ? const Icon(Icons.person, color: AppColors.white) // حالة الاسم
+            : (widget.hinttext == "Phone Number"||widget.hinttext == "01200000000" )
+                ? const Icon(Icons.phone, color: AppColors.white) :null,// حالة الهاتف
+               
+   
    border: OutlineInputBorder(
     borderRadius: BorderRadius.circular(15)
    ),

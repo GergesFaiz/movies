@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:movies/screens/forgot_password_screen.dart';
+import 'package:movies/screens/login/forgot_password_screen.dart';
+import 'package:movies/utils/screen_utils.dart';
+import 'package:movies/widgets/custom_text_field.dart';
 
 import '../utils/app_colors.dart';
-import '../widgets/app_text_field.dart';
 class UpdateProfileScreen extends StatefulWidget {
   const UpdateProfileScreen({super.key});
   @override
@@ -19,6 +20,20 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     '🧔',   '👩',  '🧑‍💻',
     '👩‍🎨', '🧑‍🚀', '🧓',
   ];
+   late TextEditingController namecontroller;
+    late TextEditingController phonecontroller;
+    @override
+  void initState() {
+    namecontroller=TextEditingController();
+     phonecontroller=TextEditingController();
+    super.initState();
+  }
+  @override
+  void dispose() {
+    namecontroller.dispose();
+     phonecontroller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +60,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+          
             children: [
 
               // ── Selected Avatar ──────────────────────
@@ -73,19 +89,28 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
               const SizedBox(height: 24),
 
               // ── Name Field ──────────────────────────
-              AppTextField(
+            /*  AppTextField(
                 hint: 'John Safwat',
                 icon: Icons.person_outline,
               ),
-              const SizedBox(height: 14),
-
+              const SizedBox(height: 14),*/
+              CustomTextField(textInputType: TextInputType.visiblePassword,
+               textInputAction: TextInputAction.next,
+                controller:namecontroller ,
+                 hinttext: "John Safwat",
+                 ),
+              SizedBox(height: 14,),
               // ── Phone Field ─────────────────────────
-              AppTextField(
+               CustomTextField(textInputType: TextInputType.visiblePassword,
+               textInputAction: TextInputAction.done,
+                controller:phonecontroller ,
+                 hinttext: "01200000000")
+            /*  AppTextField(
                 hint: '01200000000',
                 icon: Icons.phone_outlined,
                 keyboard: TextInputType.phone,
-              ),
-              const SizedBox(height: 16),
+              ),*/,
+              const SizedBox(height:10 ),
 
               // ── Reset Password ──────────────────────
               GestureDetector(
@@ -106,47 +131,53 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 secondChild: const SizedBox.shrink(),
               ),
 
-              const SizedBox(height: 24),
-
+               SizedBox(height: context.height*.35),
+              
               // ── Delete Account Button ───────────────
-              SizedBox(
-                width: double.infinity,
-                height: 52,
-                child: ElevatedButton(
-                  onPressed: () => _showDeleteDialog(context),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFE53935),
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
-                    elevation: 0,
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    height: 52,
+                    child: ElevatedButton(
+                      onPressed: () => _showDeleteDialog(context),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFE53935),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12)),
+                        elevation: 0,
+                      ),
+                      child: const Text(
+                        'Delete Account',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ),
                   ),
-                  child: const Text(
-                    'Delete Account',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  const SizedBox(height: 14),
+                  
+                  // ── Update Data Button ──────────────────
+                  SizedBox(
+                    width: double.infinity,
+                    height: 52,
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.amber,
+                        foregroundColor: const Color(0xFF111111),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12)),
+                        elevation: 0,
+                      ),
+                      child: const Text(
+                        'Update Data',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              const SizedBox(height: 14),
-
-              // ── Update Data Button ──────────────────
-              SizedBox(
-                width: double.infinity,
-                height: 52,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.amber,
-                    foregroundColor: const Color(0xFF111111),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
-                    elevation: 0,
-                  ),
-                  child: const Text(
-                    'Update Data',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                ),
+                ],
               ),
 
               const SizedBox(height: 20),

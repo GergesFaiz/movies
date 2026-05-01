@@ -100,9 +100,7 @@ class _OnboardingState extends State<Onboarding> {
           CustomElevatedbutton(
             text: data.buttonText,
             textStyle: AppStyles.simibold20Gray,
-            navigator: () {
-               Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
-            },
+            navigator: ()=>navigate("next")
              
             
           ),

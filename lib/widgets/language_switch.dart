@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movies/utils/app_assets.dart';
@@ -8,30 +9,27 @@ class LanguageSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 128),
+    return Center( 
       child: Container(
-        width: 60,
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
           color: Colors.transparent,
           borderRadius: BorderRadius.circular(30),
-          border: BoxBorder.all(color: AppColors.amber, width: 2),
+          border: Border.all(color: AppColors.amber, width: 2), 
         ),
         child: Row(
-          spacing: 10,
+          mainAxisSize: MainAxisSize.min, 
           children: [
             SizedBox(
               height: 40,
               width: 40,
               child: SvgPicture.asset(AppIcon.lr),
-              // Image.asset("assets/images/LR.png"),
             ),
-
+            const SizedBox(width: 10), 
             SizedBox(
               height: 40,
               width: 40,
               child: SvgPicture.asset(AppIcon.eg),
-              // Image.asset("assets/images/EG.png"),
             ),
           ],
         ),

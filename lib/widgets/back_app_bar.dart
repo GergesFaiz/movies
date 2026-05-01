@@ -10,6 +10,7 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget{
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      backgroundColor: AppColors.blackColor,
       leading: IconButton(
         icon: Icon(Icons.arrow_back,color: AppColors.amber,),onPressed: () => Navigator.pop(context),),
       elevation: 0,

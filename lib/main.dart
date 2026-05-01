@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:movies/screens/forgot_password_screen.dart';
+import 'package:movies/screens/login/forgot_password_screen.dart';
 import 'package:movies/screens/login/login_screen.dart';
 import 'package:movies/screens/onboarding/onboarding.dart';
-import 'package:movies/screens/register_screen.dart';
+import 'package:movies/screens/login/register_screen.dart';
 import 'package:movies/screens/update_profile_screen.dart';
 import 'package:movies/utils/appRoutes.dart';
 

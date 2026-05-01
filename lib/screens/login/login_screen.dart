@@ -41,6 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      backgroundColor: AppColors.blackColor,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsetsGeometry.all(16),
@@ -87,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
  color: AppColors.amber
          ) ,),)),
          CustomElevatedbutton(text: 'Login', textStyle: AppStyles.bold20Gray,
-         navigator: () => Navigator.pushNamed(context,AppRoutes.updateProfileScreen),),
+         navigator: () { Navigator.pushNamed(context,AppRoutes.updateProfileScreen);}),
          Row( mainAxisAlignment: MainAxisAlignment.center,
          
           children: [
@@ -109,88 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
           navigator: () => Navigator),
          
          LanguageSwitch(),
-        // SizedBox.expand()
-              SizedBox(
-                height: 180,
-                width: 180,
-                child: Image.asset(AppAssets.splashImage),
-              ),
-              Form(
-                key: formkey,
-                child: Column(
-                  spacing: 15,
-                  children: [
-                    CustomTextField(
-                      textInputType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.next,
-                      controller: emailcontroller,
-                      hinttext: "Email",
-                    ),
-                    CustomTextField(
-                      textInputType: TextInputType.visiblePassword,
-                      textInputAction: TextInputAction.done,
-                      controller: passwordcontroller,
-                      hinttext: "Password",
-                      ispassword: true,
-                    ),
-                  ],
-                ),
-              ),
-              Align(
-                alignment: AlignmentGeometry.centerRight,
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      AppRoutes.forgotPasswordScreen,
-                    );
-                  },
-                  child: Text(
-                    "Forget Password ?",
-                    style: GoogleFonts.roboto(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.amber,
-                    ),
-                  ),
-                ),
-              ),
-              CustomElevatedbutton(text: 'Login', textStyle: AppStyles.medium14Gray, navigator: () { 
-                Navigator.pushNamed(context, AppRoutes.updateProfileScreen);
-               },),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-
-                children: [
-                  Text(
-                    "Don’t Have Account ?",
-                    style: GoogleFonts.roboto(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.white,
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, AppRoutes.registerScreen);
-                    },
-                    child: Text(
-                      "Create One ",
-                      style: GoogleFonts.roboto(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.amber,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              CustomDivider(),
-              CustomElevatedbutton(text: 'Login With Google', isIcon: true, textStyle: AppStyles.medium13Gray, navigator: () {  },),
-
-              LanguageSwitch(),
-
-              // SizedBox.expand()
+       
             ],
           ),
         ),
