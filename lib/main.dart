@@ -3,7 +3,7 @@ import 'package:movies/screens/login/forgot_password_screen.dart';
 import 'package:movies/screens/login/login_screen.dart';
 import 'package:movies/screens/onboarding/onboarding.dart';
 import 'package:movies/screens/login/register_screen.dart';
-import 'package:movies/screens/update_profile_screen.dart';
+import 'package:movies/screens/updateprofile/update_profile_screen.dart';
 import 'package:movies/utils/appRoutes.dart';
 import 'package:movies/utils/app_theme.dart';
 
