@@ -3,6 +3,18 @@ class AppAssets {
   static String  forgotPasswordBro='assets/images/forgot_password_bro.png';
   static String  emailIcon='assets/images/icons/Vector.png';
   static const String splashImage = "assets/images/splash_logo.png";
+
+  static const String avatar1 = "assets/images/avatars/gamer (1).png";
+  static const String avatar2 = "assets/images/avatars/gamer (2).png";
+  static const String avatar3 = "assets/images/avatars/gamer (3).png";
+  static const String avatar4 = "assets/images/avatars/gamer (4).png";
+  static const String avatar5 = "assets/images/avatars/gamer (5).png";
+  static const String avatar6 = "assets/images/avatars/gamer (6).png";
+  static const String avatar7 = "assets/images/avatars/gamer (7).png";
+  static const String avatar8 = "assets/images/avatars/gamer (8).png";
+  static const String avatar9 = "assets/images/avatars/gamer (9).png";
+  static const String avatar10 = "assets/images/avatars/gamerK.png";
+
   
 
 }

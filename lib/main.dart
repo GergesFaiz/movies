@@ -5,6 +5,7 @@ import 'package:movies/screens/onboarding/onboarding.dart';
 import 'package:movies/screens/login/register_screen.dart';
 import 'package:movies/screens/update_profile_screen.dart';
 import 'package:movies/utils/appRoutes.dart';
+import 'package:movies/utils/app_theme.dart';
 
 
 import 'home_screen.dart';
@@ -22,6 +23,9 @@ class MyApp extends StatelessWidget {
 
       debugShowCheckedModeBanner: false,
       initialRoute: AppRoutes.onBoarding,
+      theme:AppTheme.darkTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.dark,
       routes: {
         AppRoutes.onBoarding:(context)=>Onboarding(),
         AppRoutes.homeScreen: (context) => HomeScreen(),
