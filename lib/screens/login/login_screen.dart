@@ -8,6 +8,7 @@ import 'package:movies/widgets/custom_divider.dart';
 import 'package:movies/widgets/custom_elevatedbutton.dart';
 import 'package:movies/widgets/custom_text_field.dart';
 import 'package:movies/widgets/language_switch.dart';
+import '../../utils/screen_utils.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -37,22 +38,23 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var height = context.height;
+    var width = context.width;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Padding(
-          padding:  EdgeInsetsGeometry.all(16),
+          padding: EdgeInsetsGeometry.symmetric(
+            horizontal: width*0.04
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             spacing: 20,
 
             children: [
-              /* SvgPicture.asset(AppIcon.loginIcon,
-      width: 180,
-      height:180 ,),*/
               SizedBox(
-                height: 180,
-                width: 180,
+                height: height*0.126,
+                width: width*0.28,
                 child: Image.asset(AppAssets.splashImage),
               ),
               Form(
@@ -98,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
               CustomElevatedbutton(
                 text: 'Login',
                 textStyle: AppStyles.bold20Gray,
-                navigator: () {
+                navigator: ()  {
                   Navigator.pushNamed(context, AppRoutes.homeScreen);
                 },
               ),
