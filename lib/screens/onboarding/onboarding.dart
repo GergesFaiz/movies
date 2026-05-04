@@ -105,7 +105,7 @@ class _OnboardingState extends State<Onboarding> {
           ),
           CustomElevatedbutton(
             text: data.buttonText,
-            textStyle: AppStyles.simibold20Gray,
+            textStyle: AppStyles.bold20black,
             navigator: () => navigate("next"),
           ),
           //  const Spacer(),

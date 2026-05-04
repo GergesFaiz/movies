@@ -43,94 +43,95 @@ class _LoginScreenState extends State<LoginScreen> {
     var width = context.width;
     return Scaffold(
       // resizeToAvoidBottomInset: false,
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: width * 0.04),
-        child: Form(
-          key: formkey,
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              spacing: height * 0.02,
-              children: [
-                SizedBox(
-              height:height * 0.28 ,width:width * 0.28,
-              child: Image.asset(AppAssets.splashImage,),
-            ),
-                CustomTextField(
-                  textInputType: TextInputType.emailAddress,
-                  textInputAction: TextInputAction.next,
-                  controller: emailcontroller,
-                  hinttext: "Email",
-                ),
-                CustomTextField(
-                  textInputType: TextInputType.visiblePassword,
-                  textInputAction: TextInputAction.done,
-                  controller: passwordcontroller,
-                  hinttext: "Password",
-                  ispassword: true,
-                ),
-                Align(
-                  alignment: AlignmentGeometry.centerRight,
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                      minimumSize: Size.zero,
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    ),
-                    onPressed: () {
-                      Navigator.pushNamed(
-                        context,
-                        AppRoutes.forgotPasswordScreen,
-                      );
-                    },
-                    child: Text(
-                      "Forget Password ?",
-                      style:AppStyles.medium14Amber,
-                    ),
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: width * 0.04),
+          child: Form(
+            key: formkey,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                spacing: height * 0.02,
+                children: [
+                  SizedBox(
+                height:height * 0.28 ,width:width * 0.28,
+                child: Image.asset(AppAssets.splashImage,),
+              ),
+                  CustomTextField(
+                    textInputType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
+                    controller: emailcontroller,
+                    hintText: "Email",
                   ),
-                ),
-                CustomElevatedbutton(
-                  text: 'Login',
-                  textStyle: AppStyles.bold20Gray,
-                  navigator: () {
-                    Navigator.pushNamed(context, AppRoutes.homeScreen);
-                  },
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Don’t Have Account ? ",
-                      style: AppStyles.medium14White
-                    ),
-                    TextButton(
+                  CustomTextField(
+                    textInputType: TextInputType.visiblePassword,
+                    textInputAction: TextInputAction.done,
+                    controller: passwordcontroller,
+                    hintText: "Password",
+                    isPassword: true,
+                  ),
+                  Align(
+                    alignment: AlignmentGeometry.centerRight,
+                    child: TextButton(
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.zero,
                         minimumSize: Size.zero,
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
                       onPressed: () {
-                        Navigator.pushNamed(context, AppRoutes.registerScreen);
+                        Navigator.pushNamed(
+                          context,
+                          AppRoutes.forgotPasswordScreen,
+                        );
                       },
                       child: Text(
-                        " Create One ",
-                        style: AppStyles.medium14Amber.copyWith(
-                          fontWeight: FontWeight.w900
-                        )
+                        "Forget Password ?",
+                        style:AppStyles.medium14Amber,
                       ),
                     ),
-                  ],
-                ),
-                CustomDivider(),
-                CustomElevatedbutton(
-                  text: ' Login With Google ',
-                  isIcon: true,
-                  textStyle: AppStyles.regular16black,
-                  navigator: () => Navigator,
-                ),
-
-                LanguageSwitch(),
-              ],
+                  ),
+                  CustomElevatedbutton(
+                    text: 'Login',
+                    textStyle: AppStyles.bold20Gray,
+                    navigator: () {
+                      Navigator.pushNamed(context, AppRoutes.homeScreen);
+                    },
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Don’t Have Account ? ",
+                        style: AppStyles.medium14White
+                      ),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          minimumSize: Size.zero,
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                        onPressed: () {
+                          Navigator.pushNamed(context, AppRoutes.registerScreen);
+                        },
+                        child: Text(
+                          " Create One ",
+                          style: AppStyles.medium14Amber.copyWith(
+                            fontWeight: FontWeight.w900
+                          )
+                        ),
+                      ),
+                    ],
+                  ),
+                  CustomDivider(),
+                  CustomElevatedbutton(
+                    text: ' Login With Google ',
+                    isIcon: true,
+                    textStyle: AppStyles.regular16black,
+                    navigator: () => Navigator,
+                  ),
+                  LanguageSwitch(),
+                ],
+              ),
             ),
           ),
         ),

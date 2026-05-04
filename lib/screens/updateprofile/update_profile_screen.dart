@@ -6,6 +6,7 @@ import 'package:movies/widgets/custom_text_field.dart';
 import 'package:movies/widgets/primary_button_widget.dart';
 
 import '../../utils/appRoutes.dart';
+import '../../utils/app_assets.dart';
 import '../../utils/app_colors.dart';
 import 'avatars_bottom_sheet.dart';
 
@@ -21,11 +22,17 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   int selectedAvatar = 0;
 
 
-  final List<String> avatarImages = List.generate(
-    9,
-        (i) => 'assets/images/avatars/gamer (${i + 1}).png',
-  );
-
+  final List<String> avatarImages = [
+    AppAssets.avatar7,
+    AppAssets.avatar8,
+    AppAssets.avatar9,
+    AppAssets.avatar4,
+    AppAssets.avatar5,
+    AppAssets.avatar6,
+    AppAssets.avatar1,
+    AppAssets.avatar2,
+    AppAssets.avatar3,
+  ];
   late TextEditingController namecontroller;
   late TextEditingController phonecontroller;
 
@@ -45,21 +52,26 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var height = context.height;
+    var width = context.width;
     return Scaffold(
       appBar: BackAppBar(title: 'Pick Avatar'),
       body: SafeArea(
         child: Padding(
-          padding:  EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+          padding:  EdgeInsets.symmetric(
+            horizontal: width * 0.03,
+
+          ),
           child: Column(
-            spacing: 19,
+            spacing: height * 0.02,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Center(
                 child: GestureDetector(
                   onTap: () => showAvatarsBottomSheet(),
                   child: Container(
-                    width: 150,
-                    height: 150,
+                    width: width * 0.40,
+                    height: width * 0.40,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                     ),
@@ -77,13 +89,13 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 textInputType: TextInputType.name,
                 textInputAction: TextInputAction.next,
                 controller: namecontroller,
-                hinttext: "John Safwat",
+                hintText: "John Safwat",
               ),
               CustomTextField(
                 textInputType: TextInputType.phone,
                 textInputAction: TextInputAction.done,
                 controller: phonecontroller,
-                hinttext: "01200000000",
+                hintText: "01200000000",
               ),
               GestureDetector(
                 onTap: () => Navigator.pushNamed(

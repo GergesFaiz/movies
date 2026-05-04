@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../utils/app_assets.dart';
 import '../../utils/app_colors.dart';
+import '../../utils/screen_utils.dart';
 
 class AvatarsBottomSheet extends StatefulWidget {
    AvatarsBottomSheet({
@@ -19,10 +21,17 @@ class AvatarsBottomSheet extends StatefulWidget {
 class _AvatarsBottomSheetState extends State<AvatarsBottomSheet> {
   late int selectedAvatar;
 
-  final List<String> avatarImages = List.generate(
-    9,
-        (i) => 'assets/images/avatars/gamer (${i + 1}).png',
-  );
+  final List<String> avatarImages = [
+    AppAssets.avatar7,
+    AppAssets.avatar8,
+    AppAssets.avatar9,
+    AppAssets.avatar4,
+    AppAssets.avatar5,
+    AppAssets.avatar6,
+    AppAssets.avatar1,
+    AppAssets.avatar2,
+    AppAssets.avatar3,
+      ];
 
   @override
   void initState() {
@@ -32,6 +41,8 @@ class _AvatarsBottomSheetState extends State<AvatarsBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    var height = context.height;
+    var width = context.width;
     return Container(
       padding:  EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -60,15 +71,19 @@ class _AvatarsBottomSheetState extends State<AvatarsBottomSheet> {
             },
             child: AnimatedContainer(
               duration:  Duration(milliseconds: 200),
+
               decoration: BoxDecoration(
-                shape: BoxShape.circle,
+                color:selected ? AppColors.amber.withAlpha(90) : Colors.transparent,
+                borderRadius: BorderRadius.circular(20),
+                shape: BoxShape.rectangle,
                 border: Border.all(
-                  color: selected ? AppColors.amber : Colors.transparent,
-                  width: 3,
+                  color: AppColors.amber ,
+                  width: 2,
                 ),
               ),
-              child: ClipOval(
-                child: Image.asset(avatarImages[i], fit: BoxFit.cover),
+              child: SizedBox(
+                width: width*0.2,
+                child: Image.asset(avatarImages[i],),
               ),
             ),
           );

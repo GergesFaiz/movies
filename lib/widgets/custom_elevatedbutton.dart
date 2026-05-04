@@ -25,43 +25,38 @@ class CustomElevatedbutton extends StatelessWidget {
   Widget build(BuildContext context) {
     var height = context.height;
 
-    return Padding(
-      padding:  EdgeInsets.symmetric(
-        vertical: height*0.015,
-      ),
-      child: ElevatedButton(
-        onPressed: () {
-          navigator!();
-          // Navigator.pushNamed(context, AppRoutes.updateProfileScreen);
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.amber,
-          padding: EdgeInsets.all(15),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadiusGeometry.circular(15),
-          ),
-          alignment: Alignment.center,
+    return ElevatedButton(
+      onPressed: () {
+        navigator!();
+        // Navigator.pushNamed(context, AppRoutes.updateProfileScreen);
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.amber,
+        padding: EdgeInsets.all(15),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadiusGeometry.circular(15),
         ),
-        child: isIcon
-            ? Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                spacing: 5,
-                children: [
-                  //Icon(,color: AppColors.gray,size: 40,),
-                  SvgPicture.asset(AppIcon.googleIcon, height: 24, width: 24),
-
-                  Text(
-                    text,
-                    style: GoogleFonts.roboto(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.gray,
-                    ),
-                  ),
-                ],
-              )
-            : Text(text, style: textStyle),
+        alignment: Alignment.center,
       ),
+      child: isIcon
+          ? Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              spacing: 5,
+              children: [
+                //Icon(,color: AppColors.gray,size: 40,),
+                SvgPicture.asset(AppIcon.googleIcon, height: 24, width: 24),
+
+                Text(
+                  text,
+                  style: GoogleFonts.roboto(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.gray,
+                  ),
+                ),
+              ],
+            )
+          : Text(text, style: textStyle),
     );
   }
 }

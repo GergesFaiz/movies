@@ -4,6 +4,7 @@ import 'package:movies/utils/app_colors.dart';
 import 'package:movies/widgets/back_app_bar.dart';
 
 import '../../../utils/app_styles.dart';
+import '../../utils/screen_utils.dart';
 import '../../widgets/primary_button_widget.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -19,16 +20,22 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var height = context.height;
+    var width = context.width;
     return Scaffold(
       appBar: BackAppBar(title: "Forget Password",
       ),
       body: Padding(
-        padding: EdgeInsets.all(20.0),
+        padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width * 0.06,
+
+        ),
         child: SingleChildScrollView(
           child: Column(
+            spacing: height * 0.02,
             children: [
               SizedBox(
-                height: 430,
+                height:height * 0.46,
                 child: Center(child: Image.asset(AppAssets.forgotPasswordBro)),
               ),
               TextField(
@@ -51,7 +58,6 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 ),
                 keyboardType: TextInputType.emailAddress,
               ),
-              SizedBox(height: 20),
               PrimaryButtonWidget(label: "Verify Email", onPressed: () {}),
             ],
           ),

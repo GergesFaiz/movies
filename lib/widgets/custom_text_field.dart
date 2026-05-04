@@ -2,22 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:movies/utils/app_colors.dart';
 import 'package:movies/utils/app_styles.dart';
 
+import '../utils/app_assets.dart';
+
 class CustomTextField extends StatefulWidget {
   final TextInputType textInputType;
   final TextInputAction textInputAction;
   final TextEditingController controller;
   final String? Function(String?)? validator;
-  final bool ispassword;
-  final String hinttext;
+  final bool isPassword;
+  final String hintText;
 
-  const CustomTextField({
+   const CustomTextField({
     super.key,
     required this.textInputType,
     required this.textInputAction,
     required this.controller,
     this.validator,
-    this.ispassword = false,
-    required this.hinttext,
+    this.isPassword = false,
+    required this.hintText,
   });
 
   @override
@@ -31,7 +33,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   void initState() {
     super.initState();
 
-    isShowPassword = widget.ispassword;
+    isShowPassword = widget.isPassword;
   }
 
   @override
@@ -41,7 +43,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       enableSuggestions: false,
       cursorColor: AppColors.white,
       cursorRadius: Radius.circular(16),
-      keyboardType: widget.ispassword
+      keyboardType: widget.isPassword
           ? widget.textInputType
           : TextInputType.visiblePassword,
       textInputAction: widget.textInputAction,
@@ -52,12 +54,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
       obscureText: isShowPassword,
       onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
       decoration: InputDecoration(
-        hintText: widget.hinttext,
+        hintText: widget.hintText,
         hintStyle: AppStyles.regular16white,
 
         filled: true,
         fillColor: AppColors.gray,
-        suffixIcon: widget.ispassword
+        suffixIcon: widget.isPassword
             ? IconButton(
                 onPressed: () {
                   setState(() {
@@ -70,19 +72,23 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 ),
               )
             : null,
-        prefixIcon: widget.ispassword
+        prefixIcon: widget.isPassword
             ? Icon(Icons.lock, color: AppColors.white,size: 26,)
             : //(Icon( Icons.email,color: AppColors.white)),
-              (widget.hinttext == "Email")
-            ? const Icon(Icons.email, color: AppColors.white,size: 26,) // حالة الإيميل
-            : (widget.hinttext == "Name" || widget.hinttext == "John Safwat")
-            ? const Icon(Icons.person, color: AppColors.white) // حالة الاسم
-            : (widget.hinttext == "Phone Number" ||
-                  widget.hinttext == "01200000000")
-            ? const Icon(Icons.phone, color: AppColors.white)
+              (widget.hintText == "Email")
+            ?  ImageIcon(
+                AssetImage(AppAssets.emailIcon),
+                size: 31,
+                color: AppColors.white,
+              )
+            : (widget.hintText == "Name" || widget.hintText == "John Safwat")
+            ?  Icon(Icons.person, color: AppColors.white)
+            : (widget.hintText == "Phone Number" ||
+                  widget.hintText == "01200000000")
+            ?  Icon(Icons.phone, color: AppColors.white)
             : null,
 
-        // حالة الهاتف
+
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
