@@ -1,6 +1,9 @@
  import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movies/utils/app_colors.dart';
+import 'package:movies/utils/app_styles.dart';
+
+import '../utils/screen_utils.dart';
 
 
 class CustomDivider extends StatelessWidget 
@@ -13,34 +16,30 @@ class CustomDivider extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
+    var width = context.width;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal:90 ),
+      padding:  EdgeInsets.symmetric(horizontal:width * 0.15 ),
       child: Row(
         children: [
-      
+
       Expanded(
         child: Divider(
-          thickness: 1, 
+          thickness: 1,
           color: AppColors.amber,
-          endIndent: 10,
+          endIndent: 11.2,
         ),
       ),
-      
+
       Text(
         "OR",
-        style:GoogleFonts.roboto(
-       fontSize: 15,
-       fontWeight: FontWeight.w400,
-       color: AppColors.amber
-       
+        style:AppStyles.medium15Amber
       ),
-      ),
-      
+
       Expanded(
         child: Divider(
           thickness: 1,
           color:AppColors.amber,
-          indent: 10, 
+          indent: 11.2,
         ),
       ),]),
     )
