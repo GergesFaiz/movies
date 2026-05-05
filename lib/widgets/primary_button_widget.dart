@@ -8,13 +8,14 @@ class PrimaryButtonWidget extends StatelessWidget {
   final VoidCallback onPressed;
   final Color backgroundColor;
    TextStyle? textStyle= AppStyles.regular20Black;
+  final Icon? icon;
 
    PrimaryButtonWidget({
     super.key,
     required this.label,
     required this.onPressed,
     this.backgroundColor = AppColors.amber,
-     this.textStyle
+     this.textStyle, this.icon
   });
 
   @override
@@ -22,6 +23,7 @@ class PrimaryButtonWidget extends StatelessWidget {
     width: double.infinity,
     height: 56,
     child: ElevatedButton(
+
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor,
@@ -29,7 +31,14 @@ class PrimaryButtonWidget extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         elevation: 0,
       ),
-      child: Text(label, style: textStyle),
+      child: Row(
+        spacing: 10,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(label, style: textStyle),
+          (icon ?? Container()),
+        ],
+      ),
     ),
   );
 }
