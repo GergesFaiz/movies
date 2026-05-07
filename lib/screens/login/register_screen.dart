@@ -117,7 +117,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       controller: namecontroller,
                       hintText: "Name",
                       validator: AppValidator
-                          .validateName, // nice clean code جميله قوي التقسيمه دي 🫡🫡
+                          .validateName, // nice clean code جميله   قوي التقسيمه دي 🫡🫡
                     ),
                     CustomTextField(
                       textInputType: TextInputType.emailAddress,
