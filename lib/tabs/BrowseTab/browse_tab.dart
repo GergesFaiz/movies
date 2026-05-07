@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:movies/utils/app_colors.dart';
-import 'package:movies/utils/app_styles.dart';
 import 'package:movies/utils/screen_utils.dart';
 
 import 'movies_card.dart';

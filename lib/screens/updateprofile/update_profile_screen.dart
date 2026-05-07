@@ -11,7 +11,7 @@ import '../../utils/app_colors.dart';
 import 'avatars_bottom_sheet.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
-   UpdateProfileScreen({super.key});
+   const UpdateProfileScreen({super.key});
 
   @override
   State<UpdateProfileScreen> createState() => _UpdateProfileScreenState();

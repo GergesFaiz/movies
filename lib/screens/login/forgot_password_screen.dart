@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 import 'package:movies/utils/app_assets.dart';
 import 'package:movies/utils/app_colors.dart';
+import 'package:movies/utils/firebase_files/auth_function.dart';
+import 'package:movies/utils/firebase_files/dialog_utils.dart';
 import 'package:movies/widgets/back_app_bar.dart';
 
 import '../../../utils/app_styles.dart';
@@ -15,6 +18,7 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+   
   final emailController = TextEditingController();
   bool emailSent = false;
 
@@ -58,13 +62,36 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 ),
                 keyboardType: TextInputType.emailAddress,
               ),
-              PrimaryButtonWidget(label: "Verify Email", onPressed: () {}),
+              PrimaryButtonWidget(label: "Verify Email", onPressed: () async {
+                
+  if (emailController.text.isNotEmpty) {
+    DialogUtils.showLoading(context, s: "Sending reset link...");
+    try{
+    String? result = await FirebaseFunctions.resetPassword(emailController.text.trim());
+    
+    DialogUtils.hideLoading(context);
+
+    if (result == null) {
+      DialogUtils.showMessage(context, "Check your email to reset your password!",
+      posActionName: "Ok",
+          posAction: () {
+            Navigator.pop(context);});
+    }    else {
+      DialogUtils.showMessage(context, result, title: "Error");
+    }
+  } catch (e) {
+      if (context.mounted) DialogUtils.hideLoading(context);
+      DialogUtils.showMessage(context, e.toString(), title: "System Error");
+    }
+  }
+              }),
             ],
           ),
         ),
       ),
     );
   }
+ 
 }
 
 //

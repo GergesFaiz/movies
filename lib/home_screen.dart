@@ -6,7 +6,7 @@ import 'package:movies/tabs/search_tab.dart';
 import 'package:movies/utils/app_colors.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();

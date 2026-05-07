@@ -13,7 +13,7 @@ class OnboardingBottomsheet extends StatelessWidget {
   final VoidCallback navigatorback;
   final bool isFirstPage;
 
-  OnboardingBottomsheet({
+  const OnboardingBottomsheet({
     super.key,
     required this.bottomSheetTitle,
     required this.bottomSheetDiscribtion,
