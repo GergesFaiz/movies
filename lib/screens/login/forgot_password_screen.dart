@@ -18,7 +18,6 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-   
   final emailController = TextEditingController();
   bool emailSent = false;
 
@@ -27,19 +26,17 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     var height = context.height;
     var width = context.width;
     return Scaffold(
-      appBar: BackAppBar(title: "Forget Password",
-      ),
+      appBar: BackAppBar(title: "Forget Password"),
       body: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width * 0.06,
-
         ),
         child: SingleChildScrollView(
           child: Column(
             spacing: height * 0.02,
             children: [
               SizedBox(
-                height:height * 0.46,
+                height: height * 0.46,
                 child: Center(child: Image.asset(AppAssets.forgotPasswordBro)),
               ),
               TextField(
@@ -62,36 +59,54 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 ),
                 keyboardType: TextInputType.emailAddress,
               ),
-              PrimaryButtonWidget(label: "Verify Email", onPressed: () async {
-                
-  if (emailController.text.isNotEmpty) {
-    DialogUtils.showLoading(context, s: "Sending reset link...");
-    try{
-    String? result = await FirebaseFunctions.resetPassword(emailController.text.trim());
-    
-    DialogUtils.hideLoading(context);
+              PrimaryButtonWidget(
+                label: "Verify Email",
+                onPressed: () async {
+                  if (emailController.text.isNotEmpty) {
+                    DialogUtils.showLoading(
+                      context,
+                      s: "Sending reset link...",
+                    );
+                    try {
+                      String? result = await FirebaseFunctions.resetPassword(
+                        emailController.text.trim(),
+                      );
 
-    if (result == null) {
-      DialogUtils.showMessage(context, "Check your email to reset your password!",
-      posActionName: "Ok",
-          posAction: () {
-            Navigator.pop(context);});
-    }    else {
-      DialogUtils.showMessage(context, result, title: "Error");
-    }
-  } catch (e) {
-      if (context.mounted) DialogUtils.hideLoading(context);
-      DialogUtils.showMessage(context, e.toString(), title: "System Error");
-    }
-  }
-              }),
+                      DialogUtils.hideLoading(context);
+
+                      if (result == null) {
+                        DialogUtils.showMessage(
+                          context,
+                          "Check your email to reset your password!",
+                          posActionName: "Ok",
+                          posAction: () {
+                            Navigator.pop(context);
+                          },
+                        );
+                      } else {
+                        DialogUtils.showMessage(
+                          context,
+                          result,
+                          title: "Error",
+                        );
+                      }
+                    } catch (e) {
+                      if (context.mounted) DialogUtils.hideLoading(context);
+                      DialogUtils.showMessage(
+                        context,
+                        e.toString(),
+                        title: "System Error",
+                      );
+                    }
+                  }
+                },
+              ),
             ],
           ),
         ),
       ),
     );
   }
- 
 }
 
 //
