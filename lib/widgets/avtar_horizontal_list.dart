@@ -15,9 +15,15 @@ class AvtarHorizontalList extends StatefulWidget {
 
 class _AvtarHorizontalListState extends State<AvtarHorizontalList> {
   final List<String> avatarImages = [
-    AppAssets.avatar1, AppAssets.avatar2, AppAssets.avatar3,
-    AppAssets.avatar4, AppAssets.avatar5, AppAssets.avatar6,
-    AppAssets.avatar7, AppAssets.avatar8, AppAssets.avatar9,
+    AppAssets.avatar1,
+    AppAssets.avatar2,
+    AppAssets.avatar3,
+    AppAssets.avatar4,
+    AppAssets.avatar5,
+    AppAssets.avatar6,
+    AppAssets.avatar7,
+    AppAssets.avatar8,
+    AppAssets.avatar9,
     AppAssets.avatar10,
   ];
 
@@ -47,7 +53,8 @@ int? selectedAvatar;
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: isSelected ? Colors.amber : Colors.transparent, 
+                  color: isSelected ? Colors.amber : Colors.transparent,
+                  // خليها لون شيك يليق مع الموفيز
                   width: 3,
                 ),
               ),

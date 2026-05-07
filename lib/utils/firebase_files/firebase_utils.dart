@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:movies/model/user.dart';
 
 class FirebaseUtils {
+
   static CollectionReference<User> getUserCollection(){
     return   FirebaseFirestore.instance.collection(User.collectionName).
     withConverter<User>(
