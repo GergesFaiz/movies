@@ -22,7 +22,7 @@ class FirebaseFunctions {
         name: name,
         email: email,
         phoneNum: phone,
-        password: password,
+       // password: password,
       );
 
       await FirebaseFirestore.instance

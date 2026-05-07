@@ -1,9 +1,9 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:movies/utils/appRoutes.dart';
 import 'package:movies/utils/app_validator.dart';
 import 'package:movies/utils/firebase_files/auth_function.dart';
 import 'package:movies/utils/firebase_files/dialog_utils.dart';
+import 'package:movies/widgets/avtar_horizontal_list.dart';
 import 'package:movies/widgets/custom_elevatedbutton.dart';
 import 'package:movies/widgets/custom_text_field.dart';
 import 'package:movies/widgets/language_switch.dart';
@@ -29,7 +29,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   late TextEditingController phonecontroller;
 
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
-
+ int chosenAvatar = 0;
   @override
   void initState() {
     emailcontroller = TextEditingController();
@@ -68,7 +68,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     var height = context.height;
     var width = context.width;
-    String chosenAvatar = " ";
+    
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: BackAppBar(title: 'Register'),
@@ -78,9 +78,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: width * 0.03),
             child: Column(
-              spacing: height * 0.01,
+              spacing: height * 0.0,
               children: [
-                CarouselSlider(
+               /* CarouselSlider(
                   options: CarouselOptions(
                     enlargeCenterPage: true,
                     height: height * 0.18,
@@ -88,18 +88,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     enableInfiniteScroll: true,
                     enlargeFactor: 0.4,
                   ),
-                  items: avatarImages.map((path) {
-                    final isSelected = chosenAvatar == path;
+                  items: avatarImages.asMap().entries.map((entry) {
+                    int index = entry.key;     
+                    String path = entry.value;
+                    final isSelected = chosenAvatar == Index;
                     return GestureDetector(
                       onTap: () {
                         setState(() {
-                          chosenAvatar = path;
+                          chosenAvatar = index;
                         });
                       },
-                      child: Image.asset(path, fit: BoxFit.cover),
-                    );
-                  }).toList(),
-                ),
+                      child:*/ AvtarHorizontalList(onAvatarSelected: (index) {
+    setState(() {
+      chosenAvatar = index; });
+    }),
+                       //Image.asset(path, fit: BoxFit.cover),
+                    
+               //  SizedBox(height: height * 0.01),
+                
 
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -117,7 +123,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       controller: namecontroller,
                       hintText: "Name",
                       validator: AppValidator
-                          .validateName, // nice clean code جميله قوي التقسيمه دي 🫡🫡
+                          .validateName, 
                     ),
                     CustomTextField(
                       textInputType: TextInputType.emailAddress,
@@ -168,11 +174,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   password: passwordcontroller.text,
                                   phone: phonecontroller.text,
                                   avatar: chosenAvatar,
-                                ); //عظمة 🫡🫡
+                                ); 
 
                             DialogUtils.hideLoading(
                               context,
-                            ); // 🫡 مش فاهمها قوي هحتاجك تعرفاني
+                            );
 
                             if (error == null) {
                               DialogUtils.showMessage(

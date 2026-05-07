@@ -31,10 +31,10 @@ int? selectedAvatar;
   @override
   Widget build(BuildContext context) {
   double screenwidth=context.width;
-    double baseRadius = screenwidth* 0.08; 
+    double baseRadius = screenwidth* 0.14; 
   double selectedRadius = baseRadius * 1.2;
     return SizedBox(
-      height: screenwidth*.25,
+      height: screenwidth*.43,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: avatarImages.length,
@@ -66,10 +66,11 @@ int? selectedAvatar;
             AnimatedContainer(
               duration: const Duration(milliseconds: 200),
               margin:  EdgeInsetsDirectional.symmetric(horizontal: screenwidth*.02),
-              transform: isSelected?Matrix4.identity().scaled(1.15):Matrix4.identity(),
+              transform: isSelected?Matrix4.identity().scaled(1.1):Matrix4.identity(),
               alignment: Alignment.center,
               child: CircleAvatar(
-                radius: isSelected?45:35,
+                radius: isSelected?selectedRadius : baseRadius,
+                //45:35,
                 backgroundColor: isSelected?AppColors.amber:AppColors.gray,
                 child: CircleAvatar(
                   radius: isSelected?(selectedRadius-3):(baseRadius-2),
