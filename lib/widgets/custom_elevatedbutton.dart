@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:movies/utils/app_assets.dart';
 import 'package:movies/utils/app_colors.dart';
 
+import '../utils/app_styles.dart';
 import '../utils/screen_utils.dart';
 
 class CustomElevatedbutton extends StatelessWidget {
@@ -44,15 +45,11 @@ class CustomElevatedbutton extends StatelessWidget {
               spacing: 5,
               children: [
                 //Icon(,color: AppColors.gray,size: 40,),
-                SvgPicture.asset(AppIcon.googleIcon, height: 24, width: 24),
+                SvgPicture.asset(AppIcon.googleIcon, height: 26, width: 26),
 
                 Text(
                   text,
-                  style: GoogleFonts.roboto(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.gray,
-                  ),
+                  style: AppStyles.regular16Gray,
                 ),
               ],
             )
