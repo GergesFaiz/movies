@@ -12,7 +12,7 @@ class FirebaseUtils {
   }
   static Future<void> addUser(User user){
     var collectionReference =getUserCollection();
-   var docRef= collectionReference.doc();
+   var docRef= collectionReference.doc(user.id);
     user.id=docRef.id;
     return docRef.set (user);
    

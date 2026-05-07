@@ -8,7 +8,7 @@ class FirebaseFunctions {
     required String email,
     required String password,
     required String phone,
-    required String avatar,
+    required int avatar,
   }) async {
     try {
       
@@ -20,7 +20,7 @@ class FirebaseFunctions {
       
       User newUser = User(
         id: userCredential.user!.uid, 
-        avatar: avatar,
+        avatar:avatar ,
         name: name,
         email: email,
         phoneNum: phone,

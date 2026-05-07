@@ -1,7 +1,7 @@
 class User {
   static const String collectionName='Users';
    String id;
-  String avatar;
+  int avatar;
  final String name;
 final  String email;
   String password;
@@ -28,7 +28,7 @@ final  String email;
     ;
   }
   User.fromFirestore(Map<String,dynamic>data):this(
-    avatar:data["avatar"] ,
+    avatar:data["avatar"] as int,
     name: data['name'] ,
     email: data['email'],
     password:data["password"] ,

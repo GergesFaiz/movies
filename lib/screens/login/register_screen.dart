@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:movies/utils/appRoutes.dart';
@@ -60,7 +59,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           
 
     var height = context.height;
-    String chosenAvatar=" ";
+   int chosenAvatar=0;
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: BackAppBar(title: 'Register'),
@@ -87,9 +86,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 
 
             AvtarHorizontalList(
-             onAvatarSelected: (path) {
+             onAvatarSelected: (Index) {
                 setState(() {
-  chosenAvatar = path; 
+  chosenAvatar =Index; 
 });
 }
                          ),
@@ -144,7 +143,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       textStyle: AppStyles.bold20black,
                       navigator: () 
                          async {
-                          print("Start Registration");
+                         // print("Start Registration");
                if (formkey.currentState!.validate()) {
   DialogUtils.showLoading( s: 'LOADING...',context);
   try {
