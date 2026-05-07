@@ -145,6 +145,8 @@ Widget buildStat(String count, String label, BuildContext context) {
     children: [
       Text(count, style: AppStyles.bold16White.copyWith(fontSize: 36)),
       Text(label, style: AppStyles.bold16White.copyWith(fontSize: 24)),
+      Text(count, style: AppStyles.bold16White.copyWith(fontSize: 32)),
+      Text(label, style: AppStyles.bold16White.copyWith(fontSize: 22)),
     ],
   );
 }
