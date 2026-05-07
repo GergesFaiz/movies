@@ -143,8 +143,6 @@ Widget buildStat(String count, String label, BuildContext context) {
   return Column(
     spacing: context.height * 0.02,
     children: [
-      Text(count, style: AppStyles.bold16White.copyWith(fontSize: 36)),
-      Text(label, style: AppStyles.bold16White.copyWith(fontSize: 24)),
       Text(count, style: AppStyles.bold16White.copyWith(fontSize: 32)),
       Text(label, style: AppStyles.bold16White.copyWith(fontSize: 22)),
     ],
