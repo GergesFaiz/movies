@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:movies/utils/app_assets.dart';
+import 'package:movies/utils/app_colors.dart';
+import 'package:movies/utils/screen_utils.dart';
 
 class AvtarHorizontalList extends StatefulWidget {
-  // بنضيف الـ Function دي عشان نبعت الاختيار لصفحة الـ Register
-  final Function(String) onAvatarSelected;
+  
+  final Function(int) onAvatarSelected;
 
   const AvtarHorizontalList({super.key, required this.onAvatarSelected});
 
@@ -25,26 +27,28 @@ class _AvtarHorizontalListState extends State<AvtarHorizontalList> {
     AppAssets.avatar10,
   ];
 
-  String? selectedAvatar;
-
+int? selectedAvatar;
   @override
   Widget build(BuildContext context) {
+  double screenwidth=context.width;
+    double baseRadius = screenwidth* 0.08; 
+  double selectedRadius = baseRadius * 1.2;
     return SizedBox(
-      height: 100,
+      height: screenwidth*.25,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: avatarImages.length,
         itemBuilder: (context, index) {
-          bool isSelected = selectedAvatar == avatarImages[index];
+          bool isSelected = selectedAvatar == index;
           return GestureDetector(
             onTap: () {
               setState(() {
-                selectedAvatar = avatarImages[index];
+                selectedAvatar = index;
               });
-              // بنادي الفنكشن اللي جاية من برا عشان تبلغ صفحة الـ Register
-              widget.onAvatarSelected(avatarImages[index]);
+              
+              widget.onAvatarSelected(index);
             },
-            child: Container(
+            child:/* Container(
               margin: const EdgeInsets.symmetric(horizontal: 8),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
@@ -58,7 +62,21 @@ class _AvtarHorizontalListState extends State<AvtarHorizontalList> {
                 radius: 40,
                 backgroundImage: AssetImage(avatarImages[index]),
               ),
-            ),
+            ),*/
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              margin:  EdgeInsetsDirectional.symmetric(horizontal: screenwidth*.02),
+              transform: isSelected?Matrix4.identity().scaled(1.15):Matrix4.identity(),
+              alignment: Alignment.center,
+              child: CircleAvatar(
+                radius: isSelected?45:35,
+                backgroundColor: isSelected?AppColors.amber:AppColors.gray,
+                child: CircleAvatar(
+                  radius: isSelected?(selectedRadius-3):(baseRadius-2),
+                  backgroundImage: AssetImage(avatarImages[index]),
+                ),
+              ),
+            )
           );
         },
       ),
