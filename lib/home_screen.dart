@@ -1,25 +1,57 @@
 import 'package:flutter/material.dart';
+import 'package:movies/tabs/BrowseTab/browse_tab.dart';
+import 'package:movies/tabs/home_tab.dart';
+import 'package:movies/tabs/ProfileTab/profile_tab.dart';
+import 'package:movies/tabs/search_tab.dart';
 import 'package:movies/utils/app_colors.dart';
-import 'package:movies/widgets/primary_button_widget.dart';
 
-import 'utils/appRoutes.dart';
-
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int currentIndex = 0;
+
+  final List<Widget> screens = [
+    HomeTab(),
+    SearchTab(),
+    BrowseTab(),
+    ProfileTab(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(spacing: 16,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          PrimaryButtonWidget(label: 'LoginScreen', onPressed: (){
-            Navigator.pushNamed(context, AppRoutes.loginScreen);
-          }),
-
-          PrimaryButtonWidget(label: 'UpdateProfileScreen', onPressed: (){
-            Navigator.pushNamed(context, AppRoutes.updateProfileScreen);
-          }),
+      body: screens[currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: currentIndex,
+        onTap: (index) => setState(() => currentIndex = index),
+        backgroundColor: AppColors.gray,
+        selectedItemColor: AppColors.amber,
+        unselectedItemColor: AppColors.white,
+        type: BottomNavigationBarType.fixed,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined),
+            activeIcon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.bookmark_outline),
+            activeIcon: Icon(Icons.bookmark),
+            label: 'WatchList',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline),
+            activeIcon: Icon(Icons.person),
+            label: 'Profile',
+          ),
         ],
       ),
     );

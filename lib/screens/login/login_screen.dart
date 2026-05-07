@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:movies/utils/appRoutes.dart';
 import 'package:movies/utils/app_assets.dart';
-import 'package:movies/utils/app_colors.dart';
 import 'package:movies/utils/app_styles.dart';
 import 'package:movies/widgets/custom_divider.dart';
 import 'package:movies/widgets/custom_elevatedbutton.dart';

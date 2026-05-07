@@ -5,7 +5,7 @@ import '../../utils/app_colors.dart';
 import '../../utils/screen_utils.dart';
 
 class AvatarsBottomSheet extends StatefulWidget {
-   AvatarsBottomSheet({
+   const AvatarsBottomSheet({
     super.key,
     required this.onAvatarSelected,
     required this.initialAvatar,

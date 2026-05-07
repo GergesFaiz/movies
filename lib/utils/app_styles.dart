@@ -23,7 +23,7 @@ class AppStyles {
 
   static TextStyle bold20White = GoogleFonts.roboto(
     fontSize: 18,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w700,
     color: AppColors.white,
   );
   static TextStyle bold24White = GoogleFonts.roboto(
@@ -59,6 +59,11 @@ class AppStyles {
   );
   static TextStyle regular16white = GoogleFonts.roboto(
     fontSize: 16,
+    fontWeight: FontWeight.normal,
+    color: AppColors.white,
+  );
+  static TextStyle regular20white = GoogleFonts.roboto(
+    fontSize: 20,
     fontWeight: FontWeight.normal,
     color: AppColors.white,
   );
