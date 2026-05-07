@@ -67,6 +67,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     var height = context.height;
+    var width = context.width;
     String chosenAvatar = " ";
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -75,28 +76,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
         child: Form(
           key: formkey,
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: context.width * 0.03),
+            padding: EdgeInsets.symmetric(horizontal: width * 0.03),
             child: Column(
               spacing: height * 0.01,
               children: [
-                /*   Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  spacing: 16,
-                  children: [
-                    Image.asset(height: height * 0.10, AppAssets.avatar8),
-                    Image.asset(height: height * 0.15, AppAssets.avatar10),
-                    Image.asset(height: height * 0.10, AppAssets.avatar7),
-                  ],
-                ),*/
-
-                //             AvtarHorizontalList(
-                //              onAvatarSelected: (path) {
-                //                 setState(() {
-                //   chosenAvatar = path;
-                // });
-                // }
-                //                          ),
                 CarouselSlider(
                   options: CarouselOptions(
                     enlargeCenterPage: true,
