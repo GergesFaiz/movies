@@ -107,7 +107,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   children: [
                     Text(
                       'Avatar',
-                      style: TextStyle(color: AppColors.white, fontSize: 12),
+                      style: AppStyles.regular16white,
+                      // TextStyle(color: AppColors.white, fontSize: 12),**ابقي استخدمي AppStyles 🫡🫡*******
                       textAlign: TextAlign.center,
                     ),
                     CustomTextField(
@@ -115,7 +116,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       textInputAction: TextInputAction.next,
                       controller: namecontroller,
                       hintText: "Name",
-                      validator: AppValidator.validateName,
+                      validator: AppValidator
+                          .validateName, // nice clean code جميله قوي التقسيمه دي 🫡🫡
                     ),
                     CustomTextField(
                       textInputType: TextInputType.emailAddress,
@@ -142,14 +144,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           AppValidator.validateConfirmPassword(
                             value,
                             passwordcontroller.text,
-                          ),
+                          ), //عظمة 🫡🫡
                     ),
                     CustomTextField(
                       textInputType: TextInputType.phone,
                       textInputAction: TextInputAction.done,
                       controller: phonecontroller,
                       hintText: "Phone Number",
-                      validator: AppValidator.validatePhone,
+                      validator: AppValidator.validatePhone, //عظمة 🫡🫡
                     ),
                     CustomElevatedbutton(
                       text: "Create Account",
@@ -166,9 +168,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   password: passwordcontroller.text,
                                   phone: phonecontroller.text,
                                   avatar: chosenAvatar,
-                                );
+                                ); //عظمة 🫡🫡
 
-                            DialogUtils.hideLoading(context);
+                            DialogUtils.hideLoading(
+                              context,
+                            ); // 🫡 مش فاهمها قوي هحتاجك تعرفاني
 
                             if (error == null) {
                               DialogUtils.showMessage(
