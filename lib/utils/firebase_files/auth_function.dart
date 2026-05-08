@@ -1,5 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:movies/model/user.dart';
 
 class FirebaseFunctions {
@@ -49,6 +49,19 @@ class FirebaseFunctions {
       return e.message;
     } catch (e) {
       return e.toString();
+    }
+  }
+
+  signInWithEmailAndPassword(String emailAddress, String password) async {
+    try {
+      final credential = await auth.FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: emailAddress, password: password);
+    } on auth.FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
     }
   }
 }
