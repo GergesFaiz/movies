@@ -33,8 +33,9 @@ class FirebaseFunctions {
       return null;
     } on auth.FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') return 'The password is too weak.';
-      if (e.code == 'email-already-in-use')
+      if (e.code == 'email-already-in-use') {
         return 'The email is already in use.';
+      }
       return e.message;
     } catch (e) {
       return e.toString();

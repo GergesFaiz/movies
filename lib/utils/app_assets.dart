@@ -3,6 +3,10 @@ class AppAssets {
   static String  forgotPasswordBro='assets/images/forgot_password_bro.png';
   static String  emailIcon='assets/images/icons/Vector.png';
   static const String splashImage = "assets/images/splash_logo.png";
+  static const String available = "assets/images/Available Now.png";
+  static const String watchnow = "assets/images/Watch Now.png";
+
+
 
   static const String avatar1 = "assets/images/avatars/gamer (1).png";
   static const String avatar2 = "assets/images/avatars/gamer (2).png";

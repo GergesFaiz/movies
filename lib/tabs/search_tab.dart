@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:movies/utils/app_assets.dart';
 
-import '../utils/app_colors.dart';
 
 class SearchTab extends StatelessWidget {
   const SearchTab({super.key});
@@ -8,9 +8,18 @@ class SearchTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Text('Search',style: TextStyle(
-        color: AppColors.white,
-      ),)),
+     
+      body:
+       Column(
+         children: [
+          TextFormField(
+            
+          ),
+           Center(child: 
+                 Image.asset(AppAssets.empty1)
+                 ),
+         ],
+       ),
     );
   }
 }
