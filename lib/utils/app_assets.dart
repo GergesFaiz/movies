@@ -31,6 +31,8 @@ class AppIcon {
   static String lr="assets/images/icons/LR.svg";
   static String eg= "assets/images/icons/EG.svg";
   static String loginIcon="assets/images/icons/login _yellowicon.svg";
+  static String search="assets/images/icons/Vector.svg";
+
 }
 class AppOnboardingImage{
   static String onbaordingImage1="assets/images/onboarding/OnBoarding.png";

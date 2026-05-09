@@ -89,7 +89,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     enlargeFactor: 0.4,
                   ),
                   items: avatarImages.map((path) {
-                    final isSelected = chosenAvatar == path;
+                 //   final isSelected = chosenAvatar == path;
                     return GestureDetector(
                       onTap: () {
                         setState(() {

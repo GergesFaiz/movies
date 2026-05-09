@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:movies/utils/app_assets.dart';
 import 'package:movies/utils/app_colors.dart';
 
 import '../utils/app_styles.dart';
-import '../utils/screen_utils.dart';
 
 class CustomElevatedbutton extends StatelessWidget {
   final String text;
@@ -24,7 +22,7 @@ class CustomElevatedbutton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var height = context.height;
+   // var height = context.height;
 
     return ElevatedButton(
       onPressed: () {
