@@ -23,5 +23,5 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget{
   }
 
 
-  @override Size get preferredSize =>  Size.fromHeight(64);
+  @override Size get preferredSize =>  Size.fromHeight(54);
 }
