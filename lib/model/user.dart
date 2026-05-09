@@ -22,7 +22,7 @@ class User {
       'avatar': avatar,
       'name': name,
       'email': email,
-      'phonenumber': phoneNum,
+      'phoneNumber': phoneNum,
       "password": password,
     };
   }
@@ -33,7 +33,7 @@ class User {
         name: data['name'],
         email: data['email'],
         password: data["password"],
-        phoneNum: data['phonenumber'],
+        phoneNum: data['phoneNumber'],
         id: data['id'],
       );
 }
