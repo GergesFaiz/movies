@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movies/screens/login/login_screen.dart';
 import 'package:movies/tabs/ProfileTab/profile_tabs/history_tab.dart';
 import 'package:movies/tabs/ProfileTab/profile_tabs/watch_list_tab.dart';
 import 'package:movies/utils/appRoutes.dart';
@@ -95,7 +96,9 @@ class _ProfileTabState extends State<ProfileTab>
                       ),
                       label: 'Exit',
                       onPressed: () {
-                        Navigator.pushNamed(context, AppRoutes.loginScreen);
+                        Navigator.pushAndRemoveUntil(
+                            context, MaterialPageRoute(builder: (_) =>
+                            LoginScreen()), (route) => false);
                       },
                       backgroundColor: AppColors.red,
                       textStyle: AppStyles.regular20white,

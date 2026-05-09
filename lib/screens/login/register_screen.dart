@@ -1,9 +1,9 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:movies/utils/appRoutes.dart';
 import 'package:movies/utils/app_validator.dart';
 import 'package:movies/utils/firebase_files/auth_function.dart';
 import 'package:movies/utils/firebase_files/dialog_utils.dart';
-import 'package:movies/widgets/avtar_horizontal_list.dart';
 import 'package:movies/widgets/custom_elevatedbutton.dart';
 import 'package:movies/widgets/custom_text_field.dart';
 import 'package:movies/widgets/language_switch.dart';
@@ -80,7 +80,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: Column(
               spacing: height * 0.0,
               children: [
-               /* CarouselSlider(
+                CarouselSlider(
                   options: CarouselOptions(
                     enlargeCenterPage: true,
                     height: height * 0.18,
@@ -88,25 +88,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     enableInfiniteScroll: true,
                     enlargeFactor: 0.4,
                   ),
-                  items: avatarImages.asMap().entries.map((entry) {
-                    int index = entry.key;     
-                    String path = entry.value;
-                    final isSelected = chosenAvatar == Index;
+                  items: avatarImages.map((path) {
+                    final isSelected = chosenAvatar == path;
                     return GestureDetector(
                       onTap: () {
                         setState(() {
-                          chosenAvatar = index;
+                          chosenAvatar = path as int;
                         });
                       },
-                      child:*/ AvtarHorizontalList(onAvatarSelected: (index) {
-    setState(() {
-      chosenAvatar = index; });
-    }),
-                       //Image.asset(path, fit: BoxFit.cover),
-                    
-               //  SizedBox(height: height * 0.01),
-                
-
+                      child: Image.asset(path, fit: BoxFit.cover),
+                    );
+                  }).toList(),
+                ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   spacing: height * 0.02,

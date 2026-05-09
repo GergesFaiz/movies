@@ -19,7 +19,6 @@ class MovieCard extends StatelessWidget {
 
     return Stack(
       children: [
-        // ── الصورة ──
         ClipRRect(
           borderRadius: BorderRadius.circular(12),
           child: Image.network(
@@ -29,8 +28,6 @@ class MovieCard extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
-
-        // ── الـ Rating ──
         Positioned(
           top: 8,
           left: 8,

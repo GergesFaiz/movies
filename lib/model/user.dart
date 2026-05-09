@@ -4,7 +4,7 @@ class User {
   int avatar;
   final String name;
   final String email;
-  //String password;
+  String password;
   final String phoneNum;
 
   User({
@@ -13,7 +13,7 @@ class User {
     required this.name,
     required this.email,
     required this.phoneNum,
-   // required this.password,
+    required this.password,
   });
 
   Map<String, dynamic> toFirestore() {
@@ -23,7 +23,7 @@ class User {
       'name': name,
       'email': email,
       'phonenumber': phoneNum,
-    //  "password": password,
+      "password": password,
     };
   }
 
@@ -32,7 +32,7 @@ class User {
         avatar: data["avatar"],
         name: data['name'],
         email: data['email'],
-       // password: data["password"],
+        password: data["password"],
         phoneNum: data['phonenumber'],
         id: data['id'],
       );

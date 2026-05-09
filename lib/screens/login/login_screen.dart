@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:movies/utils/appRoutes.dart';
 import 'package:movies/utils/app_assets.dart';
 import 'package:movies/utils/app_styles.dart';
+import 'package:movies/utils/firebase_files/auth_function.dart';
 import 'package:movies/widgets/custom_divider.dart';
 import 'package:movies/widgets/custom_elevatedbutton.dart';
 import 'package:movies/widgets/custom_text_field.dart';
 import 'package:movies/widgets/language_switch.dart';
 
+import '../../utils/app_validator.dart';
+import '../../utils/firebase_files/dialog_utils.dart';
 import '../../utils/screen_utils.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -52,14 +55,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 spacing: height * 0.02,
                 children: [
                   SizedBox(
-                height:height * 0.28 ,width:width * 0.28,
-                child: Image.asset(AppAssets.splashImage,),
-              ),
+                    height: height * 0.28,
+                    width: width * 0.28,
+                    child: Image.asset(AppAssets.splashImage),
+                  ),
                   CustomTextField(
                     textInputType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.next,
                     controller: emailcontroller,
                     hintText: "Email",
+                    validator: AppValidator.validateEmail,
                   ),
                   CustomTextField(
                     textInputType: TextInputType.visiblePassword,
@@ -67,6 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     controller: passwordcontroller,
                     hintText: "Password",
                     isPassword: true,
+                    validator: AppValidator.validatePassword,
                   ),
                   Align(
                     alignment: AlignmentGeometry.centerRight,
@@ -84,15 +90,54 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       child: Text(
                         "Forget Password ?",
-                        style:AppStyles.medium14Amber,
+                        style: AppStyles.medium14Amber,
                       ),
                     ),
                   ),
                   CustomElevatedbutton(
                     text: 'Login',
                     textStyle: AppStyles.bold20Gray,
-                    navigator: () {
-                      Navigator.pushNamed(context, AppRoutes.homeScreen);
+                    navigator: () async {
+                      print("Start Registration");
+                      if (formkey.currentState!.validate()) {
+                        DialogUtils.showLoading(s: 'LOADING...', context);
+                        try {
+                          String? error =
+                              await FirebaseFunctions.signInWithEmailAndPassword(
+                                email: emailcontroller.text,
+                                password: passwordcontroller.text,
+                              );
+
+                          DialogUtils.hideLoading(context);
+
+                          if (error == null) {
+                            DialogUtils.showMessage(
+                              context,
+                              'Login successfully!',
+                              posActionName: 'Ok',
+                              posAction: () {
+                                Navigator.pushReplacementNamed(
+                                  context,
+                                  AppRoutes.homeScreen,
+                                );
+                              },
+                            );
+                          } else {
+                            DialogUtils.showMessage(
+                              context,
+                              error,
+                              title: "Error",
+                            );
+                          }
+                        } catch (e) {
+                          DialogUtils.hideLoading(context);
+                          DialogUtils.showMessage(
+                            context,
+                            e.toString(),
+                            title: "System Error",
+                          );
+                        }
+                      }
                     },
                   ),
                   Row(
@@ -100,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       Text(
                         "Don’t Have Account ? ",
-                        style: AppStyles.medium14White
+                        style: AppStyles.medium14White,
                       ),
                       TextButton(
                         style: TextButton.styleFrom(
@@ -109,13 +154,16 @@ class _LoginScreenState extends State<LoginScreen> {
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         ),
                         onPressed: () {
-                          Navigator.pushNamed(context, AppRoutes.registerScreen);
+                          Navigator.pushNamed(
+                            context,
+                            AppRoutes.registerScreen,
+                          );
                         },
                         child: Text(
                           " Create One ",
                           style: AppStyles.medium14Amber.copyWith(
-                            fontWeight: FontWeight.w900
-                          )
+                            fontWeight: FontWeight.w900,
+                          ),
                         ),
                       ),
                     ],

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:movies/utils/app_assets.dart';
-import 'package:movies/utils/app_colors.dart';
 import 'package:movies/utils/firebase_files/auth_function.dart';
 import 'package:movies/utils/firebase_files/dialog_utils.dart';
 import 'package:movies/widgets/back_app_bar.dart';
-import '../../../utils/app_styles.dart';
+
+import '../../utils/app_validator.dart';
 import '../../utils/screen_utils.dart';
+import '../../widgets/custom_text_field.dart';
 import '../../widgets/primary_button_widget.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -37,25 +38,12 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 height: height * 0.46,
                 child: Center(child: Image.asset(AppAssets.forgotPasswordBro)),
               ),
-              TextField(
+              CustomTextField(
+                textInputType: TextInputType.emailAddress,
+                textInputAction: TextInputAction.next,
                 controller: emailController,
-                style: AppStyles.medium16white,
-                decoration: InputDecoration(
-                  labelText: "Email",
-                  labelStyle: AppStyles.medium16white,
-                  prefixIcon: ImageIcon(
-                    AssetImage(AppAssets.emailIcon),
-                    size: 31,
-                    color: AppColors.white,
-                  ),
-                  filled: true,
-                  fillColor: AppColors.gray.withOpacity(0.2),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: AppColors.gray),
-                  ),
-                ),
-                keyboardType: TextInputType.emailAddress,
+                hintText: "Email",
+                validator: AppValidator.validateEmail,
               ),
               PrimaryButtonWidget(
                 label: "Verify Email",
