@@ -7,6 +7,8 @@ import 'package:movies/widgets/custom_elevatedbutton.dart';
 import 'package:movies/widgets/custom_text_field.dart';
 import 'package:movies/widgets/language_switch.dart';
 
+import '../../utils/firebase_files/auth_function.dart';
+import '../../utils/firebase_files/dialog_utils.dart';
 import '../../utils/screen_utils.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -17,21 +19,21 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  late TextEditingController emailcontroller;
-  late TextEditingController passwordcontroller;
-  GlobalKey<FormState> formkey = GlobalKey<FormState>();
+  late TextEditingController emailController;
+  late TextEditingController passwordController;
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
-    emailcontroller = TextEditingController();
-    passwordcontroller = TextEditingController();
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
     super.initState();
   }
 
   @override
   void dispose() {
-    emailcontroller.dispose();
-    passwordcontroller.dispose();
+    emailController.dispose();
+    passwordController.dispose();
     super.dispose();
   }
 
@@ -45,26 +47,27 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: width * 0.04),
           child: Form(
-            key: formkey,
+            key: formKey,
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 spacing: height * 0.02,
                 children: [
                   SizedBox(
-                height:height * 0.28 ,width:width * 0.28,
-                child: Image.asset(AppAssets.splashImage,),
-              ),
+                    height: height * 0.28,
+                    width: width * 0.28,
+                    child: Image.asset(AppAssets.splashImage),
+                  ),
                   CustomTextField(
                     textInputType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.next,
-                    controller: emailcontroller,
+                    controller: emailController,
                     hintText: "Email",
                   ),
                   CustomTextField(
                     textInputType: TextInputType.visiblePassword,
                     textInputAction: TextInputAction.done,
-                    controller: passwordcontroller,
+                    controller: passwordController,
                     hintText: "Password",
                     isPassword: true,
                   ),
@@ -84,15 +87,54 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       child: Text(
                         "Forget Password ?",
-                        style:AppStyles.medium14Amber,
+                        style: AppStyles.medium14Amber,
                       ),
                     ),
                   ),
                   CustomElevatedbutton(
                     text: 'Login',
                     textStyle: AppStyles.bold20Gray,
-                    navigator: () {
-                      Navigator.pushNamed(context, AppRoutes.homeScreen);
+                    navigator: () async {
+                      print("Start Login");
+                      if (formKey.currentState!.validate()) {
+                        DialogUtils.showLoading(s: 'LOADING...', context);
+                        try {
+                          String? error =
+                              await FirebaseFunctions.signInWithEmailAndPassword(
+                                emailAddress: emailController.text,
+                                password: passwordController.text,
+                              );
+
+                          DialogUtils.hideLoading(context);
+
+                          if (error == null) {
+                            DialogUtils.showMessage(
+                              context,
+                              'Login successfully!',
+                              posActionName: 'Ok',
+                              posAction: () {
+                                Navigator.pushReplacementNamed(
+                                  context,
+                                  AppRoutes.homeScreen,
+                                );
+                              },
+                            );
+                          } else {
+                            DialogUtils.showMessage(
+                              context,
+                              error,
+                              title: "Error",
+                            );
+                          }
+                        } catch (e) {
+                          DialogUtils.hideLoading(context);
+                          DialogUtils.showMessage(
+                            context,
+                            e.toString(),
+                            title: "System Error",
+                          );
+                        }
+                      }
                     },
                   ),
                   Row(
@@ -100,7 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       Text(
                         "Don’t Have Account ? ",
-                        style: AppStyles.medium14White
+                        style: AppStyles.medium14White,
                       ),
                       TextButton(
                         style: TextButton.styleFrom(
@@ -109,13 +151,16 @@ class _LoginScreenState extends State<LoginScreen> {
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         ),
                         onPressed: () {
-                          Navigator.pushNamed(context, AppRoutes.registerScreen);
+                          Navigator.pushNamed(
+                            context,
+                            AppRoutes.registerScreen,
+                          );
                         },
                         child: Text(
                           " Create One ",
                           style: AppStyles.medium14Amber.copyWith(
-                            fontWeight: FontWeight.w900
-                          )
+                            fontWeight: FontWeight.w900,
+                          ),
                         ),
                       ),
                     ],
