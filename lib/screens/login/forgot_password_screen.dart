@@ -6,8 +6,8 @@ import 'package:movies/widgets/back_app_bar.dart';
 
 import '../../utils/app_validator.dart';
 import '../../utils/screen_utils.dart';
+import '../../widgets/custom_elevatedbutton.dart';
 import '../../widgets/custom_text_field.dart';
-import '../../widgets/primary_button_widget.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -45,7 +45,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 hintText: "Email",
                 validator: AppValidator.validateEmail,
               ),
-              PrimaryButtonWidget(
+              CustomElevatedButton(
                 label: "Verify Email",
                 onPressed: () async {
                   if (emailController.text.isNotEmpty) {

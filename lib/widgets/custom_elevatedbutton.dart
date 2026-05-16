@@ -5,28 +5,32 @@ import 'package:movies/utils/app_colors.dart';
 
 import '../utils/app_styles.dart';
 
-class CustomElevatedbutton extends StatelessWidget {
-  final String text;
-
+class CustomElevatedButton extends StatelessWidget {
   final bool isIcon;
-  final TextStyle textStyle;
-  final VoidCallback? navigator;
 
-  const CustomElevatedbutton({
-    super.key,
-    required this.text,
+  final String label;
+  final VoidCallback onPressed;
+  final Color? backgroundColor;
+  TextStyle? textStyle = AppStyles.regular20Black;
+  final Icon? icon;
+
+  CustomElevatedButton({
     this.isIcon = false,
-    required this.textStyle,
-    required this.navigator,
+    this.textStyle,
+    super.key,
+    required this.label,
+    required this.onPressed,
+    this.backgroundColor = AppColors.amber,
+    this.icon,
   });
 
   @override
   Widget build(BuildContext context) {
-   // var height = context.height;
+    // var height = context.height;
 
     return ElevatedButton(
       onPressed: () {
-        navigator!();
+        onPressed!();
         // Navigator.pushNamed(context, AppRoutes.updateProfileScreen);
       },
       style: ElevatedButton.styleFrom(
@@ -45,13 +49,10 @@ class CustomElevatedbutton extends StatelessWidget {
                 //Icon(,color: AppColors.gray,size: 40,),
                 SvgPicture.asset(AppIcon.googleIcon, height: 26, width: 26),
 
-                Text(
-                  text,
-                  style: AppStyles.regular16Gray,
-                ),
+                Text(label, style: AppStyles.regular16Gray),
               ],
             )
-          : Text(text, style: textStyle),
+          : Text(label, style: textStyle),
     );
   }
 }

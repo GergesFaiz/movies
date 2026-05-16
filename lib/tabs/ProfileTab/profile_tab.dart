@@ -8,9 +8,9 @@ import 'package:movies/utils/app_assets.dart';
 import 'package:movies/utils/app_colors.dart';
 import 'package:movies/utils/app_styles.dart';
 import 'package:movies/utils/screen_utils.dart';
-import 'package:movies/widgets/primary_button_widget.dart';
 
 import '../../utils/firebase_files/auth_function.dart';
+import '../../widgets/custom_elevatedbutton.dart';
 
 class ProfileTab extends StatefulWidget {
   ProfileTab({super.key});
@@ -35,7 +35,6 @@ class _ProfileTabState extends State<ProfileTab>
     super.dispose();
   }
 
-
   final List<String> avatarImages = [
     AppAssets.avatar7,
     AppAssets.avatar8,
@@ -47,7 +46,6 @@ class _ProfileTabState extends State<ProfileTab>
     AppAssets.avatar2,
     AppAssets.avatar3,
   ];
-
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +110,7 @@ class _ProfileTabState extends State<ProfileTab>
                         children: [
                           Expanded(
                             flex: 2,
-                            child: PrimaryButtonWidget(
+                            child: CustomElevatedButton(
                               textStyle: AppStyles.regular20Black,
                               label: 'Edit Profile',
                               onPressed: () {
@@ -125,19 +123,24 @@ class _ProfileTabState extends State<ProfileTab>
                           ),
                           Expanded(
                             flex: 1,
-                            child: PrimaryButtonWidget(
-                              icon: Icon(Icons.logout, color: AppColors.white,
-                                  size: 20),
+                            child: CustomElevatedButton(
+                              icon: Icon(
+                                Icons.logout,
+                                color: AppColors.white,
+                                size: 20,
+                              ),
                               label: 'Exit',
                               onPressed: () {
                                 Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute<void>(
-                                      builder: (BuildContext context) =>
-                                          LoginScreen()),
-                                      (route) {
+                                    builder: (BuildContext context) =>
+                                        LoginScreen(),
+                                  ),
+                                  (route) {
                                     return false;
-                                  },);
+                                  },
+                                );
                                 FirebaseAuth.instance.signOut();
                               },
                               backgroundColor: AppColors.red,
@@ -161,12 +164,18 @@ class _ProfileTabState extends State<ProfileTab>
                   labelStyle: AppStyles.regular20white,
                   unselectedLabelStyle: AppStyles.regular20white,
                   tabs: [
-                    Tab(icon: Icon(
-                        Icons.list, size: 30, color: AppColors.amber),
-                        text: 'Watch List'),
-                    Tab(icon: Icon(
-                        Icons.folder, size: 30, color: AppColors.amber),
-                        text: 'History'),
+                    Tab(
+                      icon: Icon(Icons.list, size: 30, color: AppColors.amber),
+                      text: 'Watch List',
+                    ),
+                    Tab(
+                      icon: Icon(
+                        Icons.folder,
+                        size: 30,
+                        color: AppColors.amber,
+                      ),
+                      text: 'History',
+                    ),
                   ],
                 ),
               ),

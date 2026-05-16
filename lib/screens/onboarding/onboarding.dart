@@ -103,10 +103,10 @@ class _OnboardingState extends State<Onboarding> {
             style: AppStyles.bold20White,
             textAlign: TextAlign.center,
           ),
-          CustomElevatedbutton(
-            text: data.buttonText,
+          CustomElevatedButton(
+            label: data.buttonText,
             textStyle: AppStyles.bold20black,
-            navigator: () => navigate("next"),
+            onPressed: () => navigate("next"),
           ),
           //  const Spacer(),
         ],

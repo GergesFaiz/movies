@@ -1,7 +1,7 @@
 class User {
   static const String collectionName = 'Users';
   String id;
-  int avatar;
+  String avatar;
   final String name;
   final String email;
   String password;

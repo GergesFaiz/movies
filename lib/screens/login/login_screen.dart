@@ -91,10 +91,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
-                  CustomElevatedbutton(
-                    text: 'Login',
+                  CustomElevatedButton(
+                    label: 'Login',
                     textStyle: AppStyles.bold20Gray,
-                    navigator: () async {
+                    onPressed: () async {
                       print("Start Login");
                       if (formKey.currentState!.validate()) {
                         DialogUtils.showLoading(s: 'LOADING...', context);
@@ -166,11 +166,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                   CustomDivider(),
-                  CustomElevatedbutton(
-                    text: ' Login With Google ',
+                  CustomElevatedButton(
+                    label: ' Login With Google ',
                     isIcon: true,
                     textStyle: AppStyles.regular16black,
-                    navigator: () => Navigator,
+                    onPressed: () => Navigator,
                   ),
                   LanguageSwitch(),
                 ],

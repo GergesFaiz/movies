@@ -6,11 +6,11 @@ import 'package:movies/utils/app_styles.dart';
 import 'package:movies/utils/screen_utils.dart';
 import 'package:movies/widgets/back_app_bar.dart';
 import 'package:movies/widgets/custom_text_field.dart';
-import 'package:movies/widgets/primary_button_widget.dart';
 
 import '../../utils/appRoutes.dart';
 import '../../utils/app_assets.dart';
 import '../../utils/app_colors.dart';
+import '../../widgets/custom_elevatedbutton.dart';
 import 'avatars_bottom_sheet.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
@@ -172,7 +172,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
                     SizedBox(height: height * 0.23),
 
-                    PrimaryButtonWidget(
+                    CustomElevatedButton(
                       label: 'Delete Account',
                       onPressed: () async {
                         await FirebaseFirestore.instance
@@ -185,7 +185,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       textStyle: AppStyles.regular16white,
                     ),
 
-                    PrimaryButtonWidget(
+                    CustomElevatedButton(
                       label: 'Update Data',
                       onPressed: () async {
                         try {

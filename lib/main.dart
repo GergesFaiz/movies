@@ -46,6 +46,7 @@ class MyApp extends StatelessWidget {
         AppRoutes.registerScreen: (context) => RegisterScreen(),
         AppRoutes.updateProfileScreen: (context) => UpdateProfileScreen(),
 
+
       },
     );
   }

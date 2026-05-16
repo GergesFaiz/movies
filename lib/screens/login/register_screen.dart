@@ -148,10 +148,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       hintText: "Phone Number",
                       validator: AppValidator.validatePhone, //عظمة 🫡🫡
                     ),
-                    CustomElevatedbutton(
-                      text: "Create Account",
+                    CustomElevatedButton(
+                      label: "Create Account",
                       textStyle: AppStyles.bold20black,
-                      navigator: () async {
+                      onPressed: () async {
                         print("Start Registration");
                         if (formKey.currentState!.validate()) {
                           DialogUtils.showLoading(s: 'LOADING...', context);
