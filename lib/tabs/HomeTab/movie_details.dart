@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:movies/api/model/movies.dart';
 import 'package:movies/utils/app_colors.dart';
 import 'package:movies/utils/app_styles.dart';
+import 'package:movies/utils/screen_utils.dart';
 
-class MovieWidget extends StatelessWidget {
+class MovieDetails extends StatelessWidget {
   final Movies movie;
 
-  const MovieWidget({super.key, required this.movie});
+  MovieDetails({super.key, required this.movie});
 
   @override
   Widget build(BuildContext context) {
@@ -17,21 +18,18 @@ class MovieWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ── Background Image ──
             Stack(
               children: [
                 CachedNetworkImage(
                   imageUrl: movie.backgroundImageOriginal ?? '',
                   width: double.infinity,
-                  height: 300,
+                  height: context.height * 0.60,
                   fit: BoxFit.cover,
                   errorWidget: (_, __, ___) =>
                       Container(height: 300, color: Colors.grey[900]),
                 ),
-
-                // Gradient
                 Container(
-                  height: 300,
+                  height: context.height * 0.60,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
@@ -40,11 +38,9 @@ class MovieWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-
-                // Back Button
                 SafeArea(
                   child: IconButton(
-                    icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+                    icon: Icon(Icons.arrow_back_ios, color: Colors.white),
                     onPressed: () => Navigator.pop(context),
                   ),
                 ),
@@ -53,7 +49,7 @@ class MovieWidget extends StatelessWidget {
 
             // ── Cover + Info ──
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(horizontal: context.width * 0.03),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -69,43 +65,43 @@ class MovieWidget extends StatelessWidget {
                         width: 120,
                         height: 170,
                         color: Colors.grey[800],
-                        child: const Icon(Icons.movie, color: Colors.white54),
+                        child: Icon(Icons.movie, color: Colors.white54),
                       ),
                     ),
                   ),
 
-                  const SizedBox(width: 16),
+                  SizedBox(width: 16),
 
                   // Title + Info
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 8),
+                        SizedBox(height: 8),
                         Text(
                           movie.title ?? '',
                           style: AppStyles.bold18White,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        const SizedBox(height: 8),
+                        SizedBox(height: 8),
 
                         // Rating
                         Row(
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.star,
                               color: Colors.amber,
                               size: 16,
                             ),
-                            const SizedBox(width: 4),
+                            SizedBox(width: 4),
                             Text(
                               movie.rating?.toStringAsFixed(1) ?? '0',
                               style: AppStyles.regular16white,
                             ),
                           ],
                         ),
-                        const SizedBox(height: 6),
+                        SizedBox(height: 6),
 
                         // Year & Runtime
                         Text(
@@ -115,7 +111,7 @@ class MovieWidget extends StatelessWidget {
                             fontSize: 13,
                           ),
                         ),
-                        const SizedBox(height: 6),
+                        SizedBox(height: 6),
 
                         // Language
                         Text(
@@ -125,15 +121,13 @@ class MovieWidget extends StatelessWidget {
                             fontSize: 13,
                           ),
                         ),
-                        const SizedBox(height: 8),
-
-                        // Genres
+                        SizedBox(height: 8),
                         Wrap(
                           spacing: 6,
                           runSpacing: 4,
                           children: (movie.genres ?? []).map((genre) {
                             return Container(
-                              padding: const EdgeInsets.symmetric(
+                              padding: EdgeInsets.symmetric(
                                 horizontal: 10,
                                 vertical: 4,
                               ),
@@ -158,16 +152,15 @@ class MovieWidget extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
 
-            // ── Synopsis ──
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(horizontal: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Synopsis', style: AppStyles.bold18White),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
                   Text(
                     movie.synopsis ??
                         movie.descriptionFull ??
@@ -178,11 +171,12 @@ class MovieWidget extends StatelessWidget {
                       height: 1.6,
                     ),
                   ),
+
                 ],
               ),
             ),
 
-            const SizedBox(height: 24),
+            SizedBox(height: 24),
           ],
         ),
       ),

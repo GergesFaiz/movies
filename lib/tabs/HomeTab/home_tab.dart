@@ -11,7 +11,7 @@ import 'package:movies/utils/screen_utils.dart';
 import 'package:movies/widgets/main_error_widget.dart';
 import 'package:movies/widgets/main_loading_widget.dart';
 
-import 'movie_widget.dart';
+import 'movie_details.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
@@ -105,7 +105,7 @@ class _HomeTabState extends State<HomeTab> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (_) =>
-                                        MovieWidget(movie: moviesList[index]),
+                                        MovieDetails(movie: moviesList[index]),
                                   ),
                                 );
                               },
@@ -165,7 +165,7 @@ class _HomeTabState extends State<HomeTab> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (_) =>
-                                            MovieWidget(
+                                            MovieDetails(
                                                 movie: moviesList[index]),
                                       ),
                                     );

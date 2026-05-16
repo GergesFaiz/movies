@@ -12,7 +12,6 @@ class Data {
   @JsonKey(name: "page_number")
   final int? pageNumber;
 
-  // نستثنيها من الـ generator ونعملها يدوي
   @JsonKey(includeFromJson: false, includeToJson: false)
   final List<Movies>? movies;
 
