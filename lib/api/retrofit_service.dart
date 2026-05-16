@@ -12,4 +12,9 @@ abstract class RetrofitService {
   Future<SourceResponse> getMovies({
     @Query("sort_by") String sortBy = "date_added",
   });
+
+  @GET("/movie_suggestions.json")
+  Future<SourceResponse> getMovieSuggestions({
+    @Query("movie_id") required int movieId,
+  });
 }

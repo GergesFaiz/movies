@@ -1,9 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:movies/api/model/movies.dart';
+import 'package:movies/api/model/source_response.dart';
+import 'package:movies/api/retrofit_service.dart';
 import 'package:movies/utils/app_colors.dart';
 import 'package:movies/utils/app_styles.dart';
 import 'package:movies/utils/screen_utils.dart';
+
+import '../../widgets/main_error_widget.dart';
+import '../../widgets/main_loading_widget.dart';
+import '../BrowseTab/movies_card.dart';
 
 class MovieDetails extends StatelessWidget {
   final Movies movie;
@@ -89,11 +96,7 @@ class MovieDetails extends StatelessWidget {
                         // Rating
                         Row(
                           children: [
-                            Icon(
-                              Icons.star,
-                              color: Colors.amber,
-                              size: 16,
-                            ),
+                            Icon(Icons.star, color: Colors.amber, size: 16),
                             SizedBox(width: 4),
                             Text(
                               movie.rating?.toStringAsFixed(1) ?? '0',
@@ -171,12 +174,70 @@ class MovieDetails extends StatelessWidget {
                       height: 1.6,
                     ),
                   ),
-
                 ],
               ),
             ),
 
             SizedBox(height: 24),
+            FutureBuilder<SourceResponse>(
+              future: RetrofitService(
+                Dio(),
+              ).getMovieSuggestions(movieId: movie.id ?? 0),
+              builder: (context, snapshot) {
+                {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return MainLoadingWidget();
+                  }
+
+                  if (snapshot.hasError) {
+                    return MainErrorWidget(
+                      massage: snapshot.error.toString(),
+                      onPressed: () {},
+                    );
+                  }
+                  List<Movies> sugsuggestions =
+                      snapshot.data?.data?.movies ?? [];
+
+                  if (sugsuggestions.isEmpty) {
+                    return Center(
+                      child: Text(
+                        'No Movies Found',
+                        style: TextStyle(color: AppColors.white),
+                      ),
+                    );
+                  } else {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: context.height * 0.28,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              padding: EdgeInsets.symmetric(horizontal: 8),
+                              itemCount: sugsuggestions.length,
+                              itemBuilder: (context, index) {
+                                return AspectRatio(
+                                  aspectRatio: 2 / 3,
+                                  child: MovieCard(
+                                    imageUrl:
+                                        sugsuggestions[index]
+                                            .mediumCoverImage ??
+                                        '',
+                                    rating: sugsuggestions[index].rating ?? -1,
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          SizedBox(height: 16),
+                        ],
+                      ),
+                    );
+                  }
+                }
+              },
+            ),
           ],
         ),
       ),
