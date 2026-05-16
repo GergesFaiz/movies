@@ -50,10 +50,10 @@ class OnboardingBottomsheet extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
 
-          CustomElevatedbutton(
-            text: buttonText,
+          CustomElevatedButton(
+            label: buttonText,
             textStyle: AppStyles.bold20black,
-            navigator: () {
+            onPressed: () {
               if (buttonText == "Next") {
                 navigatornext();
               } else {

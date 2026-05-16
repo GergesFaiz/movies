@@ -46,7 +46,16 @@ dependencies:
   cloud_firestore: ^6.3.0
   firebase_auth: ^6.4.0
   carousel_slider: ^5.1.2
-  
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+  dio: ^5.9.2
+  pretty_dio_logger: ^1.4.0
+  retrofit: ^4.9.2
+  logger: ^2.7.0
+  json_annotation: ^4.11.0
+  flutter_bloc: ^9.1.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -57,12 +66,16 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
+  retrofit_generator: ^10.2.6
+  build_runner: ^2.15.0
+  json_serializable: ^6.13.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
 flutter:
+  generate: true
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
@@ -75,6 +88,7 @@ flutter:
     - assets/images/icons/
     - assets/images/avatars/
     - assets/images/onboarding/
+    - assets/images/movies/
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

@@ -22,32 +22,32 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  late TextEditingController emailcontroller;
-  late TextEditingController passwordcontroller;
-  late TextEditingController namecontroller;
-  late TextEditingController confirmpasswordcontroller;
-  late TextEditingController phonecontroller;
+  late TextEditingController emailController;
+  late TextEditingController passwordController;
+  late TextEditingController nameController;
+  late TextEditingController confirmPasswordController;
+  late TextEditingController phoneController;
 
-  GlobalKey<FormState> formkey = GlobalKey<FormState>();
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
-    emailcontroller = TextEditingController();
-    passwordcontroller = TextEditingController();
-    namecontroller = TextEditingController();
-    confirmpasswordcontroller = TextEditingController();
-    phonecontroller = TextEditingController();
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+    nameController = TextEditingController();
+    confirmPasswordController = TextEditingController();
+    phoneController = TextEditingController();
 
     super.initState();
   }
 
   @override
   void dispose() {
-    emailcontroller.dispose();
-    passwordcontroller.dispose();
-    namecontroller.dispose();
-    confirmpasswordcontroller.dispose();
-    phonecontroller.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    nameController.dispose();
+    confirmPasswordController.dispose();
+    phoneController.dispose();
     super.dispose();
   }
 
@@ -68,13 +68,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     var height = context.height;
     var width = context.width;
-    String chosenAvatar = " ";
+    String chosenAvatar = '';
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: BackAppBar(title: 'Register'),
       body: SingleChildScrollView(
         child: Form(
-          key: formkey,
+          key: formKey,
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: width * 0.03),
             child: Column(
@@ -89,15 +89,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     enlargeFactor: 0.4,
                   ),
                   items: avatarImages.map((path) {
-                    final isSelected = chosenAvatar == path;
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          chosenAvatar = path;
-                        });
-                      },
-                      child: Image.asset(path, fit: BoxFit.cover),
-                    );
+                    setState(() {
+                      chosenAvatar = path;
+                    });
+                    return Image.asset(path, fit: BoxFit.cover);
                   }).toList(),
                 ),
 
@@ -114,22 +109,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     CustomTextField(
                       textInputType: TextInputType.name,
                       textInputAction: TextInputAction.next,
-                      controller: namecontroller,
+                      controller: nameController,
                       hintText: "Name",
                       validator: AppValidator
-                          .validateName, // nice clean code جميله قوي التقسيمه دي 🫡🫡
+                          .validateName, // nice clean code جميله   قوي التقسيمه دي 🫡🫡
                     ),
                     CustomTextField(
                       textInputType: TextInputType.emailAddress,
                       textInputAction: TextInputAction.next,
-                      controller: emailcontroller,
+                      controller: emailController,
                       hintText: "Email",
                       validator: AppValidator.validateEmail,
                     ),
                     CustomTextField(
                       textInputType: TextInputType.visiblePassword,
                       textInputAction: TextInputAction.next,
-                      controller: passwordcontroller,
+                      controller: passwordController,
                       hintText: "Password",
                       isPassword: true,
                       validator: AppValidator.validatePassword,
@@ -137,36 +132,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     CustomTextField(
                       textInputType: TextInputType.visiblePassword,
                       textInputAction: TextInputAction.next,
-                      controller: confirmpasswordcontroller,
+                      controller: confirmPasswordController,
                       hintText: "Confirm Password",
                       isPassword: true,
                       validator: (value) =>
                           AppValidator.validateConfirmPassword(
                             value,
-                            passwordcontroller.text,
+                            passwordController.text,
                           ), //عظمة 🫡🫡
                     ),
                     CustomTextField(
                       textInputType: TextInputType.phone,
                       textInputAction: TextInputAction.done,
-                      controller: phonecontroller,
+                      controller: phoneController,
                       hintText: "Phone Number",
                       validator: AppValidator.validatePhone, //عظمة 🫡🫡
                     ),
-                    CustomElevatedbutton(
-                      text: "Create Account",
+                    CustomElevatedButton(
+                      label: "Create Account",
                       textStyle: AppStyles.bold20black,
-                      navigator: () async {
+                      onPressed: () async {
                         print("Start Registration");
-                        if (formkey.currentState!.validate()) {
+                        if (formKey.currentState!.validate()) {
                           DialogUtils.showLoading(s: 'LOADING...', context);
                           try {
                             String? error =
                                 await FirebaseFunctions.registerUser(
-                                  name: namecontroller.text,
-                                  email: emailcontroller.text,
-                                  password: passwordcontroller.text,
-                                  phone: phonecontroller.text,
+                                  name: nameController.text,
+                                  email: emailController.text,
+                                  password: passwordController.text,
+                                  phone: phoneController.text,
                                   avatar: chosenAvatar,
                                 ); //عظمة 🫡🫡
 

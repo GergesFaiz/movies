@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:movies/utils/app_styles.dart';
+/*import 'package:flutter/material.dart';
 
 import '../utils/app_colors.dart';
 
@@ -7,15 +6,13 @@ class PrimaryButtonWidget extends StatelessWidget {
   final String label;
   final VoidCallback onPressed;
   final Color backgroundColor;
-   TextStyle? textStyle= AppStyles.regular20Black;
-  final Icon? icon;
-
-   PrimaryButtonWidget({
-    super.key,
-    required this.label,
+  final TextStyle textStyle;
+  
+  PrimaryButtonWidget({super.key,required this.label,
     required this.onPressed,
-    this.backgroundColor = AppColors.amber,
-     this.textStyle, this.icon
+    required this.backgroundColor,
+    required this.textStyle,
+   
   });
 
   @override
@@ -23,7 +20,6 @@ class PrimaryButtonWidget extends StatelessWidget {
     width: double.infinity,
     height: 56,
     child: ElevatedButton(
-
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor,
@@ -36,9 +32,9 @@ class PrimaryButtonWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(label, style: textStyle),
-          (icon ?? Container()),
+         // (icon ?? Container()),
         ],
       ),
     ),
   );
-}
+}*/

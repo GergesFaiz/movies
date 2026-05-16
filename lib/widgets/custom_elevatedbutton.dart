@@ -1,37 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:movies/utils/app_assets.dart';
 import 'package:movies/utils/app_colors.dart';
 
-import '../utils/screen_utils.dart';
+import '../utils/app_styles.dart';
 
-class CustomElevatedbutton extends StatelessWidget {
-  final String text;
-
+class CustomElevatedButton extends StatelessWidget {
   final bool isIcon;
-  final TextStyle textStyle;
-  final VoidCallback? navigator;
 
-  const CustomElevatedbutton({
-    super.key,
-    required this.text,
+  final String label;
+  final VoidCallback onPressed;
+  final Color backgroundColor;
+  TextStyle? textStyle = AppStyles.regular20Black;
+  final Icon? icon;
+
+  CustomElevatedButton({
     this.isIcon = false,
-    required this.textStyle,
-    required this.navigator,
+    this.textStyle,
+    super.key,
+    required this.label,
+    required this.onPressed,
+    this.backgroundColor = AppColors.amber,
+    this.icon,
   });
 
   @override
   Widget build(BuildContext context) {
-    var height = context.height;
+    // var height = context.height;
 
     return ElevatedButton(
       onPressed: () {
-        navigator!();
+        onPressed!();
         // Navigator.pushNamed(context, AppRoutes.updateProfileScreen);
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.amber,
+        backgroundColor: backgroundColor,
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadiusGeometry.circular(15),
@@ -44,19 +47,12 @@ class CustomElevatedbutton extends StatelessWidget {
               spacing: 5,
               children: [
                 //Icon(,color: AppColors.gray,size: 40,),
-                SvgPicture.asset(AppIcon.googleIcon, height: 24, width: 24),
+                SvgPicture.asset(AppIcon.googleIcon, height: 26, width: 26),
 
-                Text(
-                  text,
-                  style: GoogleFonts.roboto(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.gray,
-                  ),
-                ),
+                Text(label, style: AppStyles.regular16Gray),
               ],
             )
-          : Text(text, style: textStyle),
+          : Text(label, style: textStyle),
     );
   }
 }

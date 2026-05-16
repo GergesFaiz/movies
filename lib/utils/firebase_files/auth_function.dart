@@ -1,16 +1,14 @@
-import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:movies/model/user.dart';
 
 class FirebaseFunctions {
-
-
   static Future<String?> registerUser({
     required String name,
     required String email,
     required String password,
     required String phone,
-    required int avatar,
+    required String avatar,
   }) async {
     try {
       auth.UserCredential userCredential = await auth.FirebaseAuth.instance
@@ -33,8 +31,9 @@ class FirebaseFunctions {
       return null;
     } on auth.FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') return 'The password is too weak.';
-      if (e.code == 'email-already-in-use')
+      if (e.code == 'email-already-in-use') {
         return 'The email is already in use.';
+      }
       return e.message;
     } catch (e) {
       return e.toString();
@@ -50,5 +49,29 @@ class FirebaseFunctions {
     } catch (e) {
       return e.toString();
     }
+  }
+
+  static Future<String?> signInWithEmailAndPassword({
+    required String emailAddress,
+    required String password,
+  }) async {
+    try {
+      final credential = await auth.FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: emailAddress, password: password);
+    } on auth.FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
+    }
+  }
+
+  static Future<Map<String, dynamic>?> getUserData(String uid) async {
+    final doc = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(uid)
+        .get();
+    return doc.exists ? doc.data() : null;
   }
 }
