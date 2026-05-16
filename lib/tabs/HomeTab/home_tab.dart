@@ -1,8 +1,12 @@
+import 'dart:math';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies/api/model/movies.dart';
 import 'package:movies/api/retrofit_service.dart';
+import 'package:movies/cubit/movie_cubit.dart';
+import 'package:movies/states/movie_state.dart';
 import 'package:movies/tabs/HomeTab/movie_card.dart';
 import 'package:movies/utils/app_assets.dart';
 import 'package:movies/utils/app_colors.dart';
@@ -13,6 +17,8 @@ import 'package:movies/widgets/main_loading_widget.dart';
 
 import 'movie_details.dart';
 
+final RouteObserver<ModalRoute<void>> routeObserver = RouteObserver<ModalRoute<void>>();
+
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
 
@@ -20,7 +26,30 @@ class HomeTab extends StatefulWidget {
   State<HomeTab> createState() => _HomeTabState();
 }
 
-class _HomeTabState extends State<HomeTab> {
+List<Movies> mainMoviesList = [];
+
+class _HomeTabState extends State<HomeTab> with RouteAware {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final ModalRoute? modalRoute = ModalRoute.of(context);
+    if (modalRoute != null) {
+      routeObserver.subscribe(this, modalRoute);
+    }
+  }
+
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPopNext() {
+    super.didPopNext();
+    context.read<MoviesCubit>().changeCategoryRandomly(mainMoviesList);
+  }
+
   Future<List<Movies>> fetchMovies() async {
     final response = await RetrofitService(Dio()).getMovies();
     return response.data?.movies ?? [];
@@ -29,6 +58,11 @@ class _HomeTabState extends State<HomeTab> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mainMoviesList.isNotEmpty) {
+        context.read<MoviesCubit>().changeCategoryRandomly(mainMoviesList);
+      }
+    });
   }
 
   @override
@@ -52,6 +86,7 @@ class _HomeTabState extends State<HomeTab> {
             );
           }
           List<Movies> moviesList = snapshot.data?.data?.movies ?? [];
+          mainMoviesList = moviesList;
 
           if (moviesList.isEmpty) {
             return Center(
@@ -88,7 +123,6 @@ class _HomeTabState extends State<HomeTab> {
                     ),
                   ),
                 ),
-
                 SafeArea(
                   child: SingleChildScrollView(
                     child: Column(
@@ -111,8 +145,7 @@ class _HomeTabState extends State<HomeTab> {
                               },
                               child: MovieCard(
                                 image: moviesList[index].mediumCoverImage ?? '',
-                                text: moviesList[index].rating?.toString() ??
-                                    '0',
+                                text: moviesList[index].rating?.toString() ?? '0',
                               ),
                             );
                           },
@@ -127,60 +160,79 @@ class _HomeTabState extends State<HomeTab> {
                         ),
                         Image.asset(AppAssets.watchnow),
                         const SizedBox(height: 8),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('Action', style: AppStyles.bold18White),
-                              TextButton.icon(
-                                onPressed: () {
-                                  print(moviesList.length);
-                                },
-                                label: Text(
-                                  'See More',
-                                  style: AppStyles.medium15Amber,
-                                ),
-                                icon: Icon(
-                                  Icons.arrow_forward,
-                                  color: AppColors.amber,
-                                ),
-                                iconAlignment: IconAlignment.end,
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: height * 0.28,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
-                            itemCount: moviesList.length,
-                            itemBuilder: (context, index) {
-                              return AspectRatio(
-                                aspectRatio: 2 / 3,
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) =>
-                                            MovieDetails(
-                                                movie: moviesList[index]),
+                        BlocBuilder<MoviesCubit, MoviesState>(
+                          builder: (context, state) {
+                            String textToShow = 'Action';
+                            List<Movies> currentListViewList = moviesList;
+
+                            if (state is CategoryChangedState) {
+                              textToShow = state.categoryName;
+                              currentListViewList = state.filteredMovies;
+                            } else {
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                if (context.read<MoviesCubit>().state is MoviesInitial) {
+                                  context.read<MoviesCubit>().changeCategoryRandomly(moviesList);
+                                }
+                              });
+                            }
+                            
+                            return Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(textToShow, style: AppStyles.bold18White),
+                                      TextButton.icon(
+                                        onPressed: () {
+                                          print(moviesList.length);
+                                        },
+                                        label: Text(
+                                          'See More',
+                                          style: AppStyles.medium15Amber,
+                                        ),
+                                        icon: Icon(
+                                          Icons.arrow_forward,
+                                          color: AppColors.amber,
+                                        ),
+                                        iconAlignment: IconAlignment.end,
                                       ),
-                                    );
-                                  },
-                                  child: MovieCard(
-                                    image:
-                                    moviesList[index].mediumCoverImage ?? '',
-                                    text:
-                                    moviesList[index].rating?.toString() ??
-                                        '0',
+                                    ],
                                   ),
                                 ),
-                              );
-                            },
-                          ),
+                                const SizedBox(height: 8),
+                                SizedBox(
+                                  height: height * 0.28,
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                                    itemCount: currentListViewList.length,
+                                    itemBuilder: (context, index) {
+                                      return AspectRatio(
+                                        aspectRatio: 2 / 3,
+                                        child: InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (_) => MovieDetails(
+                                                    movie: currentListViewList[index]),
+                                              ),
+                                            );
+                                          },
+                                          child: MovieCard(
+                                            image: currentListViewList[index].mediumCoverImage ?? '',
+                                            text: currentListViewList[index].rating?.toString() ?? '0',
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
                         ),
                         const SizedBox(height: 16),
                       ],
