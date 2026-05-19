@@ -65,6 +65,7 @@ class FirebaseFunctions {
         print('Wrong password provided for that user.');
       }
     }
+    return null;
   }
 
   static Future<Map<String, dynamic>?> getUserData(String uid) async {

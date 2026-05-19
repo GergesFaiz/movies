@@ -14,7 +14,7 @@ import '../../widgets/custom_elevatedbutton.dart';
 import 'avatars_bottom_sheet.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
-  UpdateProfileScreen({super.key});
+  const UpdateProfileScreen({super.key});
 
   @override
   State<UpdateProfileScreen> createState() => _UpdateProfileScreenState();
@@ -172,60 +172,53 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
                     SizedBox(height: height * 0.23),
 
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      spacing: height*.01,
-                      children: [
-                        CustomElevatedButton(
-                          backgroundColor: AppColors.red,
-                          label: 'Delete Account',
-                          textStyle: AppStyles.regular16white,
-                          onPressed: () async {
-                            await FirebaseFirestore.instance
-                                .collection('Users')
-                                .doc(user.uid)
-                                .delete();
-                            await user.delete();
-                          },
-                        
-                        ),
-                        
-                        CustomElevatedButton(
-                          label: 'Update Data',
-                          textStyle: AppStyles.bold16Black,
-                          onPressed: () async {
-                            try {
-                              final newName = namecontroller.text.trim();
-                              final newPhone = phonecontroller.text.trim();
-                              final newAvatar = avatarImages[selectedAvatar];
-                        
-                              final Map<String, dynamic> updates = {
-                                'avatar': newAvatar,
-                              };
-                              if (newName.isNotEmpty) updates['name'] = newName;
-                              if (newPhone.isNotEmpty)
-                                updates['phoneNum'] = newPhone;
-                        
-                              await FirebaseFirestore.instance
-                                  .collection('Users')
-                                  .doc(user.uid)
-                                  .set(updates, SetOptions(merge: true));
-                        
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text("Profile updated successfully"),
-                                ),
-                              );
-                        
-                              Navigator.pop(context);
-                            } catch (e) {
-                              ScaffoldMessenger.of(
-                                context,
-                              ).showSnackBar(SnackBar(content: Text("Error: $e")));
-                            }
-                          },
-                        ),
-                      ],
+                    CustomElevatedButton(
+                      label: 'Delete Account',
+                      onPressed: () async {
+                        await FirebaseFirestore.instance
+                            .collection('Users')
+                            .doc(user.uid)
+                            .delete();
+                        await user.delete();
+                      },
+                      backgroundColor: AppColors.red,
+                      textStyle: AppStyles.regular16white,
+                    ),
+
+                    CustomElevatedButton(
+                      label: 'Update Data',
+                      onPressed: () async {
+                        try {
+                          final newName = namecontroller.text.trim();
+                          final newPhone = phonecontroller.text.trim();
+                          final newAvatar = avatarImages[selectedAvatar];
+
+                          final Map<String, dynamic> updates = {
+                            'avatar': newAvatar,
+                          };
+                          if (newName.isNotEmpty) updates['name'] = newName;
+                          if (newPhone.isNotEmpty) {
+                            updates['phoneNum'] = newPhone;
+                          }
+
+                          await FirebaseFirestore.instance
+                              .collection('Users')
+                              .doc(user.uid)
+                              .set(updates, SetOptions(merge: true));
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Profile updated successfully"),
+                            ),
+                          );
+
+                          Navigator.pop(context);
+                        } catch (e) {
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(SnackBar(content: Text("Error: $e")));
+                        }
+                      },
                     ),
                   ],
                 ),

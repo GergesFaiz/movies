@@ -53,8 +53,7 @@ dependencies:
   pretty_dio_logger: ^1.4.0
   retrofit: ^4.9.2
   logger: ^2.7.0
-  json_annotation: ^4.11.0
-  flutter_bloc: ^9.1.1
+  json_annotation: 4.11.0
 
 dev_dependencies:
   flutter_test:

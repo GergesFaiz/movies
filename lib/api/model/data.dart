@@ -15,7 +15,12 @@ class Data {
   @JsonKey(includeFromJson: false, includeToJson: false)
   final List<Movies>? movies;
 
-  Data({this.movieCount, this.limit, this.pageNumber, this.movies});
+  
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final Movies? movie; 
+
+
+  Data({this.movieCount, this.limit, this.pageNumber, this.movies, this.movie});
 
   factory Data.fromJson(Map<String, dynamic> json) {
     final base = _$DataFromJson(json);
@@ -23,9 +28,14 @@ class Data {
       movieCount: base.movieCount,
       limit: base.limit,
       pageNumber: base.pageNumber,
+     
       movies: (json['movies'] as List<dynamic>?)
           ?.map((e) => Movies.fromJson(e as Map<String, dynamic>))
           .toList(),
+      
+      movie: json['movie'] != null 
+          ? Movies.fromJson(json['movie'] as Map<String, dynamic>) 
+          : null,
     );
   }
 
@@ -33,6 +43,10 @@ class Data {
     final map = _$DataToJson(this);
     if (movies != null) {
       map['movies'] = movies!.map((e) => e.toJson()).toList();
+    }
+   
+    if (movie != null) {
+      map['movie'] = movie!.toJson();
     }
     return map;
   }

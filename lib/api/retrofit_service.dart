@@ -17,4 +17,16 @@ abstract class RetrofitService {
   Future<SourceResponse> getMovieSuggestions({
     @Query("movie_id") required int movieId,
   });
+ /* @GET("/movie_details.json")
+  Future<SourceResponse> getMovieDetails({
+    @Query("movie_id") required int movieId,
+    @Query("with_images") bool withImages = true, 
+    @Query("with_cast") bool withCast = true,
+  });*/
+ @GET("/movie_details.json")
+Future<HttpResponse<dynamic>> getMovieDetails({
+  @Query("movie_id") required int movieId,
+  @Query("with_images") bool withImages = true, 
+  @Query("with_cast") bool withCast = true,
+});
 }
