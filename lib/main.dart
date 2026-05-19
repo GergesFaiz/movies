@@ -1,11 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies/cubit/movie_cubit.dart';
 import 'package:movies/screens/login/forgot_password_screen.dart';
 import 'package:movies/screens/login/login_screen.dart';
 import 'package:movies/screens/login/register_screen.dart';
 import 'package:movies/screens/onboarding/onboarding.dart';
 import 'package:movies/screens/updateprofile/update_profile_screen.dart';
+import 'package:movies/tabs/HomeTab/home_tab.dart';
 import 'package:movies/utils/appRoutes.dart';
 import 'package:movies/utils/app_theme.dart';
 import 'package:movies/utils/firebase_files/firebase_options.dart';
@@ -29,7 +32,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return
+     MaterialApp(
+      navigatorObservers: [routeObserver],
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       locale: Locale('en'),
@@ -40,7 +45,11 @@ class MyApp extends StatelessWidget {
       initialRoute: AppRoutes.homeScreen,
       routes: {
         AppRoutes.onBoarding:(context)=>Onboarding(),
-        AppRoutes.homeScreen: (context) => HomeScreen(),
+        //AppRoutes.homeScreen: (context) => HomeScreen(),
+        AppRoutes.homeScreen: (context) => BlocProvider(
+            create: (context) => MoviesCubit(),
+            child: const HomeScreen(),
+          ),
         AppRoutes.loginScreen: (context) => LoginScreen(),
         AppRoutes.forgotPasswordScreen: (context) => ForgotPasswordScreen(),
         AppRoutes.registerScreen: (context) => RegisterScreen(),

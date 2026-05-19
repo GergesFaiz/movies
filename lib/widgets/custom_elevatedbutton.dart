@@ -10,7 +10,7 @@ class CustomElevatedButton extends StatelessWidget {
 
   final String label;
   final VoidCallback onPressed;
-  final Color? backgroundColor;
+  final Color backgroundColor;
   TextStyle? textStyle = AppStyles.regular20Black;
   final Icon? icon;
 

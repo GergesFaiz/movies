@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:movies/tabs/HomeTab/movie_card.dart';
@@ -9,6 +10,8 @@ import 'package:movies/widgets/main_error_widget.dart';
 import 'package:movies/widgets/main_loading_widget.dart';
 import 'movie_details.dart';
 import 'home_view_model.dart';
+
+final RouteObserver<ModalRoute<void>> routeObserver = RouteObserver<ModalRoute<void>>();
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
