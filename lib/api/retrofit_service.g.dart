@@ -30,11 +30,11 @@ class _RetrofitService implements RetrofitService {
     final _options = _setStreamType<SourceResponse>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
-        _dio.options,
-        '/list_movies.json',
-        queryParameters: queryParameters,
-        data: _data,
-      )
+            _dio.options,
+            '/list_movies.json',
+            queryParameters: queryParameters,
+            data: _data,
+          )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
@@ -57,11 +57,11 @@ class _RetrofitService implements RetrofitService {
     final _options = _setStreamType<SourceResponse>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
-        _dio.options,
-        '/movie_suggestions.json',
-        queryParameters: queryParameters,
-        data: _data,
-      )
+            _dio.options,
+            '/movie_suggestions.json',
+            queryParameters: queryParameters,
+            data: _data,
+          )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
@@ -73,6 +73,36 @@ class _RetrofitService implements RetrofitService {
       rethrow;
     }
     return _value;
+  }
+
+  @override
+  Future<HttpResponse<dynamic>> getMovieDetails({
+    required int movieId,
+    bool withImages = true,
+    bool withCast = true,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'movie_id': movieId,
+      r'with_images': withImages,
+      r'with_cast': withCast,
+    };
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<HttpResponse<dynamic>>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/movie_details.json',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch(_options);
+    final _value = _result.data;
+    final httpResponse = HttpResponse(_value, _result);
+    return httpResponse;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
@@ -89,9 +119,7 @@ class _RetrofitService implements RetrofitService {
   }
 
   String _combineBaseUrls(String dioBaseUrl, String? baseUrl) {
-    if (baseUrl == null || baseUrl
-        .trim()
-        .isEmpty) {
+    if (baseUrl == null || baseUrl.trim().isEmpty) {
       return dioBaseUrl;
     }
 

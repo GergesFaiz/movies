@@ -13,7 +13,7 @@ import '../../utils/firebase_files/auth_function.dart';
 import '../../widgets/custom_elevatedbutton.dart';
 
 class ProfileTab extends StatefulWidget {
-  ProfileTab({super.key});
+  const ProfileTab({super.key});
 
   @override
   State<ProfileTab> createState() => _ProfileTabState();
@@ -56,8 +56,9 @@ class _ProfileTabState extends State<ProfileTab>
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
         if (snapshot.hasError) return Text('Something went wrong');
-        if (snapshot.connectionState == ConnectionState.waiting)
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return Text("Loading...");
+        }
         if (!snapshot.hasData) return LoginScreen();
 
         final user = snapshot.data!;

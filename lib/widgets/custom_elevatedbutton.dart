@@ -30,11 +30,11 @@ class CustomElevatedButton extends StatelessWidget {
 
     return ElevatedButton(
       onPressed: () {
-        onPressed!();
+        onPressed();
         // Navigator.pushNamed(context, AppRoutes.updateProfileScreen);
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.amber,
+        backgroundColor: backgroundColor,
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadiusGeometry.circular(15),

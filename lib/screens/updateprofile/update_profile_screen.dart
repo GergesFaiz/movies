@@ -14,7 +14,7 @@ import '../../widgets/custom_elevatedbutton.dart';
 import 'avatars_bottom_sheet.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
-  UpdateProfileScreen({super.key});
+  const UpdateProfileScreen({super.key});
 
   @override
   State<UpdateProfileScreen> createState() => _UpdateProfileScreenState();
@@ -197,8 +197,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                             'avatar': newAvatar,
                           };
                           if (newName.isNotEmpty) updates['name'] = newName;
-                          if (newPhone.isNotEmpty)
+                          if (newPhone.isNotEmpty) {
                             updates['phoneNum'] = newPhone;
+                          }
 
                           await FirebaseFirestore.instance
                               .collection('Users')
