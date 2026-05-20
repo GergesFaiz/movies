@@ -30,7 +30,7 @@ class CustomElevatedButton extends StatelessWidget {
 
     return ElevatedButton(
       onPressed: () {
-        onPressed!();
+        onPressed();
         // Navigator.pushNamed(context, AppRoutes.updateProfileScreen);
       },
       style: ElevatedButton.styleFrom(

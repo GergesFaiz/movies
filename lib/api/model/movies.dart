@@ -58,6 +58,16 @@ class Movies {
   final String? dateUploaded;
   @JsonKey(name: "date_uploaded_unix")
   final int? dateUploadedUnix;
+  @JsonKey(name: "like_count")
+  final int? likeCount;
+  @JsonKey(name: "download_count")
+  final int? downloadCount;
+  @JsonKey(name: "medium_screenshot_image1")
+  final String? mediumScreenshotImage1;
+  @JsonKey(name: "medium_screenshot_image2")
+  final String? mediumScreenshotImage2;
+  @JsonKey(name: "medium_screenshot_image3")
+  final String? mediumScreenshotImage3;
 
   Movies({
     this.id,
@@ -86,6 +96,11 @@ class Movies {
     this.torrents,
     this.dateUploaded,
     this.dateUploadedUnix,
+    this.likeCount,
+    this.downloadCount,
+    this.mediumScreenshotImage1,
+    this.mediumScreenshotImage2,
+    this.mediumScreenshotImage3,
   });
 
   factory Movies.fromJson(Map<String, dynamic> json) {
