@@ -18,12 +18,10 @@ class SearchTab extends StatefulWidget {
 }
 
 class _SearchTabState extends State<SearchTab> {
-  String searchText = "";
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => SearchTabViewModel(),
+      create: (context) => SearchTabViewModel(),
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
@@ -31,7 +29,6 @@ class _SearchTabState extends State<SearchTab> {
           body: SafeArea(
             child: Column(
               children: [
-                // Search Bar - مطابق للصورة
                 Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: 16.w,
@@ -39,6 +36,8 @@ class _SearchTabState extends State<SearchTab> {
                   ),
                   child: BlocBuilder<SearchTabViewModel, SearchState>(
                     builder: (context, state) {
+                      final viewModel = context.read<SearchTabViewModel>();
+
                       return TextFormField(
                         autocorrect: false,
                         enableSuggestions: false,
@@ -55,34 +54,18 @@ class _SearchTabState extends State<SearchTab> {
                               AppIcon.search,
                               width: 24.w,
                               height: 24.w,
-                              colorFilter: const ColorFilter.mode(
-                                Colors.white70,
-                                BlendMode.srcIn,
-                              ),
                             ),
                           ),
                           filled: true,
                           fillColor: AppColors.gray.withOpacity(0.6),
-                          // أغمق زي الصورة
                           contentPadding: EdgeInsets.symmetric(vertical: 16.h),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(30.r),
                             borderSide: BorderSide.none,
                           ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30.r),
-                            borderSide: BorderSide.none,
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30.r),
-                            borderSide: BorderSide.none,
-                          ),
                         ),
                         onChanged: (value) {
-                          setState(() => searchText = value);
-                          context.read<SearchTabViewModel>().searchMovies(
-                            value,
-                          );
+                          viewModel.updateSearchText(value);
                         },
                       );
                     },
@@ -93,7 +76,9 @@ class _SearchTabState extends State<SearchTab> {
                 Expanded(
                   child: BlocBuilder<SearchTabViewModel, SearchState>(
                     builder: (context, state) {
-                      if (searchText.isEmpty) {
+                      final viewModel = context.read<SearchTabViewModel>();
+
+                      if (viewModel.searchText.isEmpty) {
                         return Center(
                           child: Image.asset(AppAssets.empty1, width: 240.w),
                         );
@@ -144,7 +129,7 @@ class _SearchTabState extends State<SearchTab> {
                                 crossAxisCount: 2,
                                 crossAxisSpacing: 12.w,
                                 mainAxisSpacing: 16.h,
-                                childAspectRatio: 0.68, // أفضل نسبة للبوسترات
+                                childAspectRatio: 0.68,
                               ),
                           itemCount: state.movies.length,
                           itemBuilder: (context, index) {
