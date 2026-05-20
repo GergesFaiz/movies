@@ -9,10 +9,19 @@ import 'search_state.dart';
 class SearchTabViewModel extends Cubit<SearchState> {
   SearchTabViewModel() : super(SearchInitial());
 
+  String _searchText = "";
+
+  String get searchText => _searchText;
+
   final RetrofitService apiService = RetrofitService(Dio());
   Timer? debounce;
 
-  void searchMovies(String query) {
+  void updateSearchText(String query) {
+    _searchText = query;
+    _performSearch(query);
+  }
+
+  void _performSearch(String query) {
     if (query.trim().isEmpty) {
       debounce?.cancel();
       emit(SearchInitial());
