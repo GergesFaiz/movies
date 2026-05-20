@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movies/tabs/BrowseTab/browse_tab.dart';
 import 'package:movies/tabs/HomeTab/home_tab.dart';
 import 'package:movies/tabs/ProfileTab/profile_tab.dart';
-import 'package:movies/tabs/search_tab.dart';
+import 'package:movies/tabs/SearchTab/search_tab.dart';
 import 'package:movies/utils/app_colors.dart';
 
 class HomeScreen extends StatefulWidget {

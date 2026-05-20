@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:movies/tabs/HomeTab/movie_card.dart';
@@ -11,17 +10,39 @@ import 'package:movies/widgets/main_loading_widget.dart';
 import 'movie_details.dart';
 import 'home_view_model.dart';
 
-final RouteObserver<ModalRoute<void>> routeObserver = RouteObserver<ModalRoute<void>>();
+final RouteObserver<ModalRoute<void>> routeObserver =
+    RouteObserver<ModalRoute<void>>();
 
 class HomeTab extends StatefulWidget {
-  const HomeTab({super.key});
+  HomeTab({super.key});
 
   @override
   State<HomeTab> createState() => _HomeTabState();
 }
 
-class _HomeTabState extends State<HomeTab> {
-  final HomeViewModel viewModel = HomeViewModel();
+List<Movies> mainMoviesList = [];
+
+class _HomeTabState extends State<HomeTab> with RouteAware {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final ModalRoute? modalRoute = ModalRoute.of(context);
+    if (modalRoute != null) {
+      routeObserver.subscribe(this, modalRoute);
+    }
+  }
+
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPopNext() {
+    super.didPopNext();
+    context.read<MoviesCubit>().changeCategoryRandomly(mainMoviesList);
+  }
 
   @override
   void initState() {
@@ -37,9 +58,12 @@ class _HomeTabState extends State<HomeTab> {
     final double height = context.height;
 
     return Scaffold(
-      body: _buildBody(height),
-    );
-  }
+      body: FutureBuilder(
+        future: RetrofitService(Dio()).getMovies(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return MainLoadingWidget();
+          }
 
   Widget _buildBody(double height) {
     if (viewModel.isLoading) {
@@ -127,47 +151,46 @@ class _HomeTabState extends State<HomeTab> {
                     enlargeFactor: 0.3,
                   ),
                 ),
-                Image.asset(AppAssets.watchnow),
-                const SizedBox(height: 8),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(viewModel.currentGenre, style: AppStyles.bold18White),
-                      TextButton.icon(
-                        onPressed: () {},
-                        label: Text(
-                          'See More',
-                          style: AppStyles.medium15Amber,
-                        ),
-                        icon: Icon(
-                          Icons.arrow_forward,
-                          color: AppColors.amber,
-                        ),
-                        iconAlignment: IconAlignment.end,
-                      ),
-                    ],
+                Container(
+                  height: context.height,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.transparent,
+                        AppColors.gray.withOpacity(0.8),
+                        AppColors.gray,
+                      ],
+                      stops: [0.0, 0.4, 0.9],
+                    ),
                   ),
                 ),
-                SizedBox(
-                  height: height * 0.28,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    itemCount: viewModel.dynamicMoviesList.length,
-                    itemBuilder: (context, index) {
-                      final dynamicMovie = viewModel.dynamicMoviesList[index];
-                      return AspectRatio(
-                        aspectRatio: 2 / 3,
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => MovieDetails(
-                                  movie: dynamicMovie,
-                                ),
+                SafeArea(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset(AppAssets.available),
+                        SizedBox(height: context.height * 0.01),
+                        CarouselSlider.builder(
+                          itemCount: moviesList.length,
+                          itemBuilder: (context, index, realIndex) {
+                            return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) =>
+                                        MovieDetails(movie: moviesList[index]),
+                                  ),
+                                );
+                              },
+                              child: MovieCard(
+                                image: moviesList[index].mediumCoverImage ?? '',
+                                text:
+                                    moviesList[index].rating?.toString() ?? '0',
                               ),
                             );
                           },
@@ -176,8 +199,103 @@ class _HomeTabState extends State<HomeTab> {
                             text: dynamicMovie.rating?.toString() ?? '0',
                           ),
                         ),
-                      );
-                    },
+                        Image.asset(AppAssets.watchnow),
+                        SizedBox(height: context.height * 0.01),
+                        BlocBuilder<MoviesCubit, MoviesState>(
+                          builder: (context, state) {
+                            String textToShow = 'Action';
+                            List<Movies> currentListViewList = moviesList;
+
+                            if (state is CategoryChangedState) {
+                              textToShow = state.categoryName;
+                              currentListViewList = state.filteredMovies;
+                            } else {
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                if (context.read<MoviesCubit>().state
+                                    is MoviesInitial) {
+                                  context
+                                      .read<MoviesCubit>()
+                                      .changeCategoryRandomly(moviesList);
+                                }
+                              });
+                            }
+
+                            return Column(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 12),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        textToShow,
+                                        style: AppStyles.bold18White,
+                                      ),
+                                      TextButton.icon(
+                                        onPressed: () {
+                                          print(moviesList.length);
+                                        },
+                                        label: Text(
+                                          'See More',
+                                          style: AppStyles.medium15Amber,
+                                        ),
+                                        icon: Icon(
+                                          Icons.arrow_forward,
+                                          color: AppColors.amber,
+                                        ),
+                                        iconAlignment: IconAlignment.end,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: context.height * 0.01),
+                                SizedBox(
+                                  height: height * 0.28,
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                    ),
+                                    itemCount: currentListViewList.length,
+                                    itemBuilder: (context, index) {
+                                      return AspectRatio(
+                                        aspectRatio: 2 / 3,
+                                        child: InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (_) => MovieDetails(
+                                                  movie:
+                                                      currentListViewList[index],
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          child: MovieCard(
+                                            image:
+                                                currentListViewList[index]
+                                                    .mediumCoverImage ??
+                                                '',
+                                            text:
+                                                currentListViewList[index]
+                                                    .rating
+                                                    ?.toString() ??
+                                                '0',
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                        SizedBox(height: context.height * 0.02),
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(height: 16),
