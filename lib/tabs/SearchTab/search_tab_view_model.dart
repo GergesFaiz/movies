@@ -9,22 +9,22 @@ import 'search_state.dart';
 class SearchTabViewModel extends Cubit<SearchState> {
   SearchTabViewModel() : super(SearchInitial());
 
-  final RetrofitService _apiService = RetrofitService(Dio());
-  Timer? _debounce;
+  final RetrofitService apiService = RetrofitService(Dio());
+  Timer? debounce;
 
   void searchMovies(String query) {
     if (query.trim().isEmpty) {
-      _debounce?.cancel();
+      debounce?.cancel();
       emit(SearchInitial());
       return;
     }
 
-    _debounce?.cancel();
-    _debounce = Timer(const Duration(milliseconds: 500), () async {
+    debounce?.cancel();
+    debounce = Timer(const Duration(milliseconds: 500), () async {
       emit(SearchLoading());
 
       try {
-        final response = await _apiService.getMovies(
+        final response = await apiService.getMovies(
           queryTerm: query,
           limit: 50,
         );
@@ -52,7 +52,7 @@ class SearchTabViewModel extends Cubit<SearchState> {
 
   @override
   Future<void> close() {
-    _debounce?.cancel();
+    debounce?.cancel();
     return super.close();
   }
 }

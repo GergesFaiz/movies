@@ -11,7 +11,7 @@ import 'package:movies/utils/app_colors.dart';
 import 'package:movies/utils/app_styles.dart';
 
 class SearchTab extends StatefulWidget {
-  const SearchTab({super.key});
+  SearchTab({super.key});
 
   @override
   State<SearchTab> createState() => _SearchTabState();
@@ -23,7 +23,7 @@ class _SearchTabState extends State<SearchTab> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => SearchTabViewModel(),
+      create: (context) => SearchTabViewModel(),
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
@@ -31,7 +31,6 @@ class _SearchTabState extends State<SearchTab> {
           body: SafeArea(
             child: Column(
               children: [
-                // Search Bar - مطابق للصورة
                 Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: 16.w,
@@ -55,7 +54,7 @@ class _SearchTabState extends State<SearchTab> {
                               AppIcon.search,
                               width: 24.w,
                               height: 24.w,
-                              colorFilter: const ColorFilter.mode(
+                              colorFilter: ColorFilter.mode(
                                 Colors.white70,
                                 BlendMode.srcIn,
                               ),
@@ -63,7 +62,6 @@ class _SearchTabState extends State<SearchTab> {
                           ),
                           filled: true,
                           fillColor: AppColors.gray.withOpacity(0.6),
-                          // أغمق زي الصورة
                           contentPadding: EdgeInsets.symmetric(vertical: 16.h),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(30.r),
@@ -89,7 +87,6 @@ class _SearchTabState extends State<SearchTab> {
                   ),
                 ),
 
-                // Results
                 Expanded(
                   child: BlocBuilder<SearchTabViewModel, SearchState>(
                     builder: (context, state) {
@@ -100,7 +97,7 @@ class _SearchTabState extends State<SearchTab> {
                       }
 
                       if (state is SearchLoading) {
-                        return const Center(
+                        return Center(
                           child: CircularProgressIndicator(
                             color: AppColors.amber,
                           ),
@@ -144,7 +141,7 @@ class _SearchTabState extends State<SearchTab> {
                                 crossAxisCount: 2,
                                 crossAxisSpacing: 12.w,
                                 mainAxisSpacing: 16.h,
-                                childAspectRatio: 0.68, // أفضل نسبة للبوسترات
+                                childAspectRatio: 0.68,
                               ),
                           itemCount: state.movies.length,
                           itemBuilder: (context, index) {
@@ -165,7 +162,7 @@ class _SearchTabState extends State<SearchTab> {
                         );
                       }
 
-                      return const SizedBox();
+                      return SizedBox();
                     },
                   ),
                 ),
