@@ -11,15 +11,13 @@ import 'package:movies/utils/app_colors.dart';
 import 'package:movies/utils/app_styles.dart';
 
 class SearchTab extends StatefulWidget {
-  SearchTab({super.key});
+  const SearchTab({super.key});
 
   @override
   State<SearchTab> createState() => _SearchTabState();
 }
 
 class _SearchTabState extends State<SearchTab> {
-  String searchText = "";
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -38,6 +36,8 @@ class _SearchTabState extends State<SearchTab> {
                   ),
                   child: BlocBuilder<SearchTabViewModel, SearchState>(
                     builder: (context, state) {
+                      final viewModel = context.read<SearchTabViewModel>();
+
                       return TextFormField(
                         autocorrect: false,
                         enableSuggestions: false,
@@ -54,10 +54,6 @@ class _SearchTabState extends State<SearchTab> {
                               AppIcon.search,
                               width: 24.w,
                               height: 24.w,
-                              colorFilter: ColorFilter.mode(
-                                Colors.white70,
-                                BlendMode.srcIn,
-                              ),
                             ),
                           ),
                           filled: true,
@@ -67,37 +63,29 @@ class _SearchTabState extends State<SearchTab> {
                             borderRadius: BorderRadius.circular(30.r),
                             borderSide: BorderSide.none,
                           ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30.r),
-                            borderSide: BorderSide.none,
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30.r),
-                            borderSide: BorderSide.none,
-                          ),
                         ),
                         onChanged: (value) {
-                          setState(() => searchText = value);
-                          context.read<SearchTabViewModel>().searchMovies(
-                            value,
-                          );
+                          viewModel.updateSearchText(value);
                         },
                       );
                     },
                   ),
                 ),
 
+                // Results
                 Expanded(
                   child: BlocBuilder<SearchTabViewModel, SearchState>(
                     builder: (context, state) {
-                      if (searchText.isEmpty) {
+                      final viewModel = context.read<SearchTabViewModel>();
+
+                      if (viewModel.searchText.isEmpty) {
                         return Center(
                           child: Image.asset(AppAssets.empty1, width: 240.w),
                         );
                       }
 
                       if (state is SearchLoading) {
-                        return Center(
+                        return const Center(
                           child: CircularProgressIndicator(
                             color: AppColors.amber,
                           ),
@@ -162,7 +150,7 @@ class _SearchTabState extends State<SearchTab> {
                         );
                       }
 
-                      return SizedBox();
+                      return const SizedBox();
                     },
                   ),
                 ),
