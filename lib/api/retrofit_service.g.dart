@@ -22,9 +22,20 @@ class _RetrofitService implements RetrofitService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<SourceResponse> getMovies({String sortBy = "date_added"}) async {
+  Future<SourceResponse> getMovies({
+    String sortBy = "date_added",
+    String? queryTerm,
+    int limit = 50,
+    int page = 1,
+  }) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'sort_by': sortBy};
+    final queryParameters = <String, dynamic>{
+      r'sort_by': sortBy,
+      r'query_term': queryTerm,
+      r'limit': limit,
+      r'page': page,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<SourceResponse>(
