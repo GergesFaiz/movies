@@ -13,8 +13,9 @@ import 'package:movies/widgets/main_error_widget.dart';
 import 'package:movies/widgets/main_loading_widget.dart';
 import 'movie_details.dart';
 import 'home_view_model.dart';
+import 'package:movies/main.dart';
 
-final RouteObserver<ModalRoute<void>> routeObserver = RouteObserver<ModalRoute<void>>();
+//final RouteObserver<ModalRoute<void>> routeObserver = RouteObserver<ModalRoute<void>>();
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
@@ -26,7 +27,7 @@ class HomeTab extends StatefulWidget {
 List<Movies> mainMoviesList = [];
 
 class _HomeTabState extends State<HomeTab> with RouteAware {
-  //  هنا تعريف الـ viewModel عشان الإيرور يختفي تماماً
+
   late HomeViewModel viewModel;
 
   @override
@@ -53,11 +54,11 @@ class _HomeTabState extends State<HomeTab> with RouteAware {
   @override
   void initState() {
     super.initState();
-    // تهيئة الـ viewModel عند بداية الشاشة
+  
     viewModel = HomeViewModel();
     viewModel.loadHomeMovies();
     viewModel.addListener(() {
-      if (mounted) setState(() {});
+      if (mounted) setState(() {mainMoviesList = viewModel.moviesList;});
     });
   }
 
@@ -99,7 +100,7 @@ class _HomeTabState extends State<HomeTab> with RouteAware {
           height: context.height * 0.5,
           width: context.width,
           child: Image.asset(
-            AppAssets.available, // اتأكدي من مسار الصورة الصحيح هنا لو مختلفة
+            AppAssets.available, 
             fit: BoxFit.cover,
           ),
         ),

@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:movies/api/model/movies.dart';
-import 'package:movies/home_screen.dart';
 import 'package:movies/utils/app_colors.dart';
 import 'package:movies/utils/app_styles.dart';
 import 'package:movies/utils/screen_utils.dart';
@@ -26,6 +25,7 @@ class _MovieDetailsState extends State<MovieDetails> {
   void initState() {
     super.initState();
     viewModel.loadMovieData(widget.movie.id ?? 0);
+    viewModel.addToHistory(widget.movie);
     viewModel.addListener(() {
       if (mounted) setState(() {});
     });
@@ -167,12 +167,13 @@ class _MovieDetailsState extends State<MovieDetails> {
               colors: [Colors.transparent, AppColors.gray],
             ),
           ),
-        ),Positioned.fill(
-          top: context.height*.2,
+        ),
+        Positioned.fill(
+          top: context.height * .2,
           child: Center(
             child: InkWell(
               onTap: () {},
-              child: Image.asset("assets/images/Group 21.png")
+              child: Image.asset("assets/images/Group 21.png"),
             ),
           ),
         ),
@@ -180,8 +181,25 @@ class _MovieDetailsState extends State<MovieDetails> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(icon: Icon(Icons.arrow_back_ios, color: AppColors.white), onPressed: () => Navigator.pop(context)),
-              IconButton(icon: Icon(Icons.bookmark_rounded, color: AppColors.white), onPressed: () {}),
+              IconButton(
+                icon: Icon(Icons.arrow_back_ios, color: AppColors.white), 
+                onPressed: () => Navigator.pop(context),
+              ),
+              StreamBuilder<bool>(
+                stream: viewModel.isMovieInWatchlist(widget.movie.id ?? 0),
+                builder: (context, snapshot) {
+                  final isSaved = snapshot.data ?? false;
+                  return IconButton(
+                    icon: Icon(
+                      Icons.bookmark_rounded, 
+                      color: isSaved ? Colors.amber : AppColors.white,
+                    ), 
+                    onPressed: () async {
+                      await viewModel.toggleWatchlist(widget.movie);
+                    },
+                  );
+                },
+              ),
             ],
           ),
         ),
@@ -199,7 +217,14 @@ class _MovieDetailsState extends State<MovieDetails> {
           const SizedBox(height: 8),
           Text(widget.movie.title ?? '', style: AppStyles.bold18White, textAlign: TextAlign.center),
           Text(widget.movie.year?.toString() ?? '', style: AppStyles.bold16White, textAlign: TextAlign.center),
-          CustomElevatedButton(label: "Watch", onPressed: () {}, backgroundColor: AppColors.red, textStyle: AppStyles.bold20White),
+          CustomElevatedButton(
+            label: "Watch", 
+            backgroundColor: AppColors.red, 
+            textStyle: AppStyles.bold20White,
+            onPressed: () async {
+              await viewModel.addToHistory(widget.movie);
+            }, 
+          ),
         ],
       ),
     );
