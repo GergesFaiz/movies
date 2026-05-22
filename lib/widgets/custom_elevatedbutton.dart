@@ -47,7 +47,7 @@ class CustomElevatedButton extends StatelessWidget {
               spacing: 5,
               children: [
                 //Icon(,color: AppColors.gray,size: 40,),
-                SvgPicture.asset(AppIcon.googleIcon, height: 26, width: 26),
+                SvgPicture.asset(AppAssets.googleIcon, height: 26, width: 26),
 
                 Text(label, style: AppStyles.regular16Gray),
               ],

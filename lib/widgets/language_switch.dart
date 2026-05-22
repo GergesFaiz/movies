@@ -31,7 +31,7 @@ class LanguageSwitch extends StatelessWidget {
                   border: Border.all(color: AppColors.amber, width: 4),
                 ),
                 child: SvgPicture.asset(
-                  AppIcon.lr,
+                  AppAssets.lr,
                   fit: BoxFit.fill,
                   height: height * 0.03,
                   width: width * 0.06,
@@ -43,7 +43,7 @@ class LanguageSwitch extends StatelessWidget {
                 padding: EdgeInsets.all(5.6),
                 child: SvgPicture.asset(
                   fit: BoxFit.fill,
-                  AppIcon.eg,
+                  AppAssets.eg,
                   height: height * 0.03,
                   width: width * 0.06,
                 ),

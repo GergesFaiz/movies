@@ -6,13 +6,13 @@ import 'package:movies/api/model/movies.dart';
 import 'package:movies/api/retrofit_service.dart';
 import 'package:movies/cubit/movie_cubit.dart';
 import 'package:movies/states/movie_state.dart';
-import 'package:movies/tabs/HomeTab/movie_card.dart';
 import 'package:movies/utils/app_assets.dart';
 import 'package:movies/utils/app_colors.dart';
 import 'package:movies/utils/app_styles.dart';
 import 'package:movies/utils/screen_utils.dart';
 import 'package:movies/widgets/main_error_widget.dart';
 import 'package:movies/widgets/main_loading_widget.dart';
+import 'package:movies/widgets/movie_card.dart';
 
 import 'movie_details.dart';
 
@@ -98,7 +98,7 @@ class _HomeTabState extends State<HomeTab> with RouteAware {
                   height: context.height * 0.5,
                   width: context.width,
                   child: Image.asset(
-                    AppOnboardingImage.onbaordingImage6,
+                    AppAssets.onbaordingImage6,
                     fit: BoxFit.cover,
                   ),
                 ),
