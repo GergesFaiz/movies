@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class MainErrorWidget extends StatelessWidget {
   String massage;
   VoidCallback onPressed;

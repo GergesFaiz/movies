@@ -5,6 +5,7 @@ import 'package:movies/utils/app_colors.dart';
 
 import '../utils/app_styles.dart';
 
+// ignore: must_be_immutable
 class CustomElevatedButton extends StatelessWidget {
   final bool isIcon;
 

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:movies/l10n/app_localizations.dart';
 import 'package:movies/utils/app_assets.dart';
+import 'package:movies/utils/app_styles.dart';
 import 'package:movies/utils/firebase_files/auth_function.dart';
 import 'package:movies/utils/firebase_files/dialog_utils.dart';
 import 'package:movies/widgets/back_app_bar.dart';
@@ -24,14 +26,17 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   Widget build(BuildContext context) {
     var height = context.height;
     var width = context.width;
+    final localizations = AppLocalizations.of(context)!;
+
     return Scaffold(
-      appBar: BackAppBar(title: "Forget Password"),
+      appBar: BackAppBar(title: localizations.forgotPassword),
       body: Padding(
         padding: EdgeInsets.symmetric(
-          horizontal: width*0.06
+          horizontal: width * 0.06,
         ),
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             spacing: height * 0.02,
             children: [
               SizedBox(
@@ -42,47 +47,54 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 textInputType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
                 controller: emailController,
-                hintText: "Email",
+                hintText: localizations.email,
                 validator: AppValidator.validateEmail,
               ),
               CustomElevatedButton(
-                label: "Verify Email",
+                label: localizations.verifyEmail,
+                textStyle: AppStyles.bold16Black,
                 onPressed: () async {
                   if (emailController.text.isNotEmpty) {
                     DialogUtils.showLoading(
                       context,
-                      s: "Sending reset link...",
+                      s: localizations.sendingResetLink,
                     );
                     try {
                       String? result = await FirebaseFunctions.resetPassword(
                         emailController.text.trim(),
                       );
 
-                      DialogUtils.hideLoading(context);
+                      if (context.mounted) DialogUtils.hideLoading(context);
 
                       if (result == null) {
-                        DialogUtils.showMessage(
-                          context,
-                          "Check your email to reset your password!",
-                          posActionName: "Ok",
-                          posAction: () {
-                            Navigator.pop(context);
-                          },
-                        );
+                        if (context.mounted) {
+                          DialogUtils.showMessage(
+                            context,
+                            localizations.checkEmailToReset,
+                            posActionName: "Ok",
+                            posAction: () {
+                              Navigator.pop(context);
+                            },
+                          );
+                        }
                       } else {
-                        DialogUtils.showMessage(
-                          context,
-                          result,
-                          title: "Error",
-                        );
+                        if (context.mounted) {
+                          DialogUtils.showMessage(
+                            context,
+                            result,
+                            title: "Error",
+                          );
+                        }
                       }
                     } catch (e) {
                       if (context.mounted) DialogUtils.hideLoading(context);
-                      DialogUtils.showMessage(
-                        context,
-                        e.toString(),
-                        title: "System Error",
-                      );
+                      if (context.mounted) {
+                        DialogUtils.showMessage(
+                          context,
+                          e.toString(),
+                          title: "System Error",
+                        );
+                      }
                     }
                   }
                 },
@@ -94,4 +106,3 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     );
   }
 }
-

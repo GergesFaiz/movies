@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:movies/api/model/movies.dart';
+import 'package:movies/l10n/app_localizations.dart';
 import 'package:movies/utils/app_colors.dart';
 import 'package:movies/utils/app_styles.dart';
 import 'package:movies/utils/screen_utils.dart';
@@ -80,7 +81,9 @@ class _MovieDetailsState extends State<MovieDetails> {
           ),
           if (viewModel.screenshots.isNotEmpty) ...[
             const SizedBox(height: 20),
-            Text('Screenshots', style: AppStyles.bold22White),
+            Text('Screenshots'
+           
+            , style: AppStyles.bold22White),
             const SizedBox(height: 12),
             ListView.builder(
               shrinkWrap: true,
@@ -92,12 +95,16 @@ class _MovieDetailsState extends State<MovieDetails> {
           ],
           if (viewModel.suggestions.isNotEmpty) ...[
             const SizedBox(height: 20),
-            Text("Similar", style: AppStyles.bold22White),
+            Text(//"Similar"
+           AppLocalizations.of(context)!.similar
+            , style: AppStyles.bold22White),
             const SizedBox(height: 10),
             _buildSuggestionsGrid(),
           ],
           const SizedBox(height: 20),
-          Text('Summary', style: AppStyles.bold22White),
+          Text(//'Summary'
+          AppLocalizations.of(context)!.summary
+          , style: AppStyles.bold22White),
           const SizedBox(height: 8),
           Text(
             widget.movie.synopsis ?? widget.movie.descriptionFull ?? 'No description available.', 
@@ -105,7 +112,9 @@ class _MovieDetailsState extends State<MovieDetails> {
           ),
           if (viewModel.cast.isNotEmpty) ...[
             const SizedBox(height: 20),
-            Text('Cast', style: AppStyles.bold22White),
+            Text(//'Cast'
+            AppLocalizations.of(context)!.cast
+            , style: AppStyles.bold22White),
             const SizedBox(height: 8),
             ListView.builder(
               shrinkWrap: true,
@@ -124,7 +133,9 @@ class _MovieDetailsState extends State<MovieDetails> {
           ],
           if (viewModel.genres.isNotEmpty) ...[
             const SizedBox(height: 20),
-            Text('Genres', style: AppStyles.bold22White),
+            Text(//'Genres'
+            AppLocalizations.of(context)!.genres
+            , style: AppStyles.bold22White),
             const SizedBox(height: 12),
             Wrap(
               spacing: 8,
@@ -218,7 +229,8 @@ class _MovieDetailsState extends State<MovieDetails> {
           Text(widget.movie.title ?? '', style: AppStyles.bold18White, textAlign: TextAlign.center),
           Text(widget.movie.year?.toString() ?? '', style: AppStyles.bold16White, textAlign: TextAlign.center),
           CustomElevatedButton(
-            label: "Watch", 
+            label: AppLocalizations.of(context)!.watch,
+            //"Watch", 
             backgroundColor: AppColors.red, 
             textStyle: AppStyles.bold20White,
             onPressed: () async {
