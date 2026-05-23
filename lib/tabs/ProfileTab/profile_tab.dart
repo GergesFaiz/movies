@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:movies/l10n/app_localizations.dart';
 import 'package:movies/screens/login/login_screen.dart';
 import 'package:movies/tabs/ProfileTab/profile_tabs/history_tab.dart';
 import 'package:movies/tabs/ProfileTab/profile_tabs/watch_list_tab.dart';
@@ -55,9 +56,9 @@ class _ProfileTabState extends State<ProfileTab>
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
-        if (snapshot.hasError) return Text('Something went wrong');
+        if (snapshot.hasError) return const Center(child: Text('Something went wrong'));
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Text("Loading...");
+          return const Center(child: CircularProgressIndicator());
         }
         if (!snapshot.hasData) return LoginScreen();
 
@@ -69,6 +70,13 @@ class _ProfileTabState extends State<ProfileTab>
             final userData = userDataSnapshot.data;
             final userName = userData?['name'] ?? 'Loading...';
             final avatarPath = userData?['avatar'];
+
+            
+            final List? watchList = userData?['watchlist'] as List?;
+            final List? historyList = userData?['history'] as List?;
+            
+            final String watchListCount = (watchList?.length ?? 0).toString();
+            final String historyCount = (historyList?.length ?? 0).toString();
 
             return Scaffold(
               appBar: AppBar(
@@ -96,8 +104,9 @@ class _ProfileTabState extends State<ProfileTab>
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                buildStat('12', 'Wish List', context),
-                                buildStat('10', 'History', context),
+                              
+                                buildStat(watchListCount, 'Watch List', context),
+                                buildStat(historyCount, 'History', context),
                               ],
                             ),
                           ),
@@ -125,24 +134,24 @@ class _ProfileTabState extends State<ProfileTab>
                           Expanded(
                             flex: 1,
                             child: CustomElevatedButton(
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.logout,
                                 color: AppColors.white,
                                 size: 20,
                               ),
                               label: 'Exit',
-                              onPressed: () {
-                                Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute<void>(
-                                    builder: (BuildContext context) =>
-                                        LoginScreen(),
-                                  ),
-                                  (route) {
-                                    return false;
-                                  },
-                                );
-                                FirebaseAuth.instance.signOut();
+                              onPressed: () async {
+                               
+                                await FirebaseAuth.instance.signOut();
+                                if (context.mounted) {
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute<void>(
+                                      builder: (BuildContext context) => LoginScreen(),
+                                    ),
+                                    (route) => false,
+                                  );
+                                }
                               },
                               backgroundColor: AppColors.red,
                               textStyle: AppStyles.regular20white,
@@ -166,11 +175,12 @@ class _ProfileTabState extends State<ProfileTab>
                   unselectedLabelStyle: AppStyles.regular20white,
                   tabs: [
                     Tab(
-                      icon: Icon(Icons.list, size: 30, color: AppColors.amber),
-                      text: 'Watch List',
+                      icon: const Icon(Icons.list, size: 30, color: AppColors.amber),
+                      text:AppLocalizations.of(context)!.watchlist
+                       //'Watch List',
                     ),
                     Tab(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.folder,
                         size: 30,
                         color: AppColors.amber,

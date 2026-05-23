@@ -41,7 +41,7 @@ class _AvatarsBottomSheetState extends State<AvatarsBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    var height = context.height;
+    //var height = context.height;
     var width = context.width;
     return Container(
       padding:  EdgeInsets.all(16),

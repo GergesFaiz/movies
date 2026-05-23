@@ -1,5 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies/api/model/movies.dart';
+import 'package:movies/cubit/movie_cubit.dart';
+import 'package:movies/states/movie_state.dart';
 import 'package:movies/tabs/HomeTab/movie_card.dart';
 import 'package:movies/utils/app_assets.dart';
 import 'package:movies/utils/app_colors.dart';
@@ -9,12 +13,12 @@ import 'package:movies/widgets/main_error_widget.dart';
 import 'package:movies/widgets/main_loading_widget.dart';
 import 'movie_details.dart';
 import 'home_view_model.dart';
+import 'package:movies/main.dart';
 
-final RouteObserver<ModalRoute<void>> routeObserver =
-    RouteObserver<ModalRoute<void>>();
+//final RouteObserver<ModalRoute<void>> routeObserver = RouteObserver<ModalRoute<void>>();
 
 class HomeTab extends StatefulWidget {
-  HomeTab({super.key});
+  const HomeTab({super.key});
 
   @override
   State<HomeTab> createState() => _HomeTabState();
@@ -23,6 +27,9 @@ class HomeTab extends StatefulWidget {
 List<Movies> mainMoviesList = [];
 
 class _HomeTabState extends State<HomeTab> with RouteAware {
+
+  late HomeViewModel viewModel;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -47,25 +54,23 @@ class _HomeTabState extends State<HomeTab> with RouteAware {
   @override
   void initState() {
     super.initState();
+  
+    viewModel = HomeViewModel();
     viewModel.loadHomeMovies();
     viewModel.addListener(() {
-      if (mounted) setState(() {});
+      if (mounted) setState(() {mainMoviesList = viewModel.moviesList;});
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final double height = context.height;
-
     return Scaffold(
-      body: FutureBuilder(
-        future: RetrofitService(Dio()).getMovies(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return MainLoadingWidget();
-          }
+      body: buildBody(height),
+    );
+  }
 
-  Widget _buildBody(double height) {
+  Widget buildBody(double height) {
     if (viewModel.isLoading) {
       return const MainLoadingWidget();
     }
@@ -95,7 +100,7 @@ class _HomeTabState extends State<HomeTab> with RouteAware {
           height: context.height * 0.5,
           width: context.width,
           child: Image.asset(
-            AppOnboardingImage.onbaordingImage6,
+            AppAssets.available, 
             fit: BoxFit.cover,
           ),
         ),
@@ -151,154 +156,88 @@ class _HomeTabState extends State<HomeTab> with RouteAware {
                     enlargeFactor: 0.3,
                   ),
                 ),
-                Container(
-                  height: context.height,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.transparent,
-                        AppColors.gray.withOpacity(0.8),
-                        AppColors.gray,
-                      ],
-                      stops: [0.0, 0.4, 0.9],
-                    ),
-                  ),
-                ),
-                SafeArea(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                Image.asset(AppAssets.watchnow),
+                SizedBox(height: context.height * 0.01),
+                BlocBuilder<MoviesCubit, MoviesState>(
+                  builder: (context, state) {
+                    String textToShow = 'Action';
+                    List<Movies> currentListViewList = viewModel.moviesList;
+
+                    if (state is CategoryChangedState) {
+                      textToShow = state.categoryName;
+                      currentListViewList = state.filteredMovies;
+                    } else {
+                     
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        if (context.read<MoviesCubit>().state is MoviesInitial) {
+                          context.read<MoviesCubit>().changeCategoryRandomly(viewModel.moviesList);
+                        }
+                      });
+                    }
+
+                    return Column(
                       children: [
-                        Image.asset(AppAssets.available),
-                        SizedBox(height: context.height * 0.01),
-                        CarouselSlider.builder(
-                          itemCount: moviesList.length,
-                          itemBuilder: (context, index, realIndex) {
-                            return InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) =>
-                                        MovieDetails(movie: moviesList[index]),
-                                  ),
-                                );
-                              },
-                              child: MovieCard(
-                                image: moviesList[index].mediumCoverImage ?? '',
-                                text:
-                                    moviesList[index].rating?.toString() ?? '0',
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                textToShow,
+                                style: AppStyles.bold18White,
                               ),
-                            );
-                          },
-                          child: MovieCard(
-                            image: dynamicMovie.mediumCoverImage ?? '',
-                            text: dynamicMovie.rating?.toString() ?? '0',
+                              TextButton.icon(
+                                onPressed: () {
+                                  print(viewModel.moviesList.length);
+                                },
+                                label: Text(
+                                  'See More',
+                                  style: AppStyles.medium15Amber,
+                                ),
+                                icon: Icon(
+                                  Icons.arrow_forward,
+                                  color: AppColors.amber,
+                                ),
+                                iconAlignment: IconAlignment.end,
+                              ),
+                            ],
                           ),
                         ),
-                        Image.asset(AppAssets.watchnow),
                         SizedBox(height: context.height * 0.01),
-                        BlocBuilder<MoviesCubit, MoviesState>(
-                          builder: (context, state) {
-                            String textToShow = 'Action';
-                            List<Movies> currentListViewList = moviesList;
-
-                            if (state is CategoryChangedState) {
-                              textToShow = state.categoryName;
-                              currentListViewList = state.filteredMovies;
-                            } else {
-                              WidgetsBinding.instance.addPostFrameCallback((_) {
-                                if (context.read<MoviesCubit>().state
-                                    is MoviesInitial) {
-                                  context
-                                      .read<MoviesCubit>()
-                                      .changeCategoryRandomly(moviesList);
-                                }
-                              });
-                            }
-
-                            return Column(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 12),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        textToShow,
-                                        style: AppStyles.bold18White,
-                                      ),
-                                      TextButton.icon(
-                                        onPressed: () {
-                                          print(moviesList.length);
-                                        },
-                                        label: Text(
-                                          'See More',
-                                          style: AppStyles.medium15Amber,
+                        SizedBox(
+                          height: height * 0.28,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            itemCount: currentListViewList.length,
+                            itemBuilder: (context, index) {
+                              return AspectRatio(
+                                aspectRatio: 2 / 3,
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => MovieDetails(
+                                          movie: currentListViewList[index],
                                         ),
-                                        icon: Icon(
-                                          Icons.arrow_forward,
-                                          color: AppColors.amber,
-                                        ),
-                                        iconAlignment: IconAlignment.end,
                                       ),
-                                    ],
+                                    );
+                                  },
+                                  child: MovieCard(
+                                    image: currentListViewList[index].mediumCoverImage ?? '',
+                                    text: currentListViewList[index].rating?.toString() ?? '0',
                                   ),
                                 ),
-                                SizedBox(height: context.height * 0.01),
-                                SizedBox(
-                                  height: height * 0.28,
-                                  child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 8,
-                                    ),
-                                    itemCount: currentListViewList.length,
-                                    itemBuilder: (context, index) {
-                                      return AspectRatio(
-                                        aspectRatio: 2 / 3,
-                                        child: InkWell(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (_) => MovieDetails(
-                                                  movie:
-                                                      currentListViewList[index],
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                          child: MovieCard(
-                                            image:
-                                                currentListViewList[index]
-                                                    .mediumCoverImage ??
-                                                '',
-                                            text:
-                                                currentListViewList[index]
-                                                    .rating
-                                                    ?.toString() ??
-                                                '0',
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
+                              );
+                            },
+                          ),
                         ),
-                        SizedBox(height: context.height * 0.02),
                       ],
-                    ),
-                  ),
+                    );
+                  },
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: context.height * 0.02),
               ],
             ),
           ),
