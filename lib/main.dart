@@ -39,7 +39,7 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
             theme: AppTheme.darkTheme,
             darkTheme: AppTheme.darkTheme,
             themeMode: ThemeMode.dark,
-            initialRoute: AppRoutes.loginScreen,
+            initialRoute: AppRoutes.homeScreen,
             routes: {
               AppRoutes.onBoarding: (context) => Onboarding(),
               AppRoutes.homeScreen: (context) => BlocProvider(

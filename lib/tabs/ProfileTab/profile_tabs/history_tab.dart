@@ -16,24 +16,41 @@ class HistoryTab extends StatelessWidget {
     final user = FirebaseAuth.instance.currentUser;
 
     if (user == null) {
-      return  Scaffold(
+      return Scaffold(
         backgroundColor: AppColors.backgroundDark,
-        body: Center(child: Text(//'Please log in first'
-        AppLocalizations.of(context)!.pleaseLoginFirst
-        , style: TextStyle(color: Colors.white))),
+        body: Center(
+          child: Text(
+            AppLocalizations.of(context)!.pleaseLoginFirst,
+            style: const TextStyle(color: Colors.white),
+          ),
+        ),
       );
     }
 
     return Scaffold(
       backgroundColor: AppColors.backgroundDark,
+      /*appBar: AppBar(
+        backgroundColor: AppColors.headerBackground,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.amber),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text(
+          'History',
+          style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
+        ),
+      ),*/
       body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
         stream: FirebaseFirestore.instance.collection('Users').doc(user.uid).snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return  Center(child: Text(
-            //  'Something went wrong', 
-            AppLocalizations.of(context)!.somethingWentWrong,
-              style: TextStyle(color: Colors.white)));
+            return Center(
+              child: Text(
+                AppLocalizations.of(context)!.somethingWentWrong,
+                style: const TextStyle(color: Colors.white),
+              ),
+            );
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator(color: AppColors.amber));
