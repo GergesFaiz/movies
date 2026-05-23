@@ -1,3 +1,5 @@
+
+https://github.com/user-attachments/assets/f1c9fb6a-7fb4-4dc6-9b3e-c519e4324bf3
 # movies
 Featuer_1 Part 1
 
@@ -14,7 +16,50 @@ https://github.com/user-attachments/assets/39076c82-d32d-454a-b42e-07b3347c0f57
 
 Phase_2 Part2
 
-https://github.com/user-attachments/assets/e9a4462d-21a3-403c-b903-51fcd67b6d2e
+https://github.com/user-attachments/assets/e9a4462d-21a3-403c-b903-51fcd67b6d
+
+ phase_4 part1
+
+https://github.com/user-attachments/assets/6305bee5-4353-4977-a49f-126b7e1bd5c4
+
+phase_3 part1
+
+https://github.com/user-attachments/assets/00b8822e-bcc0-4306-b405-720bad783a1b
+
+
+
+
+https://github.com/user-attachments/assets/99713424-312a-46c2-b641-057061d78a2f
+
+
+phase_3 part2
+
+https://github.com/user-attachments/assets/cb62fe9d-64d5-4248-9aa2-bcea963bc742
+
+phase_4 part1
+
+https://github.com/user-attachments/assets/cd8118c3-a5e7-4403-bad6-de35587e151a
+
+phase_4 part2
+
+
+https://github.com/user-attachments/assets/ffc0306c-919a-4781-bd7b-97ca3602a6d6
+
+
+
+
+
+https://github.com/user-attachments/assets/11c89a03-55f5-4b1a-beca-c95b9f364fb2
+
+
+
+
+
+
+
+
+
+
 
 
 
