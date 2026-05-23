@@ -14,7 +14,6 @@ class LanguageSwitch extends StatelessWidget {
     var height = context.height;
     var width = context.width;
 
-   
     final languageCubit = context.read<AppLanguageCubit>();
     final isEnglish = languageCubit.state.languageCode == 'en';
 
@@ -38,9 +37,10 @@ class LanguageSwitch extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
+                 
                     border: Border.all(
                       color: isEnglish ? AppColors.amber : Colors.transparent,
-                      width: 4,
+                      width: 3,
                     ),
                   ),
                   child: SvgPicture.asset(
@@ -57,22 +57,20 @@ class LanguageSwitch extends StatelessWidget {
                 onTap: () {
                   languageCubit.changeLanguage('ar'); 
                 },
-                child: Padding(
-                  padding: const EdgeInsets.all(5.6),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      border: Border.all(
-                        color: !isEnglish ? AppColors.amber : Colors.transparent,
-                        width: 4,
-                      ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                   
+                    border: Border.all(
+                      color: !isEnglish ? AppColors.amber : Colors.transparent,
+                      width: 3,
                     ),
-                    child: SvgPicture.asset(
-                      AppIcon.eg,
-                      fit: BoxFit.fill,
-                      height: height * 0.03,
-                      width: width * 0.06,
-                    ),
+                  ),
+                  child: SvgPicture.asset(
+                    AppIcon.eg,
+                    fit: BoxFit.fill,
+                    height: height * 0.03,
+                    width: width * 0.06,
                   ),
                 ),
               ),

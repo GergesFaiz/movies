@@ -42,11 +42,11 @@ class MovieCard extends StatelessWidget {
               child: CachedNetworkImage(
                 imageUrl: image,
                 fit: BoxFit.cover,
-                placeholder: (_, __) => Container(
+                placeholder: (_, _) => Container(
                   color: Colors.grey[850],
                   child: const Center(child: CircularProgressIndicator()),
                 ),
-                errorWidget: (_, __, ___) => Container(
+                errorWidget: (_, _, _) => Container(
                   color: Colors.grey[850],
                   child: const Icon(Icons.broken_image, color: Colors.white54),
                 ),
