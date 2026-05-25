@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies/cubit/movie_cubit.dart';
+import 'package:movies/cubit/app_language_cubit.dart';
 import 'package:movies/l10n/app_localizations.dart';
 import 'package:movies/screens/login/forgot_password_screen.dart';
 import 'package:movies/screens/login/login_screen.dart';
@@ -16,9 +17,7 @@ import 'package:movies/utils/firebase_files/firebase_options.dart';
 
 import 'home_screen.dart';
 
-// Global Route Observer
-final RouteObserver<ModalRoute<void>> routeObserver = RouteObserver<
-    ModalRoute<void>>();
+final RouteObserver<ModalRoute<void>> routeObserver = RouteObserver<ModalRoute<void>>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,11 +30,16 @@ Future<void> main() async {
     persistenceEnabled: true,
   );
 
-  runApp(MyApp());
+  runApp(
+    BlocProvider(
+      create: (context) => AppLanguageCubit(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +47,13 @@ class MyApp extends StatelessWidget {
       designSize: Size(430, 932),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (context, child) =>
-          MaterialApp(
+      builder: (context, child) => BlocBuilder<AppLanguageCubit, Locale>(
+        builder: (context, localeState) {
+          return MaterialApp(
             navigatorObservers: [routeObserver],
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
-            locale: Locale('en'),
+            locale: localeState,
             debugShowCheckedModeBanner: false,
             theme: AppTheme.darkTheme,
             darkTheme: AppTheme.darkTheme,
@@ -56,18 +61,18 @@ class MyApp extends StatelessWidget {
             initialRoute: AppRoutes.homeScreen,
             routes: {
               AppRoutes.onBoarding: (context) => Onboarding(),
-              AppRoutes.homeScreen: (context) =>
-                  BlocProvider(
-            create: (context) => MoviesCubit(),
+              AppRoutes.homeScreen: (context) => BlocProvider(
+                    create: (context) => MoviesCubit(),
                     child: HomeScreen(),
-          ),
+                  ),
               AppRoutes.loginScreen: (context) => LoginScreen(),
-              AppRoutes.forgotPasswordScreen: (context) =>
-                  ForgotPasswordScreen(),
+              AppRoutes.forgotPasswordScreen: (context) => ForgotPasswordScreen(),
               AppRoutes.registerScreen: (context) => RegisterScreen(),
               AppRoutes.updateProfileScreen: (context) => UpdateProfileScreen(),
             },
-          ),
+          );
+        },
+      ),
     );
   }
 }

@@ -56,6 +56,7 @@ class FirebaseFunctions {
     required String password,
   }) async {
     try {
+      // ignore: unused_local_variable
       final credential = await auth.FirebaseAuth.instance
           .signInWithEmailAndPassword(email: emailAddress, password: password);
     } on auth.FirebaseAuthException catch (e) {

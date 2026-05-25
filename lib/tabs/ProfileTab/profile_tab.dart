@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:movies/l10n/app_localizations.dart';
 import 'package:movies/screens/login/login_screen.dart';
 import 'package:movies/tabs/ProfileTab/profile_tabs/history_tab.dart';
 import 'package:movies/tabs/ProfileTab/profile_tabs/watch_list_tab.dart';
@@ -175,7 +176,8 @@ class _ProfileTabState extends State<ProfileTab>
                   tabs: [
                     Tab(
                       icon: const Icon(Icons.list, size: 30, color: AppColors.amber),
-                      text: 'Watch List',
+                      text:AppLocalizations.of(context)!.watchlist
+                       //'Watch List',
                     ),
                     Tab(
                       icon: const Icon(

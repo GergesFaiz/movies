@@ -23,6 +23,18 @@ class WatchListTab extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.backgroundDark,
+     /* appBar: AppBar(
+        backgroundColor: AppColors.headerBackground,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.amber),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text(
+          AppLocalizations.of(context)?.watchlist ?? 'Watch List',
+          style: const TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
+        ),
+      ),*/
       body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
         stream: FirebaseFirestore.instance.collection('Users').doc(user.uid).snapshots(),
         builder: (context, snapshot) {
@@ -63,7 +75,9 @@ class WatchListTab extends StatelessWidget {
               return ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    
+                  },
                   child: Image.network(
                     posterPath,
                     fit: BoxFit.cover,

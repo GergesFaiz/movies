@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:movies/l10n/app_localizations.dart';
 import 'package:movies/utils/appRoutes.dart';
 import 'package:movies/utils/app_validator.dart';
 import 'package:movies/utils/firebase_files/auth_function.dart';
@@ -110,7 +111,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       textInputType: TextInputType.name,
                       textInputAction: TextInputAction.next,
                       controller: nameController,
-                      hintText: "Name",
+                      hintText: //"Name",
+                      AppLocalizations.of(context)!.name,
                       validator: AppValidator
                           .validateName, // nice clean code جميله   قوي التقسيمه دي 🫡🫡
                     ),
@@ -118,14 +120,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       textInputType: TextInputType.emailAddress,
                       textInputAction: TextInputAction.next,
                       controller: emailController,
-                      hintText: "Email",
+                      hintText:// "Email",
+                      AppLocalizations.of(context)!.email,
                       validator: AppValidator.validateEmail,
                     ),
                     CustomTextField(
                       textInputType: TextInputType.visiblePassword,
                       textInputAction: TextInputAction.next,
                       controller: passwordController,
-                      hintText: "Password",
+                      hintText: //"Password",
+                      AppLocalizations.of(context)!.password,
                       isPassword: true,
                       validator: AppValidator.validatePassword,
                     ),
@@ -133,7 +137,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       textInputType: TextInputType.visiblePassword,
                       textInputAction: TextInputAction.next,
                       controller: confirmPasswordController,
-                      hintText: "Confirm Password",
+                      hintText:// "Confirm Password",
+                      AppLocalizations.of(context)!.confirmPassword,
                       isPassword: true,
                       validator: (value) =>
                           AppValidator.validateConfirmPassword(
@@ -145,7 +150,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       textInputType: TextInputType.phone,
                       textInputAction: TextInputAction.done,
                       controller: phoneController,
-                      hintText: "Phone Number",
+                      hintText:// "Phone Number",
+                      AppLocalizations.of(context)!.phoneNumber,
                       validator: AppValidator.validatePhone, //عظمة 🫡🫡
                     ),
                     CustomElevatedButton(
@@ -171,8 +177,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                             if (error == null) {
                               DialogUtils.showMessage(
-                                context,
-                                'Account created successfully!',
+                                context ,AppLocalizations.of(context)!.createAccount,
+                               // 'Account created successfully!',
                                 posActionName: 'Ok',
                                 posAction: () {
                                   Navigator.pushReplacementNamed(
@@ -193,7 +199,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             DialogUtils.showMessage(
                               context,
                               e.toString(),
-                              title: "System Error",
+                              title:AppLocalizations.of(context)!.systemError,
+                              // "System Error",
                             );
                           }
                         }
@@ -203,8 +210,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          'Already Have Account ? ',
+                        Text( AppLocalizations.of(context)!.alreadyHaveAccount,
+                          //'Already Have Account ? ',
                           style: AppStyles.bold14White,
                         ),
                         GestureDetector(
@@ -213,7 +220,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             AppRoutes.loginScreen,
                           ),
                           child: Text(
-                            'Login',
+                            AppLocalizations.of(context)!.login,
+                            //'Login',
                             style: AppStyles.bold14White.copyWith(
                               color: AppColors.amber,
                             ),
@@ -221,7 +229,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                       ],
                     ),
-                    Center(child: LanguageSwitch()),
+                    Center(child:   LanguageSwitch(),)
                   ],
                 ),
               ],
