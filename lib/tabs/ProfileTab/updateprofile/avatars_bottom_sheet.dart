@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../utils/app_assets.dart';
-import '../../utils/app_colors.dart';
-import '../../utils/screen_utils.dart';
+import '../../../utils/app_assets.dart';
+import '../../../utils/app_colors.dart';
+import '../../../utils/screen_utils.dart';
 
 class AvatarsBottomSheet extends StatefulWidget {
    const AvatarsBottomSheet({

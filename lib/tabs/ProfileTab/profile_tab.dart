@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:movies/l10n/app_localizations.dart';
@@ -71,10 +72,10 @@ class _ProfileTabState extends State<ProfileTab>
             final userName = userData?['name'] ?? 'Loading...';
             final avatarPath = userData?['avatar'];
 
-            
+
             final List? watchList = userData?['watchlist'] as List?;
             final List? historyList = userData?['history'] as List?;
-            
+
             final String watchListCount = (watchList?.length ?? 0).toString();
             final String historyCount = (historyList?.length ?? 0).toString();
 
@@ -93,18 +94,17 @@ class _ProfileTabState extends State<ProfileTab>
                         spacing: width * 0.04,
                         children: [
                           ClipOval(
-                            child: Image.asset(
-                              avatarPath ?? AppAssets.avatar7,
-                              width: width * 0.27,
-                              height: width * 0.27,
-                              fit: BoxFit.cover,
+                            child: _buildAvatar(
+                              avatarPath,
+                              width * 0.27,
+                              AppAssets.avatar7,
                             ),
                           ),
                           Expanded(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                              
+
                                 buildStat(watchListCount, 'Watch List', context),
                                 buildStat(historyCount, 'History', context),
                               ],
@@ -141,7 +141,6 @@ class _ProfileTabState extends State<ProfileTab>
                               ),
                               label: 'Exit',
                               onPressed: () async {
-                               
                                 await FirebaseAuth.instance.signOut();
                                 if (context.mounted) {
                                   Navigator.pushAndRemoveUntil(
@@ -149,7 +148,7 @@ class _ProfileTabState extends State<ProfileTab>
                                     MaterialPageRoute<void>(
                                       builder: (BuildContext context) => LoginScreen(),
                                     ),
-                                    (route) => false,
+                                        (route) => false,
                                   );
                                 }
                               },
@@ -175,9 +174,10 @@ class _ProfileTabState extends State<ProfileTab>
                   unselectedLabelStyle: AppStyles.regular20white,
                   tabs: [
                     Tab(
-                      icon: const Icon(Icons.list, size: 30, color: AppColors.amber),
-                      text:AppLocalizations.of(context)!.watchlist
-                       //'Watch List',
+                        icon: const Icon(
+                            Icons.list, size: 30, color: AppColors.amber),
+                        text: AppLocalizations.of(context)!.watchlist
+                      //'Watch List',
                     ),
                     Tab(
                       icon: const Icon(
@@ -200,6 +200,26 @@ class _ProfileTabState extends State<ProfileTab>
       },
     );
   }
+}
+
+Widget _buildAvatar(String? path, double size, String fallbackAsset) {
+  if (path != null && path.startsWith('http')) {
+    return CachedNetworkImage(
+      imageUrl: path,
+      width: size,
+      height: size,
+      fit: BoxFit.cover,
+      placeholder: (_, __) => CircularProgressIndicator(),
+      errorWidget: (_, __, ___) =>
+          Image.asset(fallbackAsset, fit: BoxFit.cover),
+    );
+  }
+  return Image.asset(
+    path ?? fallbackAsset,
+    width: size,
+    height: size,
+    fit: BoxFit.cover,
+  );
 }
 
 Widget buildStat(String count, String label, BuildContext context) {

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
 import '../../../utils/app_assets.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/screen_utils.dart';
@@ -17,13 +18,18 @@ class WatchListTab extends StatelessWidget {
     if (user == null) {
       return const Scaffold(
         backgroundColor: AppColors.backgroundDark,
-        body: Center(child: Text('Please log in first', style: TextStyle(color: Colors.white))),
+        body: Center(
+          child: Text(
+            'Please log in first',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
       );
     }
 
     return Scaffold(
       backgroundColor: AppColors.backgroundDark,
-     /* appBar: AppBar(
+      /* appBar: AppBar(
         backgroundColor: AppColors.headerBackground,
         elevation: 0,
         leading: IconButton(
@@ -36,13 +42,23 @@ class WatchListTab extends StatelessWidget {
         ),
       ),*/
       body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-        stream: FirebaseFirestore.instance.collection('Users').doc(user.uid).snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('Users')
+            .doc(user.uid)
+            .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return const Center(child: Text('Something went wrong', style: TextStyle(color: Colors.white)));
+            return const Center(
+              child: Text(
+                'Something went wrong',
+                style: TextStyle(color: Colors.white),
+              ),
+            );
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator(color: AppColors.amber));
+            return const Center(
+              child: CircularProgressIndicator(color: AppColors.amber),
+            );
           }
 
           final userData = snapshot.data?.data();
@@ -60,11 +76,14 @@ class WatchListTab extends StatelessWidget {
           }
 
           return GridView.builder(
-            padding: EdgeInsets.symmetric(horizontal: width * 0.04, vertical: height * 0.02),
+            padding: EdgeInsets.symmetric(
+              horizontal: width * 0.04,
+              vertical: height * 0.02,
+            ),
             itemCount: watchList.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3, 
-              childAspectRatio: 0.7, 
+              crossAxisCount: 3,
+              childAspectRatio: 0.7,
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
             ),
@@ -75,9 +94,7 @@ class WatchListTab extends StatelessWidget {
               return ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: InkWell(
-                  onTap: () {
-                    
-                  },
+                  onTap: () {},
                   child: Image.network(
                     posterPath,
                     fit: BoxFit.cover,
@@ -92,7 +109,10 @@ class WatchListTab extends StatelessWidget {
                       return Container(
                         color: Colors.grey[900],
                         child: const Center(
-                          child: CircularProgressIndicator(color: AppColors.amber, strokeWidth: 2),
+                          child: CircularProgressIndicator(
+                            color: AppColors.amber,
+                            strokeWidth: 2,
+                          ),
                         ),
                       );
                     },

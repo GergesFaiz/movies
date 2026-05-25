@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,10 +8,10 @@ import 'package:movies/utils/screen_utils.dart';
 import 'package:movies/widgets/back_app_bar.dart';
 import 'package:movies/widgets/custom_text_field.dart';
 
-import '../../utils/appRoutes.dart';
-import '../../utils/app_assets.dart';
-import '../../utils/app_colors.dart';
-import '../../widgets/custom_elevatedbutton.dart';
+import '../../../utils/appRoutes.dart';
+import '../../../utils/app_assets.dart';
+import '../../../utils/app_colors.dart';
+import '../../../widgets/custom_elevatedbutton.dart';
 import 'avatars_bottom_sheet.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
@@ -75,6 +76,19 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     super.dispose();
   }
 
+  Widget _buildAvatarImage(String path) {
+    if (path.startsWith('http')) {
+      return CachedNetworkImage(
+        imageUrl: path,
+        fit: BoxFit.cover,
+        placeholder: (_, __) => const CircularProgressIndicator(),
+        errorWidget: (_, __, ___) =>
+            Image.asset(avatarImages[selectedAvatar], fit: BoxFit.cover),
+      );
+    }
+    return Image.asset(path, fit: BoxFit.cover);
+  }
+
   @override
   Widget build(BuildContext context) {
     var height = context.height;
@@ -135,10 +149,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                               as Map<String, dynamic>?;
                                       final avatarPath =
                                           data?['avatar'] as String?;
-                                      return Image.asset(
+                                      return _buildAvatarImage(
                                         avatarPath ??
                                             avatarImages[selectedAvatar],
-                                        fit: BoxFit.cover,
                                       );
                                     },
                                   ),
@@ -188,7 +201,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                           backgroundColor: AppColors.red,
                           textStyle: AppStyles.regular16white,
                         ),
-                        
+
                         CustomElevatedButton(
                           label: 'Update Data',
                           textStyle: AppStyles.regular16black,
@@ -197,7 +210,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                               final newName = namecontroller.text.trim();
                               final newPhone = phonecontroller.text.trim();
                               final newAvatar = avatarImages[selectedAvatar];
-                        
+
                               final Map<String, dynamic> updates = {
                                 'avatar': newAvatar,
                               };
@@ -205,18 +218,18 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                               if (newPhone.isNotEmpty) {
                                 updates['phoneNum'] = newPhone;
                               }
-                        
+
                               await FirebaseFirestore.instance
                                   .collection('Users')
                                   .doc(user.uid)
                                   .set(updates, SetOptions(merge: true));
-                        
+
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text("Profile updated successfully"),
                                 ),
                               );
-                        
+
                               Navigator.pop(context);
                             } catch (e) {
                               ScaffoldMessenger.of(

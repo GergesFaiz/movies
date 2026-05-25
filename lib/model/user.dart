@@ -4,7 +4,6 @@ class User {
   String avatar;
   final String name;
   final String email;
-  String password;
   final String phoneNum;
 
   User({
@@ -13,7 +12,6 @@ class User {
     required this.name,
     required this.email,
     required this.phoneNum,
-    required this.password,
   });
 
   Map<String, dynamic> toFirestore() {
@@ -23,16 +21,14 @@ class User {
       'name': name,
       'email': email,
       'phoneNumber': phoneNum,
-      "password": password,
     };
   }
 
   User.fromFirestore(Map<String, dynamic> data)
     : this(
-        avatar: data["avatar"],
+        avatar: data['avatar'],
         name: data['name'],
         email: data['email'],
-        password: data["password"],
         phoneNum: data['phoneNumber'],
         id: data['id'],
       );

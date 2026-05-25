@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'torrent.details.dart';
 
 class Moviesdetails {
@@ -39,7 +40,7 @@ class Moviesdetails {
   int? dateUploadedUnix;
 
   List<Torrent>? torrents;
-  List<Cast>? cast; // 🌟 أضفنا الـ cast هنا
+  List<Cast>? cast;
 
   Moviesdetails({
     this.id,
@@ -76,7 +77,7 @@ class Moviesdetails {
     this.dateUploaded,
     this.dateUploadedUnix,
     this.torrents,
-    this.cast, // 🌟 أضفنا الـ cast هنا
+    this.cast,
   });
 
   factory Moviesdetails.fromMap(Map<String, dynamic> data) {
@@ -123,7 +124,7 @@ class Moviesdetails {
           ? null
           : (data['cast'] as List)
               .map((c) => Cast.fromMap(c as Map<String, dynamic>))
-              .toList(), // 🌟 فك الـ JSON للـ cast هنا
+                .toList(),
     );
   }
 
@@ -163,7 +164,7 @@ class Moviesdetails {
       'date_uploaded': dateUploaded,
       'date_uploaded_unix': dateUploadedUnix,
       'torrents': torrents?.map((t) => t.toMap()).toList(),
-      'cast': cast?.map((c) => c.toMap()).toList(), // 🌟 تحويل الـ cast لـ Map
+      'cast': cast?.map((c) => c.toMap()).toList(),
     };
   }
 
@@ -174,7 +175,6 @@ class Moviesdetails {
   String toJson() => json.encode(toMap());
 }
 
-// 🌟 أضفنا كلاس الـ Cast اللي شايل البيانات المطلوبة بالظبط
 class Cast {
   String? name;
   String? characterName;

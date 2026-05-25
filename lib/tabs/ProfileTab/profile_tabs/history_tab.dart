@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:movies/l10n/app_localizations.dart';
+
 import '../../../utils/app_assets.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/screen_utils.dart';
@@ -42,7 +43,10 @@ class HistoryTab extends StatelessWidget {
         ),
       ),*/
       body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-        stream: FirebaseFirestore.instance.collection('Users').doc(user.uid).snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('Users')
+            .doc(user.uid)
+            .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(
@@ -53,7 +57,9 @@ class HistoryTab extends StatelessWidget {
             );
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator(color: AppColors.amber));
+            return const Center(
+              child: CircularProgressIndicator(color: AppColors.amber),
+            );
           }
 
           final userData = snapshot.data?.data();
@@ -71,11 +77,14 @@ class HistoryTab extends StatelessWidget {
           }
 
           return GridView.builder(
-            padding: EdgeInsets.symmetric(horizontal: width * 0.04, vertical: height * 0.02),
+            padding: EdgeInsets.symmetric(
+              horizontal: width * 0.04,
+              vertical: height * 0.02,
+            ),
             itemCount: historyList.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3, 
-              childAspectRatio: 0.7, 
+              crossAxisCount: 3,
+              childAspectRatio: 0.7,
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
             ),
@@ -101,7 +110,10 @@ class HistoryTab extends StatelessWidget {
                       return Container(
                         color: Colors.grey[900],
                         child: const Center(
-                          child: CircularProgressIndicator(color: AppColors.amber, strokeWidth: 2),
+                          child: CircularProgressIndicator(
+                            color: AppColors.amber,
+                            strokeWidth: 2,
+                          ),
                         ),
                       );
                     },
