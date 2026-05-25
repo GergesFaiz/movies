@@ -1,0 +1,47 @@
+[33m4790818[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mlist-category-home-tab[m[33m)[m HEAD@{0}: reset: moving to HEAD~1
+[33m65fbf04[m[33m ([m[1;31morigin/list-category-home-tab[m[33m)[m HEAD@{1}: reset: moving to HEAD
+[33m65fbf04[m[33m ([m[1;31morigin/list-category-home-tab[m[33m)[m HEAD@{2}: reset: moving to HEAD
+[33m65fbf04[m[33m ([m[1;31morigin/list-category-home-tab[m[33m)[m HEAD@{3}: commit: list category
+[33m4790818[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mlist-category-home-tab[m[33m)[m HEAD@{4}: commit: list categoryhome tab
+[33m041b93d[m[33m ([m[1;31morigin/movie_detailsByID[m[33m, [m[1;31morigin/develop[m[33m, [m[1;32mmovie_detailsByID[m[33m, [m[1;32mdevelop[m[33m)[m HEAD@{5}: checkout: moving from movie_detailsByID to list-category-home-tab
+[33m041b93d[m[33m ([m[1;31morigin/movie_detailsByID[m[33m, [m[1;31morigin/develop[m[33m, [m[1;32mmovie_detailsByID[m[33m, [m[1;32mdevelop[m[33m)[m HEAD@{6}: checkout: moving from api/homeLogic to movie_detailsByID
+[33m763909c[m[33m ([m[1;31morigin/api/homeLogic[m[33m, [m[1;32mapi/homeLogic[m[33m)[m HEAD@{7}: checkout: moving from develop to api/homeLogic
+[33m041b93d[m[33m ([m[1;31morigin/movie_detailsByID[m[33m, [m[1;31morigin/develop[m[33m, [m[1;32mmovie_detailsByID[m[33m, [m[1;32mdevelop[m[33m)[m HEAD@{8}: pull: Fast-forward
+[33m621c138[m HEAD@{9}: reset: moving to HEAD
+[33m621c138[m HEAD@{10}: pull --tags origin develop: Fast-forward
+[33mce7720c[m[33m ([m[1;31morigin/profile_ui[m[33m, [m[1;32mprofile_ui[m[33m)[m HEAD@{11}: checkout: moving from feature_3 to develop
+[33m740ca2b[m[33m ([m[1;31morigin/feature_3[m[33m, [m[1;32mfeature_3[m[33m)[m HEAD@{12}: checkout: moving from login_firebase to feature_3
+[33ma5cc270[m[33m ([m[1;31morigin/login_firebase[m[33m, [m[1;32mlogin_firebase[m[33m)[m HEAD@{13}: pull --tags origin login_firebase: Merge made by the 'ort' strategy.
+[33m5440801[m HEAD@{14}: checkout: moving from feature_3 to login_firebase
+[33m740ca2b[m[33m ([m[1;31morigin/feature_3[m[33m, [m[1;32mfeature_3[m[33m)[m HEAD@{15}: commit: home tab _search tab ui
+[33mc2bbf47[m HEAD@{16}: pull --tags origin feature_3: Fast-forward
+[33m02124a8[m HEAD@{17}: checkout: moving from login_firebase to feature_3
+[33m5440801[m HEAD@{18}: commit: n
+[33m76ef47a[m HEAD@{19}: checkout: moving from feature_3 to login_firebase
+[33m02124a8[m HEAD@{20}: commit: new
+[33m72277a2[m[33m ([m[1;32mfeature_4[m[33m)[m HEAD@{21}: checkout: moving from feature_4 to feature_3
+[33m72277a2[m[33m ([m[1;32mfeature_4[m[33m)[m HEAD@{22}: checkout: moving from feature_3 to feature_4
+[33m72277a2[m[33m ([m[1;32mfeature_4[m[33m)[m HEAD@{23}: commit: avatarchanges to match ui
+[33mb231a1d[m HEAD@{24}: commit: avtar_changes
+[33md11179b[m HEAD@{25}: pull --tags origin feature_3: Fast-forward
+[33m14baa7f[m HEAD@{26}: commit: avatar_changes
+[33mdfe14e9[m[33m ([m[1;31morigin/browse_ui[m[33m)[m HEAD@{27}: commit: register and reset firebase done
+[33mce7720c[m[33m ([m[1;31morigin/profile_ui[m[33m, [m[1;32mprofile_ui[m[33m)[m HEAD@{28}: checkout: moving from profile_ui to feature_3
+[33mce7720c[m[33m ([m[1;31morigin/profile_ui[m[33m, [m[1;32mprofile_ui[m[33m)[m HEAD@{29}: checkout: moving from develop to profile_ui
+[33mce7720c[m[33m ([m[1;31morigin/profile_ui[m[33m, [m[1;32mprofile_ui[m[33m)[m HEAD@{30}: checkout: moving from profile_ui to develop
+[33mce7720c[m[33m ([m[1;31morigin/profile_ui[m[33m, [m[1;32mprofile_ui[m[33m)[m HEAD@{31}: checkout: moving from feature_1 to profile_ui
+[33m00a5c49[m[33m ([m[1;31morigin/feature_2[m[33m, [m[1;31morigin/feature_1[m[33m, [m[1;32mfeature_1[m[33m)[m HEAD@{32}: pull --tags origin feature_1: Fast-forward
+[33mb8bfd67[m HEAD@{33}: checkout: moving from feature_2 to feature_1
+[33m1d946e8[m[33m ([m[1;32mfeature_2[m[33m)[m HEAD@{34}: commit: try
+[33m9a017b0[m HEAD@{35}: commit: try
+[33mb8bfd67[m HEAD@{36}: checkout: moving from feature_1 to feature_2
+[33mb8bfd67[m HEAD@{37}: pull --tags origin feature_1: Fast-forward
+[33m12b935c[m HEAD@{38}: commit: final first
+[33m398ab7f[m HEAD@{39}: commit: final onboarding
+[33m3260f97[m HEAD@{40}: commit: commit
+[33mca65456[m HEAD@{41}: commit (merge): Merge branch 'feature_1' of https://github.com/GergesFaiz/movies into feature_1
+[33m134198b[m HEAD@{42}: commit: onboarding =>done
+[33mc04714e[m HEAD@{43}: pull --tags origin feature_1: Fast-forward
+[33m3752276[m HEAD@{44}: commit: login
+[33m759c934[m[33m ([m[1;32mmaster[m[33m)[m HEAD@{45}: checkout: moving from master to feature_1
+[33m759c934[m[33m ([m[1;32mmaster[m[33m)[m HEAD@{46}: clone: from https://github.com/GergesFaiz/movies.git

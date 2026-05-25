@@ -35,6 +35,11 @@ Movies _$MoviesFromJson(Map<String, dynamic> json) => Movies(
       .toList(),
   dateUploaded: json['date_uploaded'] as String?,
   dateUploadedUnix: (json['date_uploaded_unix'] as num?)?.toInt(),
+  likeCount: (json['like_count'] as num?)?.toInt(),
+  downloadCount: (json['download_count'] as num?)?.toInt(),
+  mediumScreenshotImage1: json['medium_screenshot_image1'] as String?,
+  mediumScreenshotImage2: json['medium_screenshot_image2'] as String?,
+  mediumScreenshotImage3: json['medium_screenshot_image3'] as String?,
 );
 
 Map<String, dynamic> _$MoviesToJson(Movies instance) => <String, dynamic>{
@@ -64,4 +69,9 @@ Map<String, dynamic> _$MoviesToJson(Movies instance) => <String, dynamic>{
   'torrents': instance.torrents,
   'date_uploaded': instance.dateUploaded,
   'date_uploaded_unix': instance.dateUploadedUnix,
+  'like_count': instance.likeCount,
+  'download_count': instance.downloadCount,
+  'medium_screenshot_image1': instance.mediumScreenshotImage1,
+  'medium_screenshot_image2': instance.mediumScreenshotImage2,
+  'medium_screenshot_image3': instance.mediumScreenshotImage3,
 };

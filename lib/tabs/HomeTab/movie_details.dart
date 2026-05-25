@@ -1,257 +1,246 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies/api/model/movies.dart';
+import 'package:movies/api/model/source_response.dart';
 import 'package:movies/api/retrofit_service.dart';
 import 'package:movies/utils/app_colors.dart';
 import 'package:movies/utils/app_styles.dart';
+import 'package:movies/utils/screen_utils.dart';
 
-import '../../widgets/movie_card.dart';
+import '../../widgets/main_error_widget.dart';
+import '../../widgets/main_loading_widget.dart';
+import '../BrowseTab/movies_card.dart';
 
 class MovieDetails extends StatelessWidget {
   final Movies movie;
 
-  const MovieDetails({super.key, required this.movie});
+  MovieDetails({super.key, required this.movie});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundDark,
+      backgroundColor: AppColors.gray,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Hero Image + Play Button
             Stack(
               children: [
                 CachedNetworkImage(
-                  imageUrl:
-                      movie.backgroundImageOriginal ??
-                      movie.largeCoverImage ??
-                      '',
+                  imageUrl: movie.backgroundImageOriginal ?? '',
                   width: double.infinity,
-                  height: 520.h,
+                  height: context.height * 0.60,
                   fit: BoxFit.cover,
                   errorWidget: (_, __, ___) =>
-                      Container(height: 520.h, color: Colors.grey[900]),
+                      Container(height: 300, color: Colors.grey[900]),
                 ),
                 Container(
-                  height: 520.h,
+                  height: context.height * 0.60,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.transparent,
-                        AppColors.backgroundDark.withOpacity(0.85),
-                      ],
+                      colors: [Colors.transparent, AppColors.gray],
                     ),
                   ),
                 ),
-
-                // Back Button
                 SafeArea(
                   child: IconButton(
-                    icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+                    icon: Icon(Icons.arrow_back_ios, color: Colors.white),
                     onPressed: () => Navigator.pop(context),
-                  ),
-                ),
-
-                // Big Play Button
-                Positioned(
-                  top: 180.h,
-                  left: 0,
-                  right: 0,
-                  child: Center(
-                    child: GestureDetector(
-                      onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("Video Player Coming Soon"),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        width: 90.w,
-                        height: 90.w,
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          Icons.play_arrow_rounded,
-                          size: 55.w,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
                   ),
                 ),
               ],
             ),
 
+            // ── Cover + Info ──
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: Column(
+              padding: EdgeInsets.symmetric(horizontal: context.width * 0.03),
+              child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 20.h),
-
-                  // Title + Year
-                  Text(movie.title ?? '', style: AppStyles.bold24White),
-                  SizedBox(height: 4.h),
-                  Text(
-                    "${movie.year ?? ''} • ${movie.language?.toUpperCase() ?? ''}",
-                    style: TextStyle(color: Colors.grey[400], fontSize: 15.sp),
+                  // Cover Image
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: CachedNetworkImage(
+                      imageUrl: movie.largeCoverImage ?? '',
+                      width: 120,
+                      height: 170,
+                      fit: BoxFit.cover,
+                      errorWidget: (_, __, ___) => Container(
+                        width: 120,
+                        height: 170,
+                        color: Colors.grey[800],
+                        child: Icon(Icons.movie, color: Colors.white54),
+                      ),
+                    ),
                   ),
 
-                  SizedBox(height: 24.h),
+                  SizedBox(width: 16),
 
-                  // Watch Button
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.red,
-                        padding: EdgeInsets.symmetric(vertical: 16.h),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.r),
+                  // Title + Info
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 8),
+                        Text(
+                          movie.title ?? '',
+                          style: AppStyles.bold18White,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                      child: Text("Watch", style: AppStyles.bold18White),
-                    ),
-                  ),
+                        SizedBox(height: 8),
 
-                  SizedBox(height: 24.h),
-
-                  // Stats Row
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      _buildStat(Icons.favorite_border, "15", "Likes"),
-                      _buildStat(Icons.watch_later_outlined, "90", "Watch"),
-                      _buildStat(
-                        Icons.star,
-                        movie.rating?.toStringAsFixed(1) ?? "0.0",
-                        "Rating",
-                      ),
-                    ],
-                  ),
-
-                  SizedBox(height: 32.h),
-
-                  // Screen Shots
-                  Text("Screen Shots", style: AppStyles.bold20White),
-                  SizedBox(height: 12.h),
-                  SizedBox(
-                    height: 160.h,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 5,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.only(right: 12.w),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(12.r),
-                            child: CachedNetworkImage(
-                              imageUrl: movie.mediumCoverImage ?? '',
-                              width: 220.w,
-                              fit: BoxFit.cover,
+                        // Rating
+                        Row(
+                          children: [
+                            Icon(Icons.star, color: Colors.amber, size: 16),
+                            SizedBox(width: 4),
+                            Text(
+                              movie.rating?.toStringAsFixed(1) ?? '0',
+                              style: AppStyles.regular16white,
                             ),
+                          ],
+                        ),
+                        SizedBox(height: 6),
+
+                        // Year & Runtime
+                        Text(
+                          '${movie.year ?? ''} • ${movie.runtime ?? 0} min',
+                          style: TextStyle(
+                            color: Colors.grey[400],
+                            fontSize: 13,
                           ),
-                        );
-                      },
-                    ),
-                  ),
+                        ),
+                        SizedBox(height: 6),
 
-                  SizedBox(height: 32.h),
-
-                  // Similar Movies
-                  Text("Similar", style: AppStyles.bold20White),
-                  SizedBox(height: 16.h),
-
-                  FutureBuilder(
-                    future: RetrofitService(
-                      Dio(),
-                    ).getMovieSuggestions(movieId: movie.id ?? 0),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                      final suggestions = snapshot.data?.data?.movies ?? [];
-                      if (suggestions.isEmpty) return const SizedBox();
-
-                      return SizedBox(
-                        height: 220.h,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: suggestions.length,
-                          itemBuilder: (context, index) {
-                            final sug = suggestions[index];
-                            return Padding(
-                              padding: EdgeInsets.only(right: 12.w),
-                              child: SizedBox(
-                                width: 145.w,
-                                child: MovieCard(
-                                  image: sug.mediumCoverImage ?? '',
-                                  text: (sug.rating ?? 0).toStringAsFixed(1),
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) =>
-                                            MovieDetails(movie: sug),
-                                      ),
-                                    );
-                                  },
+                        // Language
+                        Text(
+                          movie.language?.toUpperCase() ?? '',
+                          style: TextStyle(
+                            color: Colors.grey[400],
+                            fontSize: 13,
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Wrap(
+                          spacing: 6,
+                          runSpacing: 4,
+                          children: (movie.genres ?? []).map((genre) {
+                            return Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: AppColors.amber),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Text(
+                                genre,
+                                style: TextStyle(
+                                  color: AppColors.amber,
+                                  fontSize: 11,
                                 ),
                               ),
                             );
-                          },
+                          }).toList(),
                         ),
-                      );
-                    },
+                      ],
+                    ),
                   ),
+                ],
+              ),
+            ),
 
-                  SizedBox(height: 32.h),
+            SizedBox(height: 20),
 
-                  // Summary
-                  Text("Summary", style: AppStyles.bold20White),
-                  SizedBox(height: 12.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Synopsis', style: AppStyles.bold18White),
+                  SizedBox(height: 8),
                   Text(
                     movie.synopsis ??
                         movie.descriptionFull ??
-                        "No summary available.",
+                        'No description available.',
                     style: TextStyle(
                       color: Colors.grey[300],
-                      fontSize: 15.sp,
+                      fontSize: 14,
                       height: 1.6,
                     ),
                   ),
-
-                  SizedBox(height: 50.h),
                 ],
               ),
+            ),
+
+            SizedBox(height: 24),
+            FutureBuilder<SourceResponse>(
+              future: RetrofitService(
+                Dio(),
+              ).getMovieSuggestions(movieId: movie.id ?? 0),
+              builder: (context, snapshot) {
+                {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return MainLoadingWidget();
+                  }
+
+                  if (snapshot.hasError) {
+                    return MainErrorWidget(
+                      massage: snapshot.error.toString(),
+                      onPressed: () {},
+                    );
+                  }
+                  List<Movies> sugsuggestions =
+                      snapshot.data?.data?.movies ?? [];
+
+                  if (sugsuggestions.isEmpty) {
+                    return Center(
+                      child: Text(
+                        'No Movies Found',
+                        style: TextStyle(color: AppColors.white),
+                      ),
+                    );
+                  } else {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: context.height * 0.28,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              padding: EdgeInsets.symmetric(horizontal: 8),
+                              itemCount: sugsuggestions.length,
+                              itemBuilder: (context, index) {
+                                return AspectRatio(
+                                  aspectRatio: 2 / 3,
+                                  child: MovieCard(
+                                    imageUrl:
+                                        sugsuggestions[index]
+                                            .mediumCoverImage ??
+                                        '',
+                                    rating: sugsuggestions[index].rating ?? -1,
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          SizedBox(height: 16),
+                        ],
+                      ),
+                    );
+                  }
+                }
+              },
             ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildStat(IconData icon, String value, String label) {
-    return Column(
-      children: [
-        Icon(icon, color: AppColors.amber, size: 28),
-        SizedBox(height: 6.h),
-        Text(value, style: AppStyles.bold18White),
-        Text(
-          label,
-          style: TextStyle(color: Colors.grey[500], fontSize: 13.sp),
-        ),
-      ],
     );
   }
 }

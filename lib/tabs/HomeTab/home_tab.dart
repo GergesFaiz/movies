@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -6,21 +7,20 @@ import 'package:movies/api/model/movies.dart';
 import 'package:movies/api/retrofit_service.dart';
 import 'package:movies/cubit/movie_cubit.dart';
 import 'package:movies/states/movie_state.dart';
+import 'package:movies/tabs/HomeTab/movie_card.dart';
 import 'package:movies/utils/app_assets.dart';
 import 'package:movies/utils/app_colors.dart';
 import 'package:movies/utils/app_styles.dart';
 import 'package:movies/utils/screen_utils.dart';
 import 'package:movies/widgets/main_error_widget.dart';
 import 'package:movies/widgets/main_loading_widget.dart';
-import 'package:movies/widgets/movie_card.dart';
 
 import 'movie_details.dart';
 
-final RouteObserver<ModalRoute<void>> routeObserver =
-    RouteObserver<ModalRoute<void>>();
+final RouteObserver<ModalRoute<void>> routeObserver = RouteObserver<ModalRoute<void>>();
 
 class HomeTab extends StatefulWidget {
-  HomeTab({super.key});
+  const HomeTab({super.key});
 
   @override
   State<HomeTab> createState() => _HomeTabState();
@@ -50,6 +50,11 @@ class _HomeTabState extends State<HomeTab> with RouteAware {
     context.read<MoviesCubit>().changeCategoryRandomly(mainMoviesList);
   }
 
+  Future<List<Movies>> fetchMovies() async {
+    final response = await RetrofitService(Dio()).getMovies();
+    return response.data?.movies ?? [];
+  }
+
   @override
   void initState() {
     super.initState();
@@ -69,7 +74,7 @@ class _HomeTabState extends State<HomeTab> with RouteAware {
         future: RetrofitService(Dio()).getMovies(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return MainLoadingWidget();
+            return const MainLoadingWidget();
           }
 
           if (snapshot.hasError) {
@@ -98,7 +103,7 @@ class _HomeTabState extends State<HomeTab> with RouteAware {
                   height: context.height * 0.5,
                   width: context.width,
                   child: Image.asset(
-                    AppAssets.onbaordingImage6,
+                    AppOnboardingImage.onbaordingImage6,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -114,7 +119,7 @@ class _HomeTabState extends State<HomeTab> with RouteAware {
                         AppColors.gray.withOpacity(0.8),
                         AppColors.gray,
                       ],
-                      stops: [0.0, 0.4, 0.9],
+                      stops: const [0.0, 0.4, 0.9],
                     ),
                   ),
                 ),
@@ -124,7 +129,7 @@ class _HomeTabState extends State<HomeTab> with RouteAware {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Image.asset(AppAssets.available),
-                        SizedBox(height: context.height * 0.01),
+                        const SizedBox(height: 8),
                         CarouselSlider.builder(
                           itemCount: moviesList.length,
                           itemBuilder: (context, index, realIndex) {
@@ -140,8 +145,7 @@ class _HomeTabState extends State<HomeTab> with RouteAware {
                               },
                               child: MovieCard(
                                 image: moviesList[index].mediumCoverImage ?? '',
-                                text:
-                                    moviesList[index].rating?.toString() ?? '0',
+                                text: moviesList[index].rating?.toString() ?? '0',
                               ),
                             );
                           },
@@ -155,7 +159,7 @@ class _HomeTabState extends State<HomeTab> with RouteAware {
                           ),
                         ),
                         Image.asset(AppAssets.watchnow),
-                        SizedBox(height: context.height * 0.01),
+                        const SizedBox(height: 8),
                         BlocBuilder<MoviesCubit, MoviesState>(
                           builder: (context, state) {
                             String textToShow = 'Action';
@@ -166,27 +170,20 @@ class _HomeTabState extends State<HomeTab> with RouteAware {
                               currentListViewList = state.filteredMovies;
                             } else {
                               WidgetsBinding.instance.addPostFrameCallback((_) {
-                                if (context.read<MoviesCubit>().state
-                                    is MoviesInitial) {
-                                  context
-                                      .read<MoviesCubit>()
-                                      .changeCategoryRandomly(moviesList);
+                                if (context.read<MoviesCubit>().state is MoviesInitial) {
+                                  context.read<MoviesCubit>().changeCategoryRandomly(moviesList);
                                 }
                               });
                             }
-
+                            
                             return Column(
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 12),
+                                  padding: const EdgeInsets.symmetric(horizontal: 12),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
-                                        textToShow,
-                                        style: AppStyles.bold18White,
-                                      ),
+                                      Text(textToShow, style: AppStyles.bold18White),
                                       TextButton.icon(
                                         onPressed: () {
                                           print(moviesList.length);
@@ -204,14 +201,12 @@ class _HomeTabState extends State<HomeTab> with RouteAware {
                                     ],
                                   ),
                                 ),
-                                SizedBox(height: context.height * 0.01),
+                                const SizedBox(height: 8),
                                 SizedBox(
                                   height: height * 0.28,
                                   child: ListView.builder(
                                     scrollDirection: Axis.horizontal,
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 8,
-                                    ),
+                                    padding: const EdgeInsets.symmetric(horizontal: 8),
                                     itemCount: currentListViewList.length,
                                     itemBuilder: (context, index) {
                                       return AspectRatio(
@@ -222,22 +217,13 @@ class _HomeTabState extends State<HomeTab> with RouteAware {
                                               context,
                                               MaterialPageRoute(
                                                 builder: (_) => MovieDetails(
-                                                  movie:
-                                                      currentListViewList[index],
-                                                ),
+                                                    movie: currentListViewList[index]),
                                               ),
                                             );
                                           },
                                           child: MovieCard(
-                                            image:
-                                                currentListViewList[index]
-                                                    .mediumCoverImage ??
-                                                '',
-                                            text:
-                                                currentListViewList[index]
-                                                    .rating
-                                                    ?.toString() ??
-                                                '0',
+                                            image: currentListViewList[index].mediumCoverImage ?? '',
+                                            text: currentListViewList[index].rating?.toString() ?? '0',
                                           ),
                                         ),
                                       );
@@ -248,7 +234,7 @@ class _HomeTabState extends State<HomeTab> with RouteAware {
                             );
                           },
                         ),
-                        SizedBox(height: context.height * 0.02),
+                        const SizedBox(height: 16),
                       ],
                     ),
                   ),

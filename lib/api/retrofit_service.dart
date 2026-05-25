@@ -11,9 +11,6 @@ abstract class RetrofitService {
   @GET("/list_movies.json")
   Future<SourceResponse> getMovies({
     @Query("sort_by") String sortBy = "date_added",
-    @Query("query_term") String? queryTerm, // ← أضفنا ده للبحث
-    @Query("limit") int limit = 50,
-    @Query("page") int page = 1,
   });
 
   @GET("/movie_suggestions.json")
