@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:movies/api/retrofit_service.dart';
 import 'package:movies/api/model/movies.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class MovieDetailsViewModel extends ChangeNotifier {
   final RetrofitService _apiService = RetrofitService(Dio());
+  final _auth = FirebaseAuth.instance;
+  final _firestore = FirebaseFirestore.instance;
 
   bool isLoading = false;
   String? errorMessage;
@@ -56,5 +60,81 @@ class MovieDetailsViewModel extends ChangeNotifier {
       isLoading = false;
       notifyListeners();
     }
+  }
+
+  Future<void> toggleWatchlist(Movies movie) async {
+    final user = _auth.currentUser;
+    if (user == null) return;
+
+    final userDoc = _firestore.collection('Users').doc(user.uid);
+    final movieImage = movie.mediumCoverImage ?? movie.largeCoverImage ?? '';
+    
+    final movieData = {
+      'id': movie.id,
+      'title': movie.title,
+      'rating': movie.rating,
+      'image_url': movieImage,
+      'poster_path': movieImage,
+      'medium_cover_image': movieImage,
+    };
+
+    final snapshot = await userDoc.get();
+    
+    if (!snapshot.exists) {
+      await userDoc.set({
+        'watchlist': [movieData],
+        'history': []
+      }, SetOptions(merge: true));
+      notifyListeners();
+      return;
+    }
+
+    final List<dynamic> watchlist = snapshot.data()?['watchlist'] ?? [];
+    bool isExist = watchlist.any((item) => item['id'] == movie.id);
+
+    if (isExist) {
+      await userDoc.set({
+        'watchlist': FieldValue.arrayRemove([watchlist.firstWhere((item) => item['id'] == movie.id)])
+      }, SetOptions(merge: true));
+    } else {
+      await userDoc.set({
+        'watchlist': FieldValue.arrayUnion([movieData])
+      }, SetOptions(merge: true));
+    }
+    notifyListeners();
+  }
+
+  Future<void> addToHistory(Movies movie) async {
+    final user = _auth.currentUser;
+    if (user == null) return;
+
+    final userDoc = _firestore.collection('Users').doc(user.uid);
+    final movieImage = movie.mediumCoverImage ?? movie.largeCoverImage ?? '';
+
+    final movieData = {
+      'id': movie.id,
+      'title': movie.title,
+      'rating': movie.rating,
+      'image_url': movieImage,
+      'poster_path': movieImage,
+      'medium_cover_image': movieImage,
+    };
+
+    await userDoc.set({
+      'history': FieldValue.arrayUnion([movieData])
+    }, SetOptions(merge: true));
+    
+    notifyListeners();
+  }
+
+  Stream<bool> isMovieInWatchlist(int movieId) {
+    final user = _auth.currentUser;
+    if (user == null) return Stream.value(false);
+
+    return _firestore.collection('Users').doc(user.uid).snapshots().map((snapshot) {
+      if (!snapshot.exists) return false;
+      final List<dynamic> watchlist = snapshot.data()?['watchlist'] ?? [];
+      return watchlist.any((item) => item['id'] == movieId);
+    });
   }
 }
