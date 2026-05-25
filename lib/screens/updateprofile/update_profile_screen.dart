@@ -172,53 +172,60 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
                     SizedBox(height: height * 0.23),
 
-                    CustomElevatedButton(
-                      label: 'Delete Account',
-                      onPressed: () async {
-                        await FirebaseFirestore.instance
-                            .collection('Users')
-                            .doc(user.uid)
-                            .delete();
-                        await user.delete();
-                      },
-                      backgroundColor: AppColors.red,
-                      textStyle: AppStyles.regular16white,
-                    ),
-
-                    CustomElevatedButton(
-                      label: 'Update Data',
-                      onPressed: () async {
-                        try {
-                          final newName = namecontroller.text.trim();
-                          final newPhone = phonecontroller.text.trim();
-                          final newAvatar = avatarImages[selectedAvatar];
-
-                          final Map<String, dynamic> updates = {
-                            'avatar': newAvatar,
-                          };
-                          if (newName.isNotEmpty) updates['name'] = newName;
-                          if (newPhone.isNotEmpty) {
-                            updates['phoneNum'] = newPhone;
-                          }
-
-                          await FirebaseFirestore.instance
-                              .collection('Users')
-                              .doc(user.uid)
-                              .set(updates, SetOptions(merge: true));
-
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Profile updated successfully"),
-                            ),
-                          );
-
-                          Navigator.pop(context);
-                        } catch (e) {
-                          ScaffoldMessenger.of(
-                            context,
-                          ).showSnackBar(SnackBar(content: Text("Error: $e")));
-                        }
-                      },
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      spacing: 15,
+                      children: [
+                        CustomElevatedButton(
+                          label: 'Delete Account',
+                          onPressed: () async {
+                            await FirebaseFirestore.instance
+                                .collection('Users')
+                                .doc(user.uid)
+                                .delete();
+                            await user.delete();
+                          },
+                          backgroundColor: AppColors.red,
+                          textStyle: AppStyles.regular16white,
+                        ),
+                        
+                        CustomElevatedButton(
+                          label: 'Update Data',
+                          textStyle: AppStyles.regular16black,
+                          onPressed: () async {
+                            try {
+                              final newName = namecontroller.text.trim();
+                              final newPhone = phonecontroller.text.trim();
+                              final newAvatar = avatarImages[selectedAvatar];
+                        
+                              final Map<String, dynamic> updates = {
+                                'avatar': newAvatar,
+                              };
+                              if (newName.isNotEmpty) updates['name'] = newName;
+                              if (newPhone.isNotEmpty) {
+                                updates['phoneNum'] = newPhone;
+                              }
+                        
+                              await FirebaseFirestore.instance
+                                  .collection('Users')
+                                  .doc(user.uid)
+                                  .set(updates, SetOptions(merge: true));
+                        
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Profile updated successfully"),
+                                ),
+                              );
+                        
+                              Navigator.pop(context);
+                            } catch (e) {
+                              ScaffoldMessenger.of(
+                                context,
+                              ).showSnackBar(SnackBar(content: Text("Error: $e")));
+                            }
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 ),

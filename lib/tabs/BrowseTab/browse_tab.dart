@@ -7,7 +7,8 @@ import 'package:movies/tabs/HomeTab/movie_details.dart';
 import 'package:movies/utils/app_colors.dart';
 import 'package:movies/utils/app_styles.dart';
 
-import '../../widgets/movie_card.dart';
+import '../HomeTab/movie_card.dart';
+
 
 class BrowseTab extends StatefulWidget {
   const BrowseTab({super.key});
@@ -112,8 +113,8 @@ class _BrowseTabState extends State<BrowseTab> {
                       itemBuilder: (context, index) {
                         final movie = viewModel.filteredMovies[index];
                         return MovieCard(
-                          image: movie.mediumCoverImage ?? '',
-                          text: (movie.rating ?? 0).toStringAsFixed(1),
+                          imageUrl: movie.mediumCoverImage ?? '',
+                          rating: (movie.rating ?? 0).toStringAsFixed(1),
                           onTap: () {
                             Navigator.push(
                               context,

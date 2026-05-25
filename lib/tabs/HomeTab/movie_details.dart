@@ -1,14 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies/api/model/movies.dart';
+import 'package:movies/l10n/app_localizations.dart';
 import 'package:movies/utils/app_colors.dart';
 import 'package:movies/utils/app_styles.dart';
-import 'package:movies/utils/screen_utils.dart';
+import 'package:movies/widgets/cast_item.dart';
 import 'package:movies/widgets/custom_elevatedbutton.dart';
 import 'package:movies/widgets/details_container.dart';
-import 'package:movies/widgets/cast_item.dart';
-import '../BrowseTab/movies_card.dart';
-import 'movie_details_view_model.dart'; 
+
+import 'movie_card.dart';
+import 'movie_details_state.dart';
+import 'movie_details_view_model.dart';
 
 class MovieDetails extends StatefulWidget {
   final Movies movie;
@@ -19,101 +23,127 @@ class MovieDetails extends StatefulWidget {
 }
 
 class _MovieDetailsState extends State<MovieDetails> {
-  final MovieDetailsViewModel viewModel = MovieDetailsViewModel();
+  late final MovieDetailsViewModel _viewModel;
 
   @override
   void initState() {
     super.initState();
-    viewModel.loadMovieData(widget.movie.id ?? 0);
-    viewModel.addToHistory(widget.movie);
-    viewModel.addListener(() {
-      if (mounted) setState(() {});
-    });
+    _viewModel = MovieDetailsViewModel();
+    _viewModel.loadMovieData(widget.movie.id ?? 0);
+    _viewModel.addToHistory(widget.movie);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.gray,
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildHeader(context),
-            _buildTitleSection(context),
-            const SizedBox(height: 15),
-            if (viewModel.isLoading)
-              const Center(
-                child: Padding(
-                  padding: EdgeInsets.all(40.0),
-                  child: CircularProgressIndicator(),
-                ),
-              )
-            else if (viewModel.errorMessage != null)
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Text(viewModel.errorMessage!, style: const TextStyle(color: Colors.red, fontSize: 16)),
-                ),
-              )
-            else
-              _buildMainDetails(context), 
-          ],
+    return BlocProvider.value(
+      value: _viewModel,
+      child: Scaffold(
+        backgroundColor: AppColors.gray,
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildHeader(context),
+              _buildTitleSection(context),
+              SizedBox(height: 15.h),
+              BlocBuilder<MovieDetailsViewModel, MovieDetailsState>(
+                builder: (context, state) {
+                  if (state is MovieDetailsLoading ||
+                      state is MovieDetailsInitial) {
+                    return Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(40.h),
+                        child: const CircularProgressIndicator(),
+                      ),
+                    );
+                  }
+                  if (state is MovieDetailsError) {
+                    return Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(20.h),
+                        child: Text(
+                          state.message,
+                          style: TextStyle(color: Colors.red, fontSize: 16.sp),
+                        ),
+                      ),
+                    );
+                  }
+                  if (state is MovieDetailsLoaded) {
+                    return _buildMainDetails(context, state);
+                  }
+                  return const SizedBox.shrink();
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildMainDetails(BuildContext context) {
+  Widget _buildMainDetails(BuildContext context, MovieDetailsLoaded state) {
+    final loc = AppLocalizations.of(context)!;
+
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: context.width * 0.03),
+      padding: EdgeInsets.symmetric(horizontal: 0.03.sw),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              DetailsContainer(text: viewModel.likeCount, icon: Icons.favorite),
-              DetailsContainer(text: viewModel.runtime.toString(), icon: Icons.access_time_filled),
-              DetailsContainer(text: viewModel.rating.toString(), icon: Icons.star),
+              DetailsContainer(text: state.likeCount, icon: Icons.favorite),
+              DetailsContainer(text: state.runtime.toString(),
+                  icon: Icons.access_time_filled),
+              DetailsContainer(text: state.rating.toString(), icon: Icons.star),
             ],
           ),
-          if (viewModel.screenshots.isNotEmpty) ...[
-            const SizedBox(height: 20),
+
+          // Screenshots
+          if (state.screenshots.isNotEmpty) ...[
+            SizedBox(height: 20.h),
             Text('Screenshots', style: AppStyles.bold22White),
-            const SizedBox(height: 12),
+            SizedBox(height: 12.h),
             ListView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               padding: EdgeInsets.zero,
-              itemCount: viewModel.screenshots.length,
-              itemBuilder: (context, index) => _buildScreenshotItem(context, viewModel.screenshots[index]),
+              itemCount: state.screenshots.length,
+              itemBuilder: (context, index) =>
+                  _buildScreenshotItem(state.screenshots[index]),
             ),
           ],
-          if (viewModel.suggestions.isNotEmpty) ...[
-            const SizedBox(height: 20),
-            Text("Similar", style: AppStyles.bold22White),
-            const SizedBox(height: 10),
-            _buildSuggestionsGrid(),
+
+          // Similar
+          if (state.suggestions.isNotEmpty) ...[
+            SizedBox(height: 20.h),
+            Text(loc.similar, style: AppStyles.bold22White),
+            SizedBox(height: 10.h),
+            _buildSuggestionsGrid(state),
           ],
-          const SizedBox(height: 20),
-          Text('Summary', style: AppStyles.bold22White),
-          const SizedBox(height: 8),
+
+          // Summary
+          SizedBox(height: 20.h),
+          Text(loc.summary, style: AppStyles.bold22White),
+          SizedBox(height: 8.h),
           Text(
-            widget.movie.synopsis ?? widget.movie.descriptionFull ?? 'No description available.', 
-            style: AppStyles.medium16white
+            widget.movie.synopsis ?? widget.movie.descriptionFull ??
+                'No description available.',
+            style: AppStyles.medium16white,
           ),
-          if (viewModel.cast.isNotEmpty) ...[
-            const SizedBox(height: 20),
-            Text('Cast', style: AppStyles.bold22White),
-            const SizedBox(height: 8),
+
+          // Cast
+          if (state.cast.isNotEmpty) ...[
+            SizedBox(height: 20.h),
+            Text(loc.cast, style: AppStyles.bold22White),
+            SizedBox(height: 8.h),
             ListView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               padding: EdgeInsets.zero,
-              itemCount: viewModel.cast.length,
+              itemCount: state.cast.length,
               itemBuilder: (context, index) {
-                final actor = viewModel.cast[index];
+                final actor = state.cast[index];
                 return CastItem(
                   imageUrl: actor['url_small_image'] ?? '',
                   actorName: actor['name'] ?? '',
@@ -122,27 +152,34 @@ class _MovieDetailsState extends State<MovieDetails> {
               },
             ),
           ],
-          if (viewModel.genres.isNotEmpty) ...[
-            const SizedBox(height: 20),
-            Text('Genres', style: AppStyles.bold22White),
-            const SizedBox(height: 12),
+
+          // Genres
+          if (state.genres.isNotEmpty) ...[
+            SizedBox(height: 20.h),
+            Text(loc.genres, style: AppStyles.bold22White),
+            SizedBox(height: 12.h),
             Wrap(
-              spacing: 8,
-              runSpacing: 4,
-              children: viewModel.genres.map((genre) => Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: Colors.grey[800],
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  genre,
-                  style: const TextStyle(color: Colors.white, fontSize: 12),
-                ),
-              )).toList(),
+              spacing: 8.w,
+              runSpacing: 4.h,
+              children: state.genres
+                  .map((genre) =>
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 12.w, vertical: 6.h),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[800],
+                      borderRadius: BorderRadius.circular(20.r),
+                    ),
+                    child: Text(
+                      genre,
+                      style: TextStyle(color: Colors.white, fontSize: 12.sp),
+                    ),
+                  ))
+                  .toList(),
             ),
           ],
-          const SizedBox(height: 24),
+
+          SizedBox(height: 24.h),
         ],
       ),
     );
@@ -154,12 +191,13 @@ class _MovieDetailsState extends State<MovieDetails> {
         CachedNetworkImage(
           imageUrl: widget.movie.backgroundImageOriginal ?? '',
           width: double.infinity,
-          height: context.height * 0.60,
+          height: 0.60.sh,
           fit: BoxFit.cover,
-          errorWidget: (_, _, _) => Container(height: 300, color: Colors.grey[900]),
+          errorWidget: (_, __, ___) =>
+              Container(height: 300.h, color: Colors.grey[900]),
         ),
         Container(
-          height: context.height * 0.60,
+          height: 0.60.sh,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
@@ -169,11 +207,11 @@ class _MovieDetailsState extends State<MovieDetails> {
           ),
         ),
         Positioned.fill(
-          top: context.height * .2,
+          top: 0.2.sh,
           child: Center(
             child: InkWell(
               onTap: () {},
-              child: Image.asset("assets/images/Group 21.png"),
+              child: Image.asset('assets/images/Group 21.png'),
             ),
           ),
         ),
@@ -182,21 +220,19 @@ class _MovieDetailsState extends State<MovieDetails> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               IconButton(
-                icon: Icon(Icons.arrow_back_ios, color: AppColors.white), 
+                icon: Icon(Icons.arrow_back_ios, color: AppColors.white),
                 onPressed: () => Navigator.pop(context),
               ),
               StreamBuilder<bool>(
-                stream: viewModel.isMovieInWatchlist(widget.movie.id ?? 0),
+                stream: _viewModel.isMovieInWatchlist(widget.movie.id ?? 0),
                 builder: (context, snapshot) {
                   final isSaved = snapshot.data ?? false;
                   return IconButton(
                     icon: Icon(
-                      Icons.bookmark_rounded, 
+                      Icons.bookmark_rounded,
                       color: isSaved ? Colors.amber : AppColors.white,
-                    ), 
-                    onPressed: () async {
-                      await viewModel.toggleWatchlist(widget.movie);
-                    },
+                    ),
+                    onPressed: () => _viewModel.toggleWatchlist(widget.movie),
                   );
                 },
               ),
@@ -209,39 +245,39 @@ class _MovieDetailsState extends State<MovieDetails> {
 
   Widget _buildTitleSection(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: context.width * 0.03),
+      padding: EdgeInsets.symmetric(horizontal: 0.03.sw),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        spacing: 10,
         children: [
-          const SizedBox(height: 8),
+          SizedBox(height: 8.h),
           Text(widget.movie.title ?? '', style: AppStyles.bold18White, textAlign: TextAlign.center),
+          SizedBox(height: 10.h),
           Text(widget.movie.year?.toString() ?? '', style: AppStyles.bold16White, textAlign: TextAlign.center),
+          SizedBox(height: 10.h),
           CustomElevatedButton(
-            label: "Watch", 
-            backgroundColor: AppColors.red, 
+            label: AppLocalizations.of(context)!.watch,
+            backgroundColor: AppColors.red,
             textStyle: AppStyles.bold20White,
-            onPressed: () async {
-              await viewModel.addToHistory(widget.movie);
-            }, 
+            onPressed: () => _viewModel.addToHistory(widget.movie),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildScreenshotItem(BuildContext context, String url) {
+  Widget _buildScreenshotItem(String url) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0),
+      padding: EdgeInsets.only(bottom: 12.h),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(8.r),
         child: CachedNetworkImage(
           imageUrl: url,
           fit: BoxFit.cover,
           width: double.infinity,
-          height: context.height * 0.25,
-          errorWidget: (_, _, _) => Container(
-            height: 150, 
+          height: 0.25.sh,
+          errorWidget: (_, __, ___) =>
+              Container(
+                height: 150.h,
             color: Colors.grey[900],
             child: const Center(child: Icon(Icons.error, color: Colors.white)),
           ),
@@ -250,18 +286,22 @@ class _MovieDetailsState extends State<MovieDetails> {
     );
   }
 
-  Widget _buildSuggestionsGrid() {
+  Widget _buildSuggestionsGrid(MovieDetailsLoaded state) {
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: viewModel.suggestions.length,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2, crossAxisSpacing: 8, mainAxisSpacing: 8, childAspectRatio: 0.70,
+      itemCount: state.suggestions.length,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 8.w,
+        mainAxisSpacing: 8.h,
+        childAspectRatio: 0.70,
       ),
       itemBuilder: (context, index) {
+        final movie = state.suggestions[index];
         return MovieCard(
-          imageUrl: viewModel.suggestions[index].mediumCoverImage ?? '',
-          rating: viewModel.suggestions[index].rating ?? -1,
+          imageUrl: movie.mediumCoverImage ?? '',
+          rating: movie.rating.toString(),
         );
       },
     );

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:movies/l10n/app_localizations.dart';
 import '../../../utils/app_assets.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/screen_utils.dart';
@@ -15,19 +16,41 @@ class HistoryTab extends StatelessWidget {
     final user = FirebaseAuth.instance.currentUser;
 
     if (user == null) {
-      return const Scaffold(
+      return Scaffold(
         backgroundColor: AppColors.backgroundDark,
-        body: Center(child: Text('Please log in first', style: TextStyle(color: Colors.white))),
+        body: Center(
+          child: Text(
+            AppLocalizations.of(context)!.pleaseLoginFirst,
+            style: const TextStyle(color: Colors.white),
+          ),
+        ),
       );
     }
 
     return Scaffold(
       backgroundColor: AppColors.backgroundDark,
+      /*appBar: AppBar(
+        backgroundColor: AppColors.headerBackground,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.amber),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text(
+          'History',
+          style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
+        ),
+      ),*/
       body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
         stream: FirebaseFirestore.instance.collection('Users').doc(user.uid).snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return const Center(child: Text('Something went wrong', style: TextStyle(color: Colors.white)));
+            return Center(
+              child: Text(
+                AppLocalizations.of(context)!.somethingWentWrong,
+                style: const TextStyle(color: Colors.white),
+              ),
+            );
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator(color: AppColors.amber));

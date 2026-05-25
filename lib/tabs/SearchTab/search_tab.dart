@@ -8,7 +8,8 @@ import 'package:movies/tabs/SearchTab/search_tab_view_model.dart';
 import 'package:movies/utils/app_assets.dart';
 import 'package:movies/utils/app_colors.dart';
 import 'package:movies/utils/app_styles.dart';
-import 'package:movies/widgets/movie_card.dart';
+
+import '../HomeTab/movie_card.dart';
 
 class SearchTab extends StatefulWidget {
   const SearchTab({super.key});
@@ -135,8 +136,8 @@ class _SearchTabState extends State<SearchTab> {
                           itemBuilder: (context, index) {
                             final movie = state.movies[index];
                             return MovieCard(
-                              image: movie.mediumCoverImage ?? '',
-                              text: (movie.rating ?? 0).toStringAsFixed(1),
+                              imageUrl: movie.mediumCoverImage ?? '',
+                              rating: (movie.rating ?? 0).toStringAsFixed(1),
                               onTap: () {
                                 Navigator.push(
                                   context,
