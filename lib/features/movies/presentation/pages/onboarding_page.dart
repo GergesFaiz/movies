@@ -70,7 +70,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     end: Alignment.bottomCenter,
                     colors: [
                       Colors.transparent,
-                      data.gradientColor.withOpacity(0.6),
+                      data.gradientColor.withValues(alpha: 0.6),
                       data.gradientColor,
                     ],
                     stops: const [0.0, 0.6, 1.0],

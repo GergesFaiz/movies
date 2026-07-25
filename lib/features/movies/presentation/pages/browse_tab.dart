@@ -76,7 +76,7 @@ class _BrowseTabState extends State<BrowseTab> {
                               decoration: BoxDecoration(
                                 color: isSelected
                                     ? AppColors.amber
-                                    : AppColors.gray.withOpacity(0.3),
+                                    : AppColors.gray.withValues(alpha: 0.3),
                                 borderRadius: BorderRadius.circular(30.r),
                               ),
                               child: Text(

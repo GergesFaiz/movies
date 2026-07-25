@@ -75,7 +75,7 @@ class _AvatarsBottomSheetState extends State<AvatarsBottomSheet> {
               duration: const Duration(milliseconds: 200),
               decoration: BoxDecoration(
                 color: isSelected
-                    ? AppColors.amber.withOpacity(0.35)
+                    ? AppColors.amber.withValues(alpha: 0.35)
                     : Colors.transparent,
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(color: AppColors.amber, width: 2),

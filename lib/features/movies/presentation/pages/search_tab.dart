@@ -45,7 +45,7 @@ class SearchTab extends StatelessWidget {
                       ),
                     ),
                     filled: true,
-                    fillColor: AppColors.gray.withOpacity(0.6),
+                    fillColor: AppColors.gray.withValues(alpha: 0.6),
                     contentPadding: EdgeInsets.symmetric(vertical: 16.h),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.r),

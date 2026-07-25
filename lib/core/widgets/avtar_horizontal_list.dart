@@ -67,7 +67,7 @@ int? selectedAvatar;
             AnimatedContainer(
               duration: const Duration(milliseconds: 200),
               margin:  EdgeInsetsDirectional.symmetric(horizontal: screenwidth*.02),
-              transform: isSelected?Matrix4.identity().scaled(1.1):Matrix4.identity(),
+              transform: isSelected?Matrix4.diagonal3Values(1.1, 1.1, 1.0):Matrix4.identity(),
               alignment: Alignment.center,
               child: CircleAvatar(
                 radius: isSelected?selectedRadius : baseRadius,

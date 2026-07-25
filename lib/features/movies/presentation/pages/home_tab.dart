@@ -105,7 +105,7 @@ class _HomeTabState extends State<HomeTab> with RouteAware {
               end: Alignment.bottomCenter,
               colors: [
                 Colors.transparent,
-                AppColors.gray.withOpacity(0.8),
+                AppColors.gray.withValues(alpha: 0.8),
                 AppColors.gray,
               ],
               stops: const [0.0, 0.4, 0.9],

@@ -182,8 +182,8 @@ class _ProfileTabState extends State<ProfileTab>
         width: size,
         height: size,
         fit: BoxFit.cover,
-        placeholder: (_, __) => const CircularProgressIndicator(),
-        errorWidget: (_, __, ___) =>
+        placeholder: (context, url) => const CircularProgressIndicator(),
+        errorWidget: (context, url, error) =>
             Image.asset(fallback, fit: BoxFit.cover),
       );
     }

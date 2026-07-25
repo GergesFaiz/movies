@@ -86,7 +86,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
           height: 0.60.sh,
           width: double.infinity,
           fit: BoxFit.cover,
-          errorWidget: (_, __, ___) =>
+          errorWidget: (context, url, error) =>
               Container(height: 0.60.sh, color: Colors.grey[900]),
         ),
         Container(

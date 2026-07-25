@@ -50,8 +50,9 @@ class UserMoviesRemoteDataSourceImpl implements UserMoviesRemoteDataSource {
   @override
   Future<void> addToHistory(MovieModel movie) async {
     final user = _auth.currentUser;
-    if (user == null)
+    if (user == null) {
       throw StateError('Please sign in to save viewing history.');
+    }
 
     await _userDocument(user.uid).set({
       'history': FieldValue.arrayUnion([_toFirestore(movie)]),

@@ -81,8 +81,8 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
       return CachedNetworkImage(
         imageUrl: path,
         fit: BoxFit.cover,
-        placeholder: (_, __) => const CircularProgressIndicator(),
-        errorWidget: (_, __, ___) =>
+        placeholder: (context, url) => const CircularProgressIndicator(),
+        errorWidget: (context, url, error) =>
             Image.asset(_avatarImages[_selectedAvatar], fit: BoxFit.cover),
       );
     }

@@ -101,7 +101,7 @@ class HistoryTab extends StatelessWidget {
                   child: CachedNetworkImage(
                     imageUrl: posterPath,
                     fit: BoxFit.cover,
-                    errorWidget: (_, __, ___) =>
+                    errorWidget: (context, url, error) =>
                         Container(
                           color: Colors.grey[900],
                           child: const Icon(Icons.movie, color: Colors.white24),
