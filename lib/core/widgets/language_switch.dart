@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../features/auth/presentation/cubit/app_language_cubit.dart';
-import '../utils/app_assets.dart';
 import '../utils/app_colors.dart';
+import '../utils/app_icons.dart';
 import '../utils/screen_utils.dart';
 
 class LanguageSwitch extends StatelessWidget {

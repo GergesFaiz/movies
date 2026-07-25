@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // Auth feature
 import '../../features/auth/data/datasources/auth_remote_datasource.dart';
@@ -31,6 +32,10 @@ import '../network/dio_factory.dart';
 final sl = GetIt.instance;
 
 Future<void> setupDependencies() async {
+  // ─── External ─────────────────────────────────────────────────────────────
+  final prefs = await SharedPreferences.getInstance();
+  sl.registerLazySingleton(() => prefs);
+
   // ─── Network ─────────────────────────────────────────────────────────────
   sl.registerLazySingleton(() => DioFactory.create());
   sl.registerLazySingleton(() => ApiClient(sl()));
@@ -73,5 +78,5 @@ Future<void> setupDependencies() async {
   sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(sl()));
   // Cubit
   sl.registerFactory(() => AuthCubit(sl()));
-  sl.registerLazySingleton(() => AppLanguageCubit());
+  sl.registerLazySingleton(() => AppLanguageCubit(sl()));
 }

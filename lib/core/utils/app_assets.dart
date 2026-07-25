@@ -29,6 +29,7 @@ class AppAssets {
   static String search="assets/images/icons/Vector.svg";
 
   static String onbaordingImage1="assets/images/onboarding/OnBoarding.png";
+  static String onboardingOne="assets/images/onboarding/OnBoarding.png";
   static String onbaordingImage6="assets/images/onboarding/onboarding5.png";
   static String onbaordingImage2="assets/images/onboarding/onboarding2.png";
   static String onbaordingImage3="assets/images/onboarding/The Godfather 1.png";

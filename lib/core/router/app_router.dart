@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../features/auth/presentation/pages/forgot_password_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/register_page.dart';
+import '../../features/auth/presentation/pages/splash_page.dart';
 import '../../features/auth/presentation/pages/update_profile_page.dart';
 import '../../features/movies/domain/entities/movie_entity.dart';
 import '../../features/movies/presentation/bloc/movie_details_bloc.dart';
@@ -15,8 +16,9 @@ import '../../features/movies/presentation/pages/onboarding_page.dart';
 import '../di/injection.dart';
 
 class AppRoutes {
+  static const String splash = '/splash';
   static const String onBoarding = '/onboarding';
-  static const String homeScreen = '/';
+  static const String homeScreen = '/home';
   static const String movieDetails = '/movie-details';
   static const String loginScreen = '/login';
   static const String forgotPasswordScreen = '/forgot-password';
@@ -27,6 +29,9 @@ class AppRoutes {
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case AppRoutes.splash:
+        return MaterialPageRoute(builder: (_) => const SplashPage());
+
       case AppRoutes.onBoarding:
         return MaterialPageRoute(builder: (_) => const OnboardingPage());
 

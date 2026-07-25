@@ -74,7 +74,7 @@ class MovieCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(borderRadius),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.4),
+              color: Colors.black.withOpacity(0.4),
               blurRadius: 10.r,
               offset: const Offset(0, 6),
             ),
@@ -96,7 +96,7 @@ class MovieCard extends StatelessWidget {
                       end: Alignment.bottomCenter,
                       colors: [
                         Colors.transparent,
-                        Colors.black.withValues(alpha: 0.75),
+                        Colors.black.withOpacity(0.75),
                       ],
                       stops: const [0.6, 1.0],
                     ),
@@ -111,8 +111,8 @@ class MovieCard extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                 decoration: BoxDecoration(
-                  color: Colors.black.withValues(
-                    alpha: useContextSize ? 0.6 : 0.75,
+                  color: Colors.black.withOpacity(
+                    useContextSize ? 0.6 : 0.75,
                   ),
                   borderRadius: BorderRadius.circular(
                     useContextSize ? 8.r : 12.r,

@@ -1,30 +1,7 @@
 import 'package:flutter/material.dart';
-
-<<<<
-<<
-<<
-HEAD:lib/tabs/ProfileTab/updateprofile/
-
-avatars_bottom_sheet.dart
-import '../../../utils/app_assets.dart';
-import '../../../utils/app_colors.dart';
-import '../../../utils/screen_utils.dart';
-
-====
-==
-==
 import '../../../../core/utils/app_assets.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/screen_utils.dart';
-
->>
->
->
->
->
->
->
-origin/master:lib/features/auth/presentation/widgets/avatars_bottom_sheet.dart
 
 class AvatarsBottomSheet extends StatefulWidget {
   const AvatarsBottomSheet({
@@ -68,7 +45,7 @@ class _AvatarsBottomSheetState extends State<AvatarsBottomSheet> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.kCard,
+        color: AppColors.gray, // Assuming kCard might have been gray or needs adjustment
         borderRadius: BorderRadius.circular(20),
       ),
       child: GridView.builder(
@@ -88,14 +65,17 @@ class _AvatarsBottomSheetState extends State<AvatarsBottomSheet> {
               widget.onAvatarSelected(i);
               Future.delayed(
                 const Duration(milliseconds: 500),
-                    () => Navigator.pop(context),
+                () {
+                  if (!context.mounted) return;
+                  Navigator.pop(context);
+                },
               );
             },
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 200),
               decoration: BoxDecoration(
                 color: isSelected
-                    ? AppColors.amber.withAlpha(90)
+                    ? AppColors.amber.withOpacity(0.35)
                     : Colors.transparent,
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(color: AppColors.amber, width: 2),

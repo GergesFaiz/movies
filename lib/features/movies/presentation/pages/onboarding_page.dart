@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:movies/core/router/app_router.dart';
 
 import '../../../../core/utils/app_styles.dart';
@@ -24,10 +25,17 @@ class _OnboardingPageState extends State<OnboardingPage> {
     super.dispose();
   }
 
+  Future<void> _onFinish() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('seenOnboarding', true);
+    if (!mounted) return;
+    Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
+  }
+
   void _navigate(String direction) {
     if (direction == 'next') {
       if (_currentPage == onboardingPages.length - 1) {
-        Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
+        _onFinish();
       } else {
         _pageController.nextPage(
           duration: const Duration(milliseconds: 500),
@@ -62,7 +70,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     end: Alignment.bottomCenter,
                     colors: [
                       Colors.transparent,
-                      data.gradientColor.withValues(alpha: 0.6),
+                      data.gradientColor.withOpacity(0.6),
                       data.gradientColor,
                     ],
                     stops: const [0.0, 0.6, 1.0],

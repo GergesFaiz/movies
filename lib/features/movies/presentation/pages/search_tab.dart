@@ -7,6 +7,7 @@ import 'package:movies/features/movies/presentation/bloc/search_bloc.dart';
 
 import '../../../../core/utils/app_assets.dart';
 import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/app_icons.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../widgets/movie_card.dart';
 
@@ -44,7 +45,7 @@ class SearchTab extends StatelessWidget {
                       ),
                     ),
                     filled: true,
-                    fillColor: AppColors.gray.withValues(alpha: 0.6),
+                    fillColor: AppColors.gray.withOpacity(0.6),
                     contentPadding: EdgeInsets.symmetric(vertical: 16.h),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.r),
