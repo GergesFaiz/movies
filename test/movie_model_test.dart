@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:movies/features/movies/data/models/movie_model.dart';
+import 'package:movies/features/movies/data/remote/models/movie_model.dart';
 
 void main() {
   group('MovieModel', () {
