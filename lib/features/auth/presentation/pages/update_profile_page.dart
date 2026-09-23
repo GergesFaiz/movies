@@ -2,13 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies/core/router/app_router.dart';
 import 'package:movies/features/auth/presentation/pages/login_page.dart';
 
 import '../../../../core/utils/app_assets.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_styles.dart';
-import '../../../../core/utils/screen_utils.dart';
 import '../../../../core/widgets/back_app_bar.dart';
 import '../../../../core/widgets/custom_elevatedbutton.dart';
 import '../../../../core/widgets/custom_text_field.dart';
@@ -91,9 +91,6 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    final height = context.height;
-    final width = context.width;
-
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
@@ -114,19 +111,19 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
           body: SafeArea(
             child: SingleChildScrollView(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: width * 0.03),
+                padding: EdgeInsets.symmetric(horizontal: 12.w),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: height * 0.02),
+                    SizedBox(height: 20.h),
 
                     // Avatar picker
                     Center(
                       child: GestureDetector(
                         onTap: _showAvatarsBottomSheet,
                         child: Container(
-                          width: width * 0.40,
-                          height: width * 0.40,
+                          width: 160.w,
+                          height: 160.w,
                           decoration:
                           const BoxDecoration(shape: BoxShape.circle),
                           child: ClipOval(
@@ -157,7 +154,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                         ),
                       ),
                     ),
-                    SizedBox(height: height * 0.02),
+                    SizedBox(height: 20.h),
 
                     CustomTextField(
                       textInputType: TextInputType.name,
@@ -165,14 +162,14 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                       controller: _nameController,
                       hintText: 'Enter your name',
                     ),
-                    SizedBox(height: height * 0.02),
+                    SizedBox(height: 15.h),
                     CustomTextField(
                       textInputType: TextInputType.phone,
                       textInputAction: TextInputAction.done,
                       controller: _phoneController,
                       hintText: 'Enter your phone',
                     ),
-                    SizedBox(height: height * 0.01),
+                    SizedBox(height: 10.h),
 
                     GestureDetector(
                       onTap: () => Navigator.pushNamed(
@@ -180,11 +177,11 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                       child: Text(
                         'Reset Password',
                         style: TextStyle(
-                            color: AppColors.kText, fontSize: 14),
+                            color: AppColors.kText, fontSize: 14.sp),
                       ),
                     ),
 
-                    SizedBox(height: height * 0.23),
+                    SizedBox(height: 200.h),
 
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -216,7 +213,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                           backgroundColor: AppColors.red,
                           textStyle: AppStyles.regular16white,
                         ),
-                        const SizedBox(height: 15),
+                        SizedBox(height: 15.h),
                         CustomElevatedButton(
                           label: 'Update Data',
                           textStyle: AppStyles.regular16black,
@@ -256,7 +253,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: height * 0.02),
+                    SizedBox(height: 20.h),
                   ],
                 ),
               ),

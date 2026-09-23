@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-import '../../../../core/error/failures.dart';
-import '../../domain/entities/movie_entity.dart';
-import '../../domain/repositories/user_movies_repository.dart';
+import '../../../../../core/error/failures.dart';
+import '../../../domain/entities/movie_entity.dart';
+import '../../../domain/repositories/user_movies_repository.dart';
 import '../datasources/user_movies_remote_datasource.dart';
 import '../models/movie_model.dart';
 

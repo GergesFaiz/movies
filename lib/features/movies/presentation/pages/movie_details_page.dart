@@ -52,7 +52,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                   _buildTitlePlaceholder(),
                   Center(
                     child: Padding(
-                      padding: EdgeInsets.all(40.h),
+                      padding: EdgeInsets.all(40.r),
                       child: const CircularProgressIndicator(),
                     ),
                   ),
@@ -60,7 +60,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                   _buildTitlePlaceholder(),
                   Center(
                     child: Padding(
-                      padding: EdgeInsets.all(20.h),
+                      padding: EdgeInsets.all(20.r),
                       child: Text(
                         state.message,
                         style: TextStyle(color: Colors.red, fontSize: 16.sp),
@@ -77,8 +77,6 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
   }
 
   Widget _buildHeader(BuildContext context, MovieDetailsState state) {
-    // نحاول نجيب الـ background image من الـ state لو موجودة
-    // وإلا نعمل placeholder
     return Stack(
       children: [
         CachedNetworkImage(
@@ -104,7 +102,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
           child: Center(
             child: InkWell(
               onTap: () {},
-              child: Image.asset('assets/images/Group 21.png'),
+              child: Image.asset('assets/images/Group 21.png', height: 80.h),
             ),
           ),
         ),
@@ -113,7 +111,8 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               IconButton(
-                icon: Icon(Icons.arrow_back_ios, color: AppColors.white),
+                icon: Icon(
+                    Icons.arrow_back_ios, color: AppColors.white, size: 24.sp),
                 onPressed: () => Navigator.pop(context),
               ),
               // Watchlist button with stream
@@ -127,6 +126,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                     icon: Icon(
                       Icons.bookmark_rounded,
                       color: isSaved ? Colors.amber : AppColors.white,
+                      size: 28.sp,
                     ),
                     onPressed: () => context.read<MovieDetailsBloc>().add(
                       ToggleWatchlistEvent(widget.movie),
@@ -145,7 +145,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
     final loc = AppLocalizations.of(context)!;
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 0.03.sw),
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -171,7 +171,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
 
   Widget _buildTitlePlaceholder() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 0.03.sw, vertical: 8.h),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -191,7 +191,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
     final details = state.details;
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 0.03.sw),
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

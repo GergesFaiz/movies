@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies/core/router/app_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/widgets/custom_elevatedbutton.dart';
@@ -99,7 +100,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   Widget _buildFirstPage(OnboardingData data) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -108,11 +109,11 @@ class _OnboardingPageState extends State<OnboardingPage> {
           Text(data.title,
               style: AppStyles.medium36white,
               textAlign: TextAlign.center),
-          const SizedBox(height: 20),
+          SizedBox(height: 20.h),
           Text(data.description,
               style: AppStyles.bold20White,
               textAlign: TextAlign.center),
-          const SizedBox(height: 20),
+          SizedBox(height: 20.h),
           CustomElevatedButton(
             label: data.buttonText,
             textStyle: AppStyles.bold20black,

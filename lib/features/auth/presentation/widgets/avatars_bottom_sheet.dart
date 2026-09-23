@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../../../core/utils/app_assets.dart';
 import '../../../../core/utils/app_colors.dart';
-import '../../../../core/utils/screen_utils.dart';
 
 class AvatarsBottomSheet extends StatefulWidget {
   const AvatarsBottomSheet({
@@ -40,22 +41,20 @@ class _AvatarsBottomSheetState extends State<AvatarsBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final width = context.width;
-
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
         color: AppColors.gray, // Assuming kCard might have been gray or needs adjustment
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(20.r),
       ),
       child: GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemCount: _avatarImages.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
-          crossAxisSpacing: 14,
-          mainAxisSpacing: 14,
+          crossAxisSpacing: 14.w,
+          mainAxisSpacing: 14.h,
         ),
         itemBuilder: (context, i) {
           final isSelected = i == _selectedAvatar;
@@ -77,11 +76,11 @@ class _AvatarsBottomSheetState extends State<AvatarsBottomSheet> {
                 color: isSelected
                     ? AppColors.amber.withValues(alpha: 0.35)
                     : Colors.transparent,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: AppColors.amber, width: 2),
+                borderRadius: BorderRadius.circular(20.r),
+                border: Border.all(color: AppColors.amber, width: 2.w),
               ),
               child: SizedBox(
-                width: width * 0.2,
+                width: 80.w,
                 child: Image.asset(_avatarImages[i]),
               ),
             ),

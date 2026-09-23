@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../router/app_router.dart';
@@ -27,14 +28,14 @@ class OnboardingBottomsheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: AppColors.blackColor,
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(25),
-          topRight: Radius.circular(25),
+          topLeft: Radius.circular(25.r),
+          topRight: Radius.circular(25.r),
         ),
       ),
-      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+      padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -44,13 +45,13 @@ class OnboardingBottomsheet extends StatelessWidget {
             style: AppStyles.bold24White,
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 5),
+          SizedBox(height: 10.h),
           Text(
             bottomSheetDiscribtion,
             style: AppStyles.bold20White,
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: 20.h),
           CustomElevatedButton(
             label: buttonText,
             textStyle: AppStyles.bold20black,
@@ -63,15 +64,16 @@ class OnboardingBottomsheet extends StatelessWidget {
             },
           ),
           if (!isFirstPage) ...[
-            const SizedBox(height: 10),
+            SizedBox(height: 10.h),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.transparent,
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(16.r),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
+                  borderRadius: BorderRadius.circular(15.r),
                   side: const BorderSide(color: AppColors.amber),
                 ),
+                minimumSize: Size(double.infinity, 56.h),
               ),
               onPressed: navigatorback,
               child: Text(
@@ -79,7 +81,7 @@ class OnboardingBottomsheet extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: GoogleFonts.inter(
                   color: AppColors.amber,
-                  fontSize: 20,
+                  fontSize: 20.sp,
                   fontWeight: FontWeight.w400,
                 ),
               ),

@@ -1,31 +1,26 @@
  import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../utils/app_colors.dart';
 import '../utils/app_styles.dart';
-import '../utils/screen_utils.dart';
 
 
 class CustomDivider extends StatelessWidget 
   {
   const CustomDivider({super.key});
 
-   
- 
-
-
   @override
   Widget build(BuildContext context) {
-    var width = context.width;
     return Padding(
-      padding:  EdgeInsets.symmetric(horizontal:width * 0.15 ),
+      padding: EdgeInsets.symmetric(horizontal: 60.w),
       child: Row(
         children: [
 
-      Expanded(
+          const Expanded(
         child: Divider(
           thickness: 1,
           color: AppColors.amber,
-          endIndent: 11.2,
+          endIndent: 11,
         ),
       ),
 
@@ -34,11 +29,11 @@ class CustomDivider extends StatelessWidget
         style:AppStyles.medium15Amber
       ),
 
-      Expanded(
+          const Expanded(
         child: Divider(
           thickness: 1,
           color:AppColors.amber,
-          indent: 11.2,
+          indent: 11,
         ),
       ),]),
     )

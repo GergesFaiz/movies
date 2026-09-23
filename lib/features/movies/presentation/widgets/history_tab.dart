@@ -2,12 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/utils/app_assets.dart';
 import '../../../../core/utils/app_colors.dart';
-import '../../../../core/utils/screen_utils.dart';
 import '../../domain/entities/movie_entity.dart';
 
 class HistoryTab extends StatelessWidget {
@@ -15,8 +15,6 @@ class HistoryTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final height = context.height;
-    final width = context.width;
     final user = FirebaseAuth.instance.currentUser;
 
     if (user == null) {
@@ -25,7 +23,7 @@ class HistoryTab extends StatelessWidget {
         body: Center(
           child: Text(
             AppLocalizations.of(context)!.pleaseLoginFirst,
-            style: const TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white, fontSize: 16.sp),
           ),
         ),
       );
@@ -43,7 +41,7 @@ class HistoryTab extends StatelessWidget {
             return Center(
               child: Text(
                 AppLocalizations.of(context)!.somethingWentWrong,
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.white, fontSize: 16.sp),
               ),
             );
           }
@@ -60,8 +58,7 @@ class HistoryTab extends StatelessWidget {
             return Center(
               child: Image.asset(
                 AppAssets.empty1,
-                width: height * 0.28,
-                height: height * 0.13,
+                width: 120.w,
                 fit: BoxFit.contain,
               ),
             );
@@ -69,15 +66,15 @@ class HistoryTab extends StatelessWidget {
 
           return GridView.builder(
             padding: EdgeInsets.symmetric(
-              horizontal: width * 0.04,
-              vertical: height * 0.02,
+              horizontal: 16.w,
+              vertical: 20.h,
             ),
             itemCount: historyList.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
               childAspectRatio: 0.7,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
+              crossAxisSpacing: 10.w,
+              mainAxisSpacing: 10.h,
             ),
             itemBuilder: (context, index) {
               final movieData =
@@ -97,14 +94,15 @@ class HistoryTab extends StatelessWidget {
                       ),
                     ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(8.r),
                   child: CachedNetworkImage(
                     imageUrl: posterPath,
                     fit: BoxFit.cover,
                     errorWidget: (context, url, error) =>
                         Container(
                           color: Colors.grey[900],
-                          child: const Icon(Icons.movie, color: Colors.white24),
+                          child: Icon(Icons.movie, color: Colors.white24,
+                              size: 30.sp),
                         ),
                     placeholder: (context, url) =>
                         Container(

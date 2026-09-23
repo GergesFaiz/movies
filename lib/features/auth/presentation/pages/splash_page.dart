@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../../../core/router/app_router.dart';
 import '../../../../core/utils/app_assets.dart';
 
@@ -46,7 +48,7 @@ class _SplashPageState extends State<SplashPage> {
       body: Center(
         child: Image.asset(
           AppAssets.onboardingOne, // Or a dedicated logo if available
-          width: 200,
+          width: 200.w,
         ),
       ),
     );

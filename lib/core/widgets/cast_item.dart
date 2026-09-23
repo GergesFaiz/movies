@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../utils/app_colors.dart';
 import '../utils/app_styles.dart';
@@ -19,30 +20,30 @@ class CastItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(8),
+      margin: EdgeInsets.only(bottom: 12.h),
+      padding: EdgeInsets.all(8.r),
       decoration: BoxDecoration(
         color: Colors.grey[900],
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
       ),
       child: Row(
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(8.r),
             child: CachedNetworkImage(
               imageUrl: imageUrl ?? '',
-              width: 60,
-              height: 60,
+              width: 60.w,
+              height: 60.h,
               fit: BoxFit.cover,
               errorWidget: (_, _, _) => Container(
-                width: 60,
-                height: 60,
+                width: 60.w,
+                height: 60.h,
                 color: Colors.grey[800],
-                child: Icon(Icons.person, color: AppColors.white),
+                child: const Icon(Icons.person, color: AppColors.white),
               ),
             ),
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: 16.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,7 +55,7 @@ class CastItem extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 6),
+                SizedBox(height: 6.h),
                 Text(
                 "Character: ${characterName ?? 'Unknown Character'}",
                    style:  AppStyles.bold16White, 

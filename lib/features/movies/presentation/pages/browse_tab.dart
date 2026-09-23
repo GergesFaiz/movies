@@ -40,7 +40,7 @@ class _BrowseTabState extends State<BrowseTab> {
           return Center(
             child: Text(
               state.message,
-              style: const TextStyle(color: Colors.red, fontSize: 18),
+              style: TextStyle(color: Colors.red, fontSize: 18.sp),
             ),
           );
         }
@@ -97,12 +97,12 @@ class _BrowseTabState extends State<BrowseTab> {
                   // Movies grid
                   Expanded(
                     child: state.movies.isEmpty
-                        ? const Center(
+                        ? Center(
                             child: Text(
                               'No movies found',
                               style: TextStyle(
                                 color: Colors.white70,
-                                fontSize: 18,
+                                fontSize: 18.sp,
                               ),
                             ),
                           )

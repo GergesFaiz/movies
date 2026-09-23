@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies/core/di/injection.dart';
 import 'package:movies/core/router/app_router.dart';
 import 'package:movies/features/auth/presentation/cubit/auth_cubit.dart';
@@ -8,7 +9,6 @@ import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/utils/app_assets.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/firebase_files/dialog_utils.dart';
-import '../../../../core/utils/screen_utils.dart';
 import '../../../../core/widgets/custom_divider.dart';
 import '../../../../core/widgets/custom_elevatedbutton.dart';
 import '../../../../core/widgets/custom_text_field.dart';
@@ -42,8 +42,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final height = context.height;
-    final width = context.width;
     final local = AppLocalizations.of(context)!;
 
     return BlocProvider(
@@ -69,19 +67,19 @@ class _LoginPageState extends State<LoginPage> {
         child: Scaffold(
           body: SafeArea(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: width * 0.04),
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Form(
                 key: _formKey,
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      SizedBox(height: height * 0.02),
+                      SizedBox(height: 20.h),
                       SizedBox(
-                        height: height * 0.28,
+                        height: 240.h,
                         child: Image.asset(AppAssets.splashImage),
                       ),
-                      SizedBox(height: height * 0.02),
+                      SizedBox(height: 20.h),
                       CustomTextField(
                         textInputType: TextInputType.emailAddress,
                         textInputAction: TextInputAction.next,
@@ -94,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                           return null;
                         },
                       ),
-                      SizedBox(height: height * 0.02),
+                      SizedBox(height: 20.h),
                       CustomTextField(
                         textInputType: TextInputType.visiblePassword,
                         textInputAction: TextInputAction.done,
@@ -109,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                           return null;
                         },
                       ),
-                      SizedBox(height: height * 0.01),
+                      SizedBox(height: 10.h),
                       Align(
                         alignment: Alignment.centerRight,
                         child: TextButton(
@@ -128,7 +126,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       ),
-                      SizedBox(height: height * 0.02),
+                      SizedBox(height: 20.h),
                       BlocBuilder<AuthCubit, AuthState>(
                         builder: (context, state) {
                           return CustomElevatedButton(
@@ -147,7 +145,7 @@ class _LoginPageState extends State<LoginPage> {
                           );
                         },
                       ),
-                      SizedBox(height: height * 0.02),
+                      SizedBox(height: 20.h),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -174,9 +172,9 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ],
                       ),
-                      SizedBox(height: height * 0.02),
+                      SizedBox(height: 20.h),
                       CustomDivider(),
-                      SizedBox(height: height * 0.02),
+                      SizedBox(height: 20.h),
                       LanguageSwitch(),
                     ],
                   ),

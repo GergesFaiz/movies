@@ -35,13 +35,14 @@ class SearchTab extends StatelessWidget {
                     hintText: 'Search movies...',
                     hintStyle: AppStyles.bold18White.copyWith(
                       color: AppColors.lightGreyColor,
+                      fontSize: 16.sp,
                     ),
                     prefixIcon: Padding(
-                      padding: EdgeInsets.all(12.w),
+                      padding: EdgeInsets.all(12.r),
                       child: SvgPicture.asset(
                         AppIcon.search,
                         width: 24.w,
-                        height: 24.w,
+                        height: 24.h,
                       ),
                     ),
                     filled: true,

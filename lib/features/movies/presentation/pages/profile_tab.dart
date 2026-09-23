@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies/core/router/app_router.dart';
 
 import '../../../../core/l10n/app_localizations.dart';
@@ -8,7 +9,6 @@ import '../../../../core/utils/app_assets.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/firebase_files/auth_function.dart';
-import '../../../../core/utils/screen_utils.dart';
 import '../../../../core/widgets/custom_elevatedbutton.dart';
 import '../../../auth/presentation/pages/login_page.dart';
 import '../widgets/history_tab.dart';
@@ -39,14 +39,12 @@ class _ProfileTabState extends State<ProfileTab>
 
   @override
   Widget build(BuildContext context) {
-    var height = context.height;
-    var width = context.width;
-
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const Center(child: Text('Something went wrong'));
+          return Center(child: Text('Something went wrong',
+              style: TextStyle(fontSize: 16.sp, color: Colors.white)));
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -70,36 +68,36 @@ class _ProfileTabState extends State<ProfileTab>
               appBar: AppBar(
                 backgroundColor: AppColors.headerBackground,
                 automaticallyImplyLeading: false,
-                toolbarHeight: height * 0.32,
+                toolbarHeight: 280.h,
                 title: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: width * 0.03),
+                  padding: EdgeInsets.symmetric(horizontal: 12.w),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: height * 0.02),
+                      SizedBox(height: 20.h),
                       Row(
                         children: [
                           ClipOval(
                             child: _buildAvatar(
-                                avatarPath, width * 0.27, AppAssets.avatar7),
+                                avatarPath, 110.w, AppAssets.avatar7),
                           ),
-                          SizedBox(width: width * 0.04),
+                          SizedBox(width: 16.w),
                           Expanded(
                             child: Row(
                               mainAxisAlignment:
                               MainAxisAlignment.spaceEvenly,
                               children: [
                                 _buildStat(
-                                    watchListCount, 'Watch List', context),
-                                _buildStat(historyCount, 'History', context),
+                                    watchListCount, 'Watch List'),
+                                _buildStat(historyCount, 'History'),
                               ],
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(height: height * 0.02),
+                      SizedBox(height: 15.h),
                       Text(userName, style: AppStyles.bold20White),
-                      SizedBox(height: height * 0.02),
+                      SizedBox(height: 15.h),
                       Row(
                         children: [
                           Expanded(
@@ -112,12 +110,12 @@ class _ProfileTabState extends State<ProfileTab>
                                       context, AppRoutes.updateProfileScreen),
                             ),
                           ),
-                          SizedBox(width: width * 0.03),
+                          SizedBox(width: 12.w),
                           Expanded(
                             flex: 1,
                             child: CustomElevatedButton(
-                              icon: const Icon(Icons.logout,
-                                  color: AppColors.white, size: 20),
+                              icon: Icon(Icons.logout,
+                                  color: AppColors.white, size: 20.sp),
                               label: 'Exit',
                               onPressed: () async {
                                 await FirebaseAuth.instance.signOut();
@@ -140,7 +138,7 @@ class _ProfileTabState extends State<ProfileTab>
                   ),
                 ),
                 bottom: TabBar(
-                  dividerHeight: 3,
+                  dividerHeight: 3.h,
                   dividerColor: AppColors.transparent,
                   controller: _tabController,
                   indicatorColor: AppColors.amber,
@@ -152,13 +150,13 @@ class _ProfileTabState extends State<ProfileTab>
                   unselectedLabelStyle: AppStyles.regular20white,
                   tabs: [
                     Tab(
-                      icon: const Icon(Icons.list,
-                          size: 30, color: AppColors.amber),
+                      icon: Icon(Icons.list,
+                          size: 30.sp, color: AppColors.amber),
                       text: AppLocalizations.of(context)!.watchlist,
                     ),
-                    const Tab(
+                    Tab(
                       icon: Icon(Icons.folder,
-                          size: 30, color: AppColors.amber),
+                          size: 30.sp, color: AppColors.amber),
                       text: 'History',
                     ),
                   ],
@@ -191,14 +189,14 @@ class _ProfileTabState extends State<ProfileTab>
         width: size, height: size, fit: BoxFit.cover);
   }
 
-  Widget _buildStat(String count, String label, BuildContext context) {
+  Widget _buildStat(String count, String label) {
     return Column(
       children: [
         Text(count,
-            style: AppStyles.bold16White.copyWith(fontSize: 32)),
-        SizedBox(height: context.height * 0.02),
+            style: AppStyles.bold16White.copyWith(fontSize: 32.sp)),
+        SizedBox(height: 10.h),
         Text(label,
-            style: AppStyles.bold16White.copyWith(fontSize: 22)),
+            style: AppStyles.bold16White.copyWith(fontSize: 18.sp)),
       ],
     );
   }

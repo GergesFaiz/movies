@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
-import '../../../../core/error/failures.dart';
-import '../../../../core/network/api_client.dart';
+import '../../../../../core/error/failures.dart';
+import '../../../../../core/network/api_client.dart';
 import '../models/movie_model.dart';
 
 abstract class MoviesRemoteDataSource {

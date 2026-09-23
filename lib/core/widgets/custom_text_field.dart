@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../utils/app_assets.dart';
 import '../utils/app_colors.dart';
 import '../utils/app_styles.dart';
 
 class CustomTextField extends StatefulWidget {
+  final TextEditingController? controller;
+  final String hintText;
+  final bool isPassword;
+  final String? Function(String?)? validator;
   final TextInputType textInputType;
   final TextInputAction textInputAction;
-  final TextEditingController controller;
-  final String? Function(String?)? validator;
-  final bool isPassword;
-  final String hintText;
+  final IconData? icon;
 
-   const CustomTextField({
+  const CustomTextField({
     super.key,
+    this.controller,
+    required this.hintText,
+    this.isPassword = false,
+    this.validator,
     required this.textInputType,
     required this.textInputAction,
-    required this.controller,
-    this.validator,
-    this.isPassword = false,
-    required this.hintText,
+    this.icon,
   });
 
   @override
@@ -27,76 +29,52 @@ class CustomTextField extends StatefulWidget {
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
-  late bool isShowPassword;
-
-  @override
-  void initState() {
-    super.initState();
-
-    isShowPassword = widget.isPassword;
-  }
+  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      autocorrect: false,
-      enableSuggestions: false,
-      cursorColor: AppColors.white,
-      cursorRadius: const Radius.circular(16),
+      controller: widget.controller,
+      obscureText: widget.isPassword ? _obscureText : false,
+      validator: widget.validator,
       keyboardType: widget.textInputType,
       textInputAction: widget.textInputAction,
-      controller: widget.controller,
-      validator: widget.validator,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      style: AppStyles.regular16white,
-      obscureText: isShowPassword,
-      onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
+      style: AppStyles.bold16White,
+      cursorColor: AppColors.amber,
       decoration: InputDecoration(
         hintText: widget.hintText,
-        hintStyle: AppStyles.regular16white,
-
-        filled: true,
-        fillColor: AppColors.gray,
+        hintStyle: AppStyles.bold16White.copyWith(
+            color: AppColors.white.withValues(alpha: 0.6)),
+        prefixIcon: widget.icon != null ? Icon(
+            widget.icon, color: AppColors.white, size: 24.sp) : null,
         suffixIcon: widget.isPassword
             ? IconButton(
-                onPressed: () {
-                  setState(() {
-                    isShowPassword = !isShowPassword;
-                  });
-                },
+          onPressed: () => setState(() => _obscureText = !_obscureText),
                 icon: Icon(
-                  isShowPassword ? Icons.visibility_off : Icons.visibility,
+                  _obscureText ? Icons.visibility_off : Icons.visibility,
                   color: AppColors.white,
+                  size: 24.sp,
                 ),
               )
             : null,
-        prefixIcon: widget.isPassword
-            ? const Icon(Icons.lock, color: AppColors.white, size: 26)
-            : (widget.hintText.toLowerCase().contains("email"))
-            ? ImageIcon(
-                AssetImage(AppAssets.emailIcon),
-                size: 31,
-                color: AppColors.white,
-              )
-            : (widget.hintText.toLowerCase().contains("name") ||
-                  widget.hintText == "John Safwat")
-            ? const Icon(Icons.person, color: AppColors.white)
-            : (widget.hintText.toLowerCase().contains("phone") ||
-                  widget.hintText == "01200000000")
-            ? const Icon(Icons.phone, color: AppColors.white)
-            : null,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+        filled: true,
+        fillColor: AppColors.gray,
+        contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 18.h),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15.r),
+          borderSide: BorderSide.none,
+        ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: const BorderSide(color: AppColors.blackColor, width: 1),
+          borderRadius: BorderRadius.circular(15.r),
+          borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: const BorderSide(color: AppColors.blackColor, width: 1),
+          borderRadius: BorderRadius.circular(15.r),
+          borderSide: const BorderSide(color: AppColors.amber, width: 1.5),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: const BorderSide(color: AppColors.red, width: 1),
+          borderRadius: BorderRadius.circular(15.r),
+          borderSide: const BorderSide(color: Colors.red, width: 1.5),
         ),
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../utils/app_styles.dart';
 
@@ -16,25 +17,24 @@ class DetailsContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
       decoration: BoxDecoration(
         color: Colors.grey[800],
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(15.r),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           isicon
               ? Icon(
-                  //Icons.star
                   icon,
                   color: Colors.amber,
-                  size: 30,
+            size: 24.sp,
                 )
-              : SizedBox(width: 8),
+              : SizedBox(width: 8.w),
+          SizedBox(width: 4.w),
           Text(
             text,
-            //  movie.rating?.toStringAsFixed(1) ?? '0',
             style: AppStyles.regular16white,
           ),
         ],

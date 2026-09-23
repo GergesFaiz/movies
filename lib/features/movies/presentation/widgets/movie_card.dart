@@ -44,7 +44,8 @@ class MovieCard extends StatelessWidget {
               ),
               errorWidget: (context, url, error) => Container(
                 color: Colors.grey[850],
-                child: const Icon(Icons.broken_image, color: Colors.white54),
+                child: Icon(
+                    Icons.broken_image, color: Colors.white54, size: 24.sp),
               ),
             ),
           )
@@ -59,7 +60,8 @@ class MovieCard extends StatelessWidget {
               ),
               errorWidget: (context, url, error) => Container(
                 color: Colors.grey[850],
-                child: const Icon(Icons.broken_image, color: Colors.white54),
+                child: Icon(
+                    Icons.broken_image, color: Colors.white54, size: 32.sp),
               ),
             ),
           );
@@ -76,7 +78,7 @@ class MovieCard extends StatelessWidget {
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.4),
               blurRadius: 10.r,
-              offset: const Offset(0, 6),
+              offset: Offset(0, 6.h),
             ),
           ],
         ),

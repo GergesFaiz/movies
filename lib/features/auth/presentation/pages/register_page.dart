@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies/core/di/injection.dart';
 import 'package:movies/core/router/app_router.dart';
 import 'package:movies/features/auth/presentation/cubit/auth_cubit.dart';
@@ -12,7 +13,6 @@ import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/app_validator.dart';
 import '../../../../core/utils/firebase_files/auth_function.dart';
 import '../../../../core/utils/firebase_files/dialog_utils.dart';
-import '../../../../core/utils/screen_utils.dart';
 import '../../../../core/widgets/back_app_bar.dart';
 import '../../../../core/widgets/custom_elevatedbutton.dart';
 import '../../../../core/widgets/custom_text_field.dart';
@@ -70,8 +70,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    final height = context.height;
-    final width = context.width;
     final local = AppLocalizations.of(context)!;
 
     return BlocProvider(
@@ -101,16 +99,16 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Form(
               key: _formKey,
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: width * 0.03),
+                padding: EdgeInsets.symmetric(horizontal: 12.w),
                 child: Column(
                   children: [
-                    SizedBox(height: height * 0.01),
+                    SizedBox(height: 10.h),
 
                     // Avatar carousel
                     CarouselSlider(
                       options: CarouselOptions(
                         enlargeCenterPage: true,
-                        height: height * 0.18,
+                        height: 160.h,
                         viewportFraction: 0.37,
                         enableInfiniteScroll: true,
                         enlargeFactor: 0.4,
@@ -122,14 +120,14 @@ class _RegisterPageState extends State<RegisterPage> {
                           .map((path) => Image.asset(path, fit: BoxFit.cover))
                           .toList(),
                     ),
-                    SizedBox(height: height * 0.01),
+                    SizedBox(height: 10.h),
 
                     Text(
                       'Avatar',
                       style: AppStyles.regular16white,
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: height * 0.02),
+                    SizedBox(height: 20.h),
 
                     CustomTextField(
                       textInputType: TextInputType.name,
@@ -138,7 +136,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       hintText: local.name,
                       validator: AppValidator.validateName,
                     ),
-                    SizedBox(height: height * 0.02),
+                    SizedBox(height: 15.h),
                     CustomTextField(
                       textInputType: TextInputType.emailAddress,
                       textInputAction: TextInputAction.next,
@@ -146,7 +144,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       hintText: local.email,
                       validator: AppValidator.validateEmail,
                     ),
-                    SizedBox(height: height * 0.02),
+                    SizedBox(height: 15.h),
                     CustomTextField(
                       textInputType: TextInputType.visiblePassword,
                       textInputAction: TextInputAction.next,
@@ -155,7 +153,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       isPassword: true,
                       validator: AppValidator.validatePassword,
                     ),
-                    SizedBox(height: height * 0.02),
+                    SizedBox(height: 15.h),
                     CustomTextField(
                       textInputType: TextInputType.visiblePassword,
                       textInputAction: TextInputAction.next,
@@ -168,7 +166,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             _passwordController.text,
                           ),
                     ),
-                    SizedBox(height: height * 0.02),
+                    SizedBox(height: 15.h),
                     CustomTextField(
                       textInputType: TextInputType.phone,
                       textInputAction: TextInputAction.done,
@@ -176,7 +174,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       hintText: local.phoneNumber,
                       validator: AppValidator.validatePhone,
                     ),
-                    SizedBox(height: height * 0.02),
+                    SizedBox(height: 25.h),
 
                     BlocBuilder<AuthCubit, AuthState>(
                       builder: (context, state) {
@@ -192,8 +190,6 @@ class _RegisterPageState extends State<RegisterPage> {
                                       context,
                                     );
                                     try {
-                                      // Registration مع Firebase مباشرة
-                                      // عشان محتاجين نحفظ الـ name و phone في Firestore
                                       String? error =
                                           await FirebaseFunctions.registerUser(
                                             name: _nameController.text,
@@ -238,7 +234,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         );
                       },
                     ),
-                    SizedBox(height: height * 0.02),
+                    SizedBox(height: 15.h),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -261,9 +257,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: height * 0.02),
+                    SizedBox(height: 20.h),
                     Center(child: LanguageSwitch()),
-                    SizedBox(height: height * 0.02),
+                    SizedBox(height: 20.h),
                   ],
                 ),
               ),

@@ -10,10 +10,10 @@ import '../../features/auth/domain/repositories/auth_repository.dart';
 import '../../features/auth/presentation/cubit/app_language_cubit.dart';
 import '../../features/auth/presentation/cubit/auth_cubit.dart';
 // Movies feature
-import '../../features/movies/data/datasources/movies_remote_datasource.dart';
-import '../../features/movies/data/datasources/user_movies_remote_datasource.dart';
-import '../../features/movies/data/repositories/movies_repository_impl.dart';
-import '../../features/movies/data/repositories/user_movies_repository_impl.dart';
+import '../../features/movies/data/remote/datasources/movies_remote_datasource.dart';
+import '../../features/movies/data/remote/datasources/user_movies_remote_datasource.dart';
+import '../../features/movies/data/remote/repositories/movies_repository_impl.dart';
+import '../../features/movies/data/remote/repositories/user_movies_repository_impl.dart';
 import '../../features/movies/domain/repositories/movies_repository.dart';
 import '../../features/movies/domain/repositories/user_movies_repository.dart';
 import '../../features/movies/domain/usecases/add_to_history_usecase.dart';

@@ -85,7 +85,7 @@ class _HomeTabState extends State<HomeTab> with RouteAware {
       return Center(
         child: Text(
           'No Movies Found',
-          style: TextStyle(color: AppColors.white),
+          style: TextStyle(color: AppColors.white, fontSize: 16.sp),
         ),
       );
     }
@@ -117,7 +117,7 @@ class _HomeTabState extends State<HomeTab> with RouteAware {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Image.asset(AppAssets.available),
+                Image.asset(AppAssets.available, height: 40.h),
                 SizedBox(height: 8.h),
 
                 // Carousel
@@ -143,7 +143,7 @@ class _HomeTabState extends State<HomeTab> with RouteAware {
                   ),
                 ),
 
-                Image.asset(AppAssets.watchnow),
+                Image.asset(AppAssets.watchnow, height: 30.h),
                 SizedBox(height: 10.h),
 
                 // Category section
@@ -156,7 +156,8 @@ class _HomeTabState extends State<HomeTab> with RouteAware {
                       TextButton.icon(
                         onPressed: () {},
                         label: Text('See More', style: AppStyles.medium15Amber),
-                        icon: Icon(Icons.arrow_forward, color: AppColors.amber),
+                        icon: Icon(Icons.arrow_forward, color: AppColors.amber,
+                            size: 16.sp),
                         iconAlignment: IconAlignment.end,
                       ),
                     ],

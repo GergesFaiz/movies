@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/utils/app_assets.dart';
@@ -6,7 +7,6 @@ import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/app_validator.dart';
 import '../../../../core/utils/firebase_files/auth_function.dart';
 import '../../../../core/utils/firebase_files/dialog_utils.dart';
-import '../../../../core/utils/screen_utils.dart';
 import '../../../../core/widgets/back_app_bar.dart';
 import '../../../../core/widgets/custom_elevatedbutton.dart';
 import '../../../../core/widgets/custom_text_field.dart';
@@ -29,24 +29,22 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
-    final height = context.height;
-    final width = context.width;
     final local = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: BackAppBar(title: local.forgotPassword),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: width * 0.06),
+        padding: EdgeInsets.symmetric(horizontal: 24.w),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(height: height * 0.02),
+              SizedBox(height: 20.h),
               SizedBox(
-                height: height * 0.46,
+                height: 400.h,
                 child: Center(child: Image.asset(AppAssets.forgotPasswordBro)),
               ),
-              SizedBox(height: height * 0.02),
+              SizedBox(height: 20.h),
               CustomTextField(
                 textInputType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.done,
@@ -54,7 +52,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 hintText: local.email,
                 validator: AppValidator.validateEmail,
               ),
-              SizedBox(height: height * 0.02),
+              SizedBox(height: 20.h),
               CustomElevatedButton(
                 label: local.verifyEmail,
                 textStyle: AppStyles.bold16Black,

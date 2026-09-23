@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../utils/app_assets.dart';
 import '../utils/app_colors.dart';
-import '../utils/screen_utils.dart';
 
 class AvtarHorizontalList extends StatefulWidget {
   
@@ -31,11 +31,10 @@ class _AvtarHorizontalListState extends State<AvtarHorizontalList> {
 int? selectedAvatar;
   @override
   Widget build(BuildContext context) {
-  double screenwidth=context.width;
-    double baseRadius = screenwidth* 0.14; 
-  double selectedRadius = baseRadius * 1.2;
+    double baseRadius = 50.w;
+    double selectedRadius = baseRadius * 1.2;
     return SizedBox(
-      height: screenwidth*.43,
+      height: 140.h,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: avatarImages.length,
@@ -49,32 +48,17 @@ int? selectedAvatar;
               
               widget.onAvatarSelected(index);
             },
-            child:/* Container(
-              margin: const EdgeInsets.symmetric(horizontal: 8),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: isSelected ? Colors.amber : Colors.transparent,
-                  // خليها لون شيك يليق مع الموفيز
-                  width: 3,
-                ),
-              ),
-              child: CircleAvatar(
-                radius: 40,
-                backgroundImage: AssetImage(avatarImages[index]),
-              ),
-            ),*/
-            AnimatedContainer(
+              child: AnimatedContainer(
               duration: const Duration(milliseconds: 200),
-              margin:  EdgeInsetsDirectional.symmetric(horizontal: screenwidth*.02),
+                margin: EdgeInsets.symmetric(horizontal: 8.w),
               transform: isSelected?Matrix4.diagonal3Values(1.1, 1.1, 1.0):Matrix4.identity(),
               alignment: Alignment.center,
               child: CircleAvatar(
                 radius: isSelected?selectedRadius : baseRadius,
-                //45:35,
                 backgroundColor: isSelected?AppColors.amber:AppColors.gray,
                 child: CircleAvatar(
-                  radius: isSelected?(selectedRadius-3):(baseRadius-2),
+                  radius: isSelected ? (selectedRadius - 3.w) : (baseRadius -
+                      2.w),
                   backgroundImage: AssetImage(avatarImages[index]),
                 ),
               ),
