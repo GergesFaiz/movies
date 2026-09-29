@@ -58,8 +58,11 @@ class _LoginPageState extends State<LoginPage> {
               context,
               local.loginSuccess,
               posActionName: local.ok,
-              posAction: () =>
-                  Navigator.pushReplacementNamed(context, AppRoutes.homeScreen),
+              posAction: () => Navigator.pushNamedAndRemoveUntil(
+                context,
+                AppRoutes.homeScreen,
+                (_) => false,
+              ),
             );
           } else if (state is AuthError) {
             DialogUtils.hideLoading(context);
@@ -87,6 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                         textInputAction: TextInputAction.next,
                         controller: _emailController,
                         hintText: local.email,
+                        icon: FieldIcon.email,
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
                             return local.emailRequired;
@@ -111,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       SizedBox(height: height * 0.01),
                       Align(
-                        alignment: Alignment.centerRight,
+                        alignment: AlignmentDirectional.centerEnd,
                         child: TextButton(
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.zero,
@@ -175,9 +179,9 @@ class _LoginPageState extends State<LoginPage> {
                         ],
                       ),
                       SizedBox(height: height * 0.02),
-                      CustomDivider(),
+                      const CustomDivider(),
                       SizedBox(height: height * 0.02),
-                      LanguageSwitch(),
+                      const LanguageSwitch(),
                     ],
                   ),
                 ),

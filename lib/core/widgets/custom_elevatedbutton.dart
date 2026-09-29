@@ -45,6 +45,21 @@ class CustomElevatedButton extends StatelessWidget {
                 Text(label, style: AppStyles.regular16Gray),
               ],
             )
+          : icon != null
+          ? Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Flexible(
+                  child: Text(
+                    label,
+                    style: textStyle ?? AppStyles.regular20Black,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                const SizedBox(width: 6),
+                icon!,
+              ],
+            )
           : Text(label, style: textStyle ?? AppStyles.regular20Black),
     );
   }

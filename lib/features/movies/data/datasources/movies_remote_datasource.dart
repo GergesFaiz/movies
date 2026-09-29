@@ -7,7 +7,7 @@ import '../models/movie_model.dart';
 abstract class MoviesRemoteDataSource {
   Future<List<MovieModel>> getMovies({String sortBy, int limit, int page});
 
-  Future<Map<String, dynamic>> getMovieDetails(int movieId);
+  Future<MovieModel> getMovieDetails(int movieId);
 
   Future<List<MovieModel>> getMovieSuggestions(int movieId);
 
@@ -38,10 +38,16 @@ class MoviesRemoteDataSourceImpl implements MoviesRemoteDataSource {
   }
 
   @override
-  Future<Map<String, dynamic>> getMovieDetails(int movieId) async {
+  Future<MovieModel> getMovieDetails(int movieId) async {
     try {
       final response = await _apiClient.getMovieDetails(movieId: movieId);
-      return response.data as Map<String, dynamic>;
+      final body = response.data;
+      final data = body is Map<String, dynamic> ? body['data'] : null;
+      final movie = data is Map<String, dynamic> ? data['movie'] : null;
+      if (movie is! Map<String, dynamic>) {
+        throw const NotFoundFailure('Movie data not found');
+      }
+      return MovieModel.fromJson(movie);
     } on DioException catch (e) {
       throw _handleDioError(e);
     }
@@ -68,12 +74,18 @@ class MoviesRemoteDataSourceImpl implements MoviesRemoteDataSource {
   }
 
   Failure _handleDioError(DioException e) {
-    if (e.type == DioExceptionType.connectionTimeout ||
-        e.type == DioExceptionType.receiveTimeout) {
-      return const NetworkFailure('Connection timed out');
-    } else if (e.response?.statusCode == 404) {
-      return const NotFoundFailure('No results found');
+    switch (e.type) {
+      case DioExceptionType.connectionTimeout:
+      case DioExceptionType.receiveTimeout:
+      case DioExceptionType.sendTimeout:
+        return const NetworkFailure('Connection timed out');
+      case DioExceptionType.connectionError:
+        return const NetworkFailure();
+      default:
+        if (e.response?.statusCode == 404) {
+          return const NotFoundFailure('No results found');
+        }
+        return ServerFailure(e.message ?? 'Server error');
     }
-    return ServerFailure(e.message ?? 'Server error');
   }
 }

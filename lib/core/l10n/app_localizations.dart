@@ -421,6 +421,276 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Removed from watch list successfully'**
   String get removedFromWatchList;
+
+  /// No description provided for @register.
+  ///
+  /// In en, this message translates to:
+  /// **'Register'**
+  String get register;
+
+  /// No description provided for @accountCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Account created successfully!'**
+  String get accountCreated;
+
+  /// No description provided for @or.
+  ///
+  /// In en, this message translates to:
+  /// **'OR'**
+  String get or;
+
+  /// No description provided for @tryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Try Again'**
+  String get tryAgain;
+
+  /// No description provided for @pageNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Page not found'**
+  String get pageNotFound;
+
+  /// No description provided for @home.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get home;
+
+  /// No description provided for @search.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get search;
+
+  /// No description provided for @browse.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse'**
+  String get browse;
+
+  /// No description provided for @profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profile;
+
+  /// No description provided for @noMoviesFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No movies found'**
+  String get noMoviesFound;
+
+  /// No description provided for @seeMore.
+  ///
+  /// In en, this message translates to:
+  /// **'See More'**
+  String get seeMore;
+
+  /// No description provided for @all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get all;
+
+  /// No description provided for @screenshots.
+  ///
+  /// In en, this message translates to:
+  /// **'Screenshots'**
+  String get screenshots;
+
+  /// No description provided for @trailerUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Trailer is not available for this movie.'**
+  String get trailerUnavailable;
+
+  /// No description provided for @couldNotOpenLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open the link.'**
+  String get couldNotOpenLink;
+
+  /// No description provided for @exit.
+  ///
+  /// In en, this message translates to:
+  /// **'Exit'**
+  String get exit;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// No description provided for @deleteAccountConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete your account? This can\'t be undone.'**
+  String get deleteAccountConfirm;
+
+  /// No description provided for @unknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get unknown;
+
+  /// No description provided for @actorName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name: {name}'**
+  String actorName(String name);
+
+  /// No description provided for @characterName.
+  ///
+  /// In en, this message translates to:
+  /// **'Character: {name}'**
+  String characterName(String name);
+
+  /// No description provided for @nameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Name is required'**
+  String get nameRequired;
+
+  /// No description provided for @invalidName.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid name (at least 3 characters)'**
+  String get invalidName;
+
+  /// No description provided for @invalidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email address (e.g., name@example.com)'**
+  String get invalidEmail;
+
+  /// No description provided for @phoneRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number is required'**
+  String get phoneRequired;
+
+  /// No description provided for @invalidPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid 11-digit Egyptian phone number'**
+  String get invalidPhone;
+
+  /// No description provided for @weakPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Must contain uppercase, lowercase, number, and min 8 chars'**
+  String get weakPassword;
+
+  /// No description provided for @confirmPasswordRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please confirm your password'**
+  String get confirmPasswordRequired;
+
+  /// No description provided for @passwordsDoNotMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get passwordsDoNotMatch;
+
+  /// No description provided for @exploreNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore Now'**
+  String get exploreNow;
+
+  /// No description provided for @next.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get next;
+
+  /// No description provided for @back.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get back;
+
+  /// No description provided for @finish.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish'**
+  String get finish;
+
+  /// No description provided for @onboardingTitle1.
+  ///
+  /// In en, this message translates to:
+  /// **'Find Your Next\nFavorite Movie Here'**
+  String get onboardingTitle1;
+
+  /// No description provided for @onboardingDescription1.
+  ///
+  /// In en, this message translates to:
+  /// **'Get access to a huge library of movies\nto suit all tastes. You will surely like it.'**
+  String get onboardingDescription1;
+
+  /// No description provided for @onboardingTitle2.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover Movies'**
+  String get onboardingTitle2;
+
+  /// No description provided for @onboardingDescription2.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore a vast collection of movies in all\nqualities and genres. Find your next\nfavorite film with ease.'**
+  String get onboardingDescription2;
+
+  /// No description provided for @onboardingTitle3.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore All Genres'**
+  String get onboardingTitle3;
+
+  /// No description provided for @onboardingDescription3.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover movies from every genre, in all\navailable qualities. Find something new\nand exciting to watch every day.'**
+  String get onboardingDescription3;
+
+  /// No description provided for @onboardingTitle4.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Watchlists'**
+  String get onboardingTitle4;
+
+  /// No description provided for @onboardingDescription4.
+  ///
+  /// In en, this message translates to:
+  /// **'Save movies to your watchlist to keep\ntrack of what you want to watch next.\nEnjoy films in various qualities and\ngenres.'**
+  String get onboardingDescription4;
+
+  /// No description provided for @onboardingTitle5.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate, Review, and Learn'**
+  String get onboardingTitle5;
+
+  /// No description provided for @onboardingDescription5.
+  ///
+  /// In en, this message translates to:
+  /// **'Share your thoughts on the movies\nyou\'ve watched. Dive deep into film\ndetails and help others discover great\nmovies with your reviews.'**
+  String get onboardingDescription5;
+
+  /// No description provided for @onboardingTitle6.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Watching Now'**
+  String get onboardingTitle6;
 }
 
 class _AppLocalizationsDelegate

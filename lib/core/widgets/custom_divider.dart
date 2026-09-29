@@ -1,5 +1,6 @@
  import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
 import '../utils/app_colors.dart';
 import '../utils/app_styles.dart';
 import '../utils/screen_utils.dart';
@@ -30,7 +31,7 @@ class CustomDivider extends StatelessWidget
       ),
 
       Text(
-        "OR",
+        AppLocalizations.of(context)!.or,
         style:AppStyles.medium15Amber
       ),
 

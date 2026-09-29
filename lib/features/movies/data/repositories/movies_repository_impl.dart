@@ -5,6 +5,7 @@ import '../../domain/entities/movie_details_entity.dart';
 import '../../domain/entities/movie_entity.dart';
 import '../../domain/repositories/movies_repository.dart';
 import '../datasources/movies_remote_datasource.dart';
+import '../models/movie_model.dart';
 
 class MoviesRepositoryImpl implements MoviesRepository {
   final MoviesRemoteDataSource _remoteDataSource;
@@ -36,43 +37,20 @@ class MoviesRepositoryImpl implements MoviesRepository {
     int movieId,
   ) async {
     try {
-      final rawData = await _remoteDataSource.getMovieDetails(movieId);
-      final movieData =
-          (rawData['data'] as Map<String, dynamic>?)?['movie']
-              as Map<String, dynamic>?;
-
-      if (movieData == null) {
-        return const Left(ServerFailure('Movie data not found'));
-      }
-
-      final likeCount = movieData['like_count']?.toString() ?? '0';
-      final runtime = (movieData['runtime'] as num?)?.toInt() ?? 0;
-      final rating = (movieData['rating'] as num?)?.toDouble() ?? 0.0;
-      final genres =
-          (movieData['genres'] as List<dynamic>?)
-              ?.map((g) => g.toString())
-              .toList() ??
-          [];
-
-      final screenshots = <String>[];
-      for (int i = 1; i <= 3; i++) {
-        final url = movieData['medium_screenshot_image$i'];
-        if (url != null) screenshots.add(url.toString());
-      }
-
-      final cast = (movieData['cast'] as List<dynamic>?) ?? [];
-
-      final suggestions = await _remoteDataSource.getMovieSuggestions(movieId);
+      // Suggestions are optional: a failure there must not hide the details.
+      final suggestionsFuture = _remoteDataSource
+          .getMovieSuggestions(movieId)
+          .catchError((Object _) => <MovieModel>[]);
+      final movie = await _remoteDataSource.getMovieDetails(movieId);
+      final suggestions = await suggestionsFuture;
 
       return Right(
         MovieDetailsEntity(
-          likeCount: likeCount,
-          runtime: runtime,
-          rating: rating,
-          genres: genres,
-          screenshots: screenshots,
-          cast: cast,
-          suggestions: suggestions.map((m) => m.toEntity()).toList(),
+          movie: movie.toEntity(),
+          suggestions: suggestions
+              .where((m) => m.id != movieId)
+              .map((m) => m.toEntity())
+              .toList(),
         ),
       );
     } on Failure catch (f) {

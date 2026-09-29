@@ -1,11 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:movies/core/router/app_router.dart';
 
+import '../../../../core/di/injection.dart';
+import '../../../../core/l10n/app_localizations.dart';
+import '../../../../core/storage/app_preferences.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/widgets/custom_elevatedbutton.dart';
 import '../../../../core/widgets/onboarding_bottomsheet.dart';
 import '../../../../core/widgets/onboarding_data.dart';
-
 
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});
@@ -24,10 +27,20 @@ class _OnboardingPageState extends State<OnboardingPage> {
     super.dispose();
   }
 
-  void _navigate(String direction) {
+  Future<void> _finish() async {
+    await sl<AppPreferences>().setOnboardingSeen();
+    if (!mounted) return;
+    final isLoggedIn = sl<FirebaseAuth>().currentUser != null;
+    Navigator.pushReplacementNamed(
+      context,
+      isLoggedIn ? AppRoutes.homeScreen : AppRoutes.loginScreen,
+    );
+  }
+
+  void _navigate(String direction, int pageCount) {
     if (direction == 'next') {
-      if (_currentPage == onboardingPages.length - 1) {
-        Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
+      if (_currentPage == pageCount - 1) {
+        _finish();
       } else {
         _pageController.nextPage(
           duration: const Duration(milliseconds: 500),
@@ -44,12 +57,14 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   @override
   Widget build(BuildContext context) {
+    final pages = onboardingPages(AppLocalizations.of(context)!);
+
     return PageView.builder(
       controller: _pageController,
-      itemCount: onboardingPages.length,
+      itemCount: pages.length,
       onPageChanged: (index) => setState(() => _currentPage = index),
       itemBuilder: (context, index) {
-        final data = onboardingPages[index];
+        final data = pages[index];
         return Scaffold(
           body: Stack(
             fit: StackFit.expand,
@@ -70,16 +85,16 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 ),
               ),
               index == 0
-                  ? _buildFirstPage(data)
+                  ? _buildFirstPage(data, pages.length)
                   : Align(
-                      alignment: AlignmentGeometry.bottomCenter,
+                      alignment: Alignment.bottomCenter,
                       child: OnboardingBottomsheet(
                         bottomSheetTitle: data.title,
                         bottomSheetDiscribtion: data.description,
                         buttonText: data.buttonText,
                         isFirstPage: index == 1,
-                        navigatornext: () => _navigate('next'),
-                        navigatorback: () => _navigate('back'),
+                        navigatornext: () => _navigate('next', pages.length),
+                        navigatorback: () => _navigate('back', pages.length),
                       ),
                     ),
             ],
@@ -89,7 +104,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
     );
   }
 
-  Widget _buildFirstPage(OnboardingData data) {
+  Widget _buildFirstPage(OnboardingData data, int pageCount) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Column(
@@ -97,18 +112,22 @@ class _OnboardingPageState extends State<OnboardingPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const Spacer(flex: 2),
-          Text(data.title,
-              style: AppStyles.medium36white,
-              textAlign: TextAlign.center),
+          Text(
+            data.title,
+            style: AppStyles.medium36white,
+            textAlign: TextAlign.center,
+          ),
           const SizedBox(height: 20),
-          Text(data.description,
-              style: AppStyles.bold20White,
-              textAlign: TextAlign.center),
+          Text(
+            data.description,
+            style: AppStyles.bold20White,
+            textAlign: TextAlign.center,
+          ),
           const SizedBox(height: 20),
           CustomElevatedButton(
             label: data.buttonText,
             textStyle: AppStyles.bold20black,
-            onPressed: () => _navigate('next'),
+            onPressed: () => _navigate('next', pageCount),
           ),
         ],
       ),

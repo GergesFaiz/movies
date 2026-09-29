@@ -22,7 +22,6 @@ class FirebaseFunctions {
         name: name,
         email: email,
         phoneNum: phone,
-        password: password,
       );
 
       await FirebaseFirestore.instance
@@ -72,7 +71,7 @@ class FirebaseFunctions {
 
   static Future<Map<String, dynamic>?> getUserData(String uid) async {
     final doc = await FirebaseFirestore.instance
-        .collection('Users')
+        .collection(UserModel.collectionName)
         .doc(uid)
         .get();
     return doc.exists ? doc.data() : null;

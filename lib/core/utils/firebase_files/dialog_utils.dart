@@ -14,16 +14,28 @@ class DialogUtils {
           children: [
             const CircularProgressIndicator(color: AppColors.amber),
             const SizedBox(width: 20),
-            Text(s ?? "Loading...", style: AppStyles.bold16White),
+            Flexible(
+              child: Text(s ?? "Loading...", style: AppStyles.bold16White),
+            ),
           ],
         ),
       ),
-    ));
+    );
   }
+
   static void hideLoading(BuildContext context) {
     Navigator.pop(context);
   }
-  static void showMessage(BuildContext context, String message, {String? title, String? posActionName, VoidCallback? posAction}) {
+
+  static void showMessage(
+    BuildContext context,
+    String message, {
+    String? title,
+    String? posActionName,
+    VoidCallback? posAction,
+    String? negActionName,
+    VoidCallback? negAction,
+  }) {
     showDialog(
       context: context,
       builder: (context) {
@@ -31,6 +43,14 @@ class DialogUtils {
           title: Text(title ?? 'Notice'),
           content: Text(message),
           actions: [
+            if (negActionName != null)
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  negAction?.call();
+                },
+                child: Text(negActionName),
+              ),
             if (posActionName != null)
               TextButton(
                 onPressed: () {
@@ -44,5 +64,4 @@ class DialogUtils {
       },
     );
   }
-   
 }

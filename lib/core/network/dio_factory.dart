@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 class DioFactory {
   static Dio create() {
@@ -13,14 +14,17 @@ class DioFactory {
 
     final dio = Dio(options);
 
-    dio.interceptors.add(
-      LogInterceptor(
-        request: true,
-        responseBody: true,
-        error: true,
-        requestBody: false,
-      ),
-    );
+    // Full response bodies are large; only log them while developing.
+    if (kDebugMode) {
+      dio.interceptors.add(
+        LogInterceptor(
+          request: true,
+          responseBody: true,
+          error: true,
+          requestBody: false,
+        ),
+      );
+    }
 
     return dio;
   }

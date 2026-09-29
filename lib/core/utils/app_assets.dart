@@ -20,6 +20,22 @@ class AppAssets {
   static const String avatar10 = "assets/images/avatars/gamerK.png";
 
   static const String empty1 = "assets/images/Empty_1.png";
+  static const String playButton = "assets/images/Group 21.png";
+
+  /// Every avatar a user can pick. Register and Edit Profile both use this
+  /// list, so the saved asset path always maps back to a valid index.
+  static const List<String> avatars = [
+    avatar2,
+    avatar7,
+    avatar3,
+    avatar4,
+    avatar5,
+    avatar6,
+    avatar1,
+    avatar10,
+    avatar9,
+    avatar8,
+  ];
 
 
 
