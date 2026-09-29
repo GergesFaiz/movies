@@ -1,7 +1,6 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
 import '../utils/app_assets.dart';
 import '../utils/app_colors.dart';
 
@@ -21,52 +20,47 @@ class OnboardingData {
   });
 }
 
-final List<OnboardingData> onboardingPages = [
+List<OnboardingData> onboardingPages(AppLocalizations l10n) => [
   OnboardingData(
     image: AppOnboardingImage.onbaordingImage1,
-    title: "Find Your Next\nFavorite Movie Here",
-    description:
-        "Get access to a huge library of movies\nto suit all tastes. You will surely like it.",
-    buttonText: "Explore Now",
+    title: l10n.onboardingTitle1,
+    description: l10n.onboardingDescription1,
+    buttonText: l10n.exploreNow,
     gradientColor: AppColors.blackColor,
   ),
   OnboardingData(
     image: AppOnboardingImage.onbaordingImage2,
-    title: "Discover Movies",
-    description:
-        "Explore a vast collection of movies in all\nqualities and genres. Find your next\nfavorite film with ease.",
-    buttonText: "Next",
-    gradientColor: Color(0XFF084250),
+    title: l10n.onboardingTitle2,
+    description: l10n.onboardingDescription2,
+    buttonText: l10n.next,
+    gradientColor: const Color(0XFF084250),
   ),
   OnboardingData(
     image: AppOnboardingImage.onbaordingImage3,
-    title: "Explore All Genres",
-    description:
-        "Discover movies from every genre, in all\navailable qualities. Find something new\nand exciting to watch every day.",
-    buttonText: "Next",
-    gradientColor: Color(0XFF85210E),
+    title: l10n.onboardingTitle3,
+    description: l10n.onboardingDescription3,
+    buttonText: l10n.next,
+    gradientColor: const Color(0XFF85210E),
   ),
   OnboardingData(
     image: AppOnboardingImage.onbaordingImage4,
-    title: "Create Watchlists",
-    description:
-        "Save movies to your watchlist to keep\ntrack of what you want to watch next.\nEnjoy films in various qualities and\ngenres.",
-    buttonText: "Next",
-    gradientColor: Color(0XFF4C2471),
+    title: l10n.onboardingTitle4,
+    description: l10n.onboardingDescription4,
+    buttonText: l10n.next,
+    gradientColor: const Color(0XFF4C2471),
   ),
   OnboardingData(
     image: AppOnboardingImage.onbaordingImage5,
-    title: "Rate, Review, and Learn",
-    description:
-        "Share your thoughts on the movies\nyou've watched. Dive deep into film\ndetails and help others discover great\nmovies with your reviews.",
-    buttonText: "Next",
-    gradientColor: Color(0XFF601321),
+    title: l10n.onboardingTitle5,
+    description: l10n.onboardingDescription5,
+    buttonText: l10n.next,
+    gradientColor: const Color(0XFF601321),
   ),
   OnboardingData(
     image: AppOnboardingImage.onbaordingImage6,
-    title: "Start Watching Now",
-    description: "",
-    buttonText: "Finish",
-    gradientColor: Color(0XFF2A2C30),
+    title: l10n.onboardingTitle6,
+    description: '',
+    buttonText: l10n.finish,
+    gradientColor: const Color(0XFF2A2C30),
   ),
 ];

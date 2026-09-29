@@ -1,21 +1,21 @@
+import 'cast_entity.dart';
 import 'movie_entity.dart';
 
 class MovieDetailsEntity {
-  final String likeCount;
-  final int runtime;
-  final double rating;
-  final List<String> genres;
-  final List<String> screenshots;
-  final List<dynamic> cast;
+  final MovieEntity movie;
   final List<MovieEntity> suggestions;
 
-  const MovieDetailsEntity({
-    required this.likeCount,
-    required this.runtime,
-    required this.rating,
-    required this.genres,
-    required this.screenshots,
-    required this.cast,
-    required this.suggestions,
-  });
+  const MovieDetailsEntity({required this.movie, required this.suggestions});
+
+  String get likeCount => (movie.likeCount ?? 0).toString();
+
+  int get runtime => movie.runtime ?? 0;
+
+  double get rating => movie.rating ?? 0;
+
+  List<String> get genres => movie.genres ?? const [];
+
+  List<String> get screenshots => movie.screenshots;
+
+  List<CastEntity> get cast => movie.cast ?? const [];
 }

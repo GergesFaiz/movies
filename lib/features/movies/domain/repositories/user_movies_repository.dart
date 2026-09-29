@@ -10,4 +10,8 @@ abstract class UserMoviesRepository {
   Future<Either<Failure, void>> addToHistory(MovieEntity movie);
 
   Stream<bool> isMovieInWatchlist(int movieId);
+
+  Stream<List<MovieEntity>> watchWatchlist();
+
+  Stream<List<MovieEntity>> watchHistory();
 }

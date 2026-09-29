@@ -21,17 +21,7 @@ class AvatarsBottomSheet extends StatefulWidget {
 class _AvatarsBottomSheetState extends State<AvatarsBottomSheet> {
   late int _selectedAvatar;
 
-  final List<String> _avatarImages = [
-    AppAssets.avatar7,
-    AppAssets.avatar8,
-    AppAssets.avatar9,
-    AppAssets.avatar4,
-    AppAssets.avatar5,
-    AppAssets.avatar6,
-    AppAssets.avatar1,
-    AppAssets.avatar2,
-    AppAssets.avatar3,
-  ];
+  final List<String> _avatarImages = AppAssets.avatars;
 
   @override
   void initState() {
@@ -51,23 +41,21 @@ class _AvatarsBottomSheetState extends State<AvatarsBottomSheet> {
       ),
       child: GridView.builder(
         shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
         itemCount: _avatarImages.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
           crossAxisSpacing: 14,
           mainAxisSpacing: 14,
         ),
-        itemBuilder: (context, i) {
+        itemBuilder: (_, i) {
           final isSelected = i == _selectedAvatar;
           return GestureDetector(
-            onTap: () {
+            onTap: () async {
               setState(() => _selectedAvatar = i);
               widget.onAvatarSelected(i);
-              Future.delayed(
-                const Duration(milliseconds: 500),
-                () => Navigator.pop(context),
-              );
+              await Future.delayed(const Duration(milliseconds: 500));
+              if (!mounted) return;
+              Navigator.pop(this.context);
             },
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 200),

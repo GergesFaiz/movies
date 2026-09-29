@@ -14,9 +14,6 @@ class FirebaseUtils {
   }
 
   static Future<void> addUser(UserModel user) {
-    var collectionReference = getUserCollection();
-    var docRef = collectionReference.doc(user.id);
-    user.id = docRef.id;
-    return docRef.set(user);
+    return getUserCollection().doc(user.id).set(user);
   }
 }

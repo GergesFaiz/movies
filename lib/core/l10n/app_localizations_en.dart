@@ -169,4 +169,151 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get removedFromWatchList => 'Removed from watch list successfully';
+
+  @override
+  String get register => 'Register';
+
+  @override
+  String get accountCreated => 'Account created successfully!';
+
+  @override
+  String get or => 'OR';
+
+  @override
+  String get tryAgain => 'Try Again';
+
+  @override
+  String get pageNotFound => 'Page not found';
+
+  @override
+  String get home => 'Home';
+
+  @override
+  String get search => 'Search';
+
+  @override
+  String get browse => 'Browse';
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String get noMoviesFound => 'No movies found';
+
+  @override
+  String get seeMore => 'See More';
+
+  @override
+  String get all => 'All';
+
+  @override
+  String get screenshots => 'Screenshots';
+
+  @override
+  String get trailerUnavailable => 'Trailer is not available for this movie.';
+
+  @override
+  String get couldNotOpenLink => 'Couldn\'t open the link.';
+
+  @override
+  String get exit => 'Exit';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get deleteAccountConfirm =>
+      'Are you sure you want to delete your account? This can\'t be undone.';
+
+  @override
+  String get unknown => 'Unknown';
+
+  @override
+  String actorName(String name) {
+    return 'Name: $name';
+  }
+
+  @override
+  String characterName(String name) {
+    return 'Character: $name';
+  }
+
+  @override
+  String get nameRequired => 'Name is required';
+
+  @override
+  String get invalidName => 'Please enter a valid name (at least 3 characters)';
+
+  @override
+  String get invalidEmail =>
+      'Enter a valid email address (e.g., name@example.com)';
+
+  @override
+  String get phoneRequired => 'Phone number is required';
+
+  @override
+  String get invalidPhone => 'Enter a valid 11-digit Egyptian phone number';
+
+  @override
+  String get weakPassword =>
+      'Must contain uppercase, lowercase, number, and min 8 chars';
+
+  @override
+  String get confirmPasswordRequired => 'Please confirm your password';
+
+  @override
+  String get passwordsDoNotMatch => 'Passwords do not match';
+
+  @override
+  String get exploreNow => 'Explore Now';
+
+  @override
+  String get next => 'Next';
+
+  @override
+  String get back => 'Back';
+
+  @override
+  String get finish => 'Finish';
+
+  @override
+  String get onboardingTitle1 => 'Find Your Next\nFavorite Movie Here';
+
+  @override
+  String get onboardingDescription1 =>
+      'Get access to a huge library of movies\nto suit all tastes. You will surely like it.';
+
+  @override
+  String get onboardingTitle2 => 'Discover Movies';
+
+  @override
+  String get onboardingDescription2 =>
+      'Explore a vast collection of movies in all\nqualities and genres. Find your next\nfavorite film with ease.';
+
+  @override
+  String get onboardingTitle3 => 'Explore All Genres';
+
+  @override
+  String get onboardingDescription3 =>
+      'Discover movies from every genre, in all\navailable qualities. Find something new\nand exciting to watch every day.';
+
+  @override
+  String get onboardingTitle4 => 'Create Watchlists';
+
+  @override
+  String get onboardingDescription4 =>
+      'Save movies to your watchlist to keep\ntrack of what you want to watch next.\nEnjoy films in various qualities and\ngenres.';
+
+  @override
+  String get onboardingTitle5 => 'Rate, Review, and Learn';
+
+  @override
+  String get onboardingDescription5 =>
+      'Share your thoughts on the movies\nyou\'ve watched. Dive deep into film\ndetails and help others discover great\nmovies with your reviews.';
+
+  @override
+  String get onboardingTitle6 => 'Start Watching Now';
 }

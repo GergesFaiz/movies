@@ -4,44 +4,32 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies/core/router/app_router.dart';
 import 'package:movies/features/movies/presentation/bloc/movies_bloc.dart';
 
+import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_styles.dart';
+import '../../../../core/widgets/main_error_widget.dart';
 import '../widgets/movie_card.dart';
 
-class BrowseTab extends StatefulWidget {
+/// Movies grid filtered by genre. The [MoviesBloc] is provided (and loaded)
+/// by the home screen so "See More" on Home can pre-select a genre.
+class BrowseTab extends StatelessWidget {
   const BrowseTab({super.key});
 
   @override
-  State<BrowseTab> createState() => _BrowseTabState();
-}
-
-class _BrowseTabState extends State<BrowseTab> {
-  @override
-  void initState() {
-    super.initState();
-    context.read<MoviesBloc>().add(LoadBrowseMoviesEvent());
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final local = AppLocalizations.of(context)!;
+
     return BlocBuilder<MoviesBloc, MoviesState>(
       buildWhen: (prev, curr) =>
           curr is BrowseMoviesLoading ||
           curr is BrowseMoviesLoaded ||
           curr is BrowseMoviesError,
       builder: (context, state) {
-        if (state is BrowseMoviesLoading) {
-          return const Center(
-            child: CircularProgressIndicator(color: AppColors.amber),
-          );
-        }
-
         if (state is BrowseMoviesError) {
-          return Center(
-            child: Text(
-              state.message,
-              style: const TextStyle(color: Colors.red, fontSize: 18),
-            ),
+          return MainErrorWidget(
+            message: state.message,
+            onPressed: () =>
+                context.read<MoviesBloc>().add(LoadBrowseMoviesEvent()),
           );
         }
 
@@ -68,7 +56,7 @@ class _BrowseTabState extends State<BrowseTab> {
                               SelectGenreEvent(genre),
                             ),
                             child: Container(
-                              margin: EdgeInsets.only(right: 12.w),
+                              margin: EdgeInsetsDirectional.only(end: 12.w),
                               padding: EdgeInsets.symmetric(
                                 horizontal: 28.w,
                                 vertical: 12.h,
@@ -80,7 +68,9 @@ class _BrowseTabState extends State<BrowseTab> {
                                 borderRadius: BorderRadius.circular(30.r),
                               ),
                               child: Text(
-                                genre,
+                                genre == MoviesBloc.allGenres
+                                    ? local.all
+                                    : genre,
                                 style: AppStyles.bold16White.copyWith(
                                   color: isSelected
                                       ? Colors.black
@@ -97,10 +87,10 @@ class _BrowseTabState extends State<BrowseTab> {
                   // Movies grid
                   Expanded(
                     child: state.movies.isEmpty
-                        ? const Center(
+                        ? Center(
                             child: Text(
-                              'No movies found',
-                              style: TextStyle(
+                              local.noMoviesFound,
+                              style: const TextStyle(
                                 color: Colors.white70,
                                 fontSize: 18,
                               ),
@@ -139,7 +129,9 @@ class _BrowseTabState extends State<BrowseTab> {
           );
         }
 
-        return const SizedBox.shrink();
+        return const Center(
+          child: CircularProgressIndicator(color: AppColors.amber),
+        );
       },
     );
   }

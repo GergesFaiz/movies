@@ -22,8 +22,9 @@ class MovieDetailsBloc extends Bloc<MovieDetailsEvent, MovieDetailsState> {
     this._toggleWatchlistUseCase,
     this._addToHistoryUseCase,
     this._isMovieInWatchlistUseCase,
-  ) : super(MovieDetailsInitial()) {
+  ) : super(const MovieDetailsState()) {
     on<LoadMovieDetailsEvent>(_onLoadMovieDetails);
+    on<WatchWatchlistStatusEvent>(_onWatchWatchlistStatus);
     on<ToggleWatchlistEvent>(_onToggleWatchlist);
     on<AddToHistoryEvent>(_onAddToHistory);
   }
@@ -32,13 +33,31 @@ class MovieDetailsBloc extends Bloc<MovieDetailsEvent, MovieDetailsState> {
     LoadMovieDetailsEvent event,
     Emitter<MovieDetailsState> emit,
   ) async {
-    emit(MovieDetailsLoading());
+    emit(state.copyWith(status: MovieDetailsStatus.loading));
 
     final result = await _getMovieDetailsUseCase(event.movieId);
 
     result.fold(
-      (failure) => emit(MovieDetailsError(failure.message)),
-      (details) => emit(MovieDetailsLoaded(details: details)),
+      (failure) => emit(
+        state.copyWith(
+          status: MovieDetailsStatus.failure,
+          errorMessage: failure.message,
+        ),
+      ),
+      (details) => emit(
+        state.copyWith(status: MovieDetailsStatus.loaded, details: details),
+      ),
+    );
+  }
+
+  Future<void> _onWatchWatchlistStatus(
+    WatchWatchlistStatusEvent event,
+    Emitter<MovieDetailsState> emit,
+  ) {
+    return emit.forEach<bool>(
+      _isMovieInWatchlistUseCase(event.movieId),
+      onData: (isInWatchlist) => state.copyWith(isInWatchlist: isInWatchlist),
+      onError: (_, _) => state,
     );
   }
 
@@ -46,7 +65,32 @@ class MovieDetailsBloc extends Bloc<MovieDetailsEvent, MovieDetailsState> {
     ToggleWatchlistEvent event,
     Emitter<MovieDetailsState> emit,
   ) async {
-    await _toggleWatchlistUseCase(event.movie);
+    if (state.isTogglingWatchlist) return;
+
+    final wasInWatchlist = state.isInWatchlist;
+    emit(
+      state.copyWith(isTogglingWatchlist: true, clearWatchlistFeedback: true),
+    );
+
+    final result = await _toggleWatchlistUseCase(event.movie);
+
+    result.fold(
+      (failure) => emit(
+        state.copyWith(
+          isTogglingWatchlist: false,
+          watchlistError: failure.message,
+        ),
+      ),
+      (_) => emit(
+        state.copyWith(
+          isTogglingWatchlist: false,
+          isInWatchlist: !wasInWatchlist,
+          watchlistAction: wasInWatchlist
+              ? WatchlistAction.removed
+              : WatchlistAction.added,
+        ),
+      ),
+    );
   }
 
   Future<void> _onAddToHistory(
@@ -54,9 +98,5 @@ class MovieDetailsBloc extends Bloc<MovieDetailsEvent, MovieDetailsState> {
     Emitter<MovieDetailsState> emit,
   ) async {
     await _addToHistoryUseCase(event.movie);
-  }
-
-  Stream<bool> isMovieInWatchlist(int movieId) {
-    return _isMovieInWatchlistUseCase(movieId);
   }
 }

@@ -37,6 +37,9 @@ MovieModel _$MovieModelFromJson(Map<String, dynamic> json) => MovieModel(
   mediumScreenshotImage1: json['medium_screenshot_image1'] as String?,
   mediumScreenshotImage2: json['medium_screenshot_image2'] as String?,
   mediumScreenshotImage3: json['medium_screenshot_image3'] as String?,
+  cast: (json['cast'] as List<dynamic>?)
+      ?.map((e) => CastModel.fromJson(e as Map<String, dynamic>))
+      .toList(),
 );
 
 Map<String, dynamic> _$MovieModelToJson(MovieModel instance) =>
@@ -71,4 +74,5 @@ Map<String, dynamic> _$MovieModelToJson(MovieModel instance) =>
       'medium_screenshot_image1': instance.mediumScreenshotImage1,
       'medium_screenshot_image2': instance.mediumScreenshotImage2,
       'medium_screenshot_image3': instance.mediumScreenshotImage3,
+      'cast': instance.cast,
     };

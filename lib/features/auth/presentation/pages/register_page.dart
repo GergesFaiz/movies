@@ -10,7 +10,6 @@ import '../../../../core/utils/app_assets.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/app_validator.dart';
-import '../../../../core/utils/firebase_files/auth_function.dart';
 import '../../../../core/utils/firebase_files/dialog_utils.dart';
 import '../../../../core/utils/screen_utils.dart';
 import '../../../../core/widgets/back_app_bar.dart';
@@ -33,20 +32,7 @@ class _RegisterPageState extends State<RegisterPage> {
   late final TextEditingController _phoneController;
 
   final _formKey = GlobalKey<FormState>();
-  String _chosenAvatar = AppAssets.avatar2;
-
-  final List<String> _avatarImages = [
-    AppAssets.avatar2,
-    AppAssets.avatar7,
-    AppAssets.avatar3,
-    AppAssets.avatar4,
-    AppAssets.avatar5,
-    AppAssets.avatar6,
-    AppAssets.avatar1,
-    AppAssets.avatar10,
-    AppAssets.avatar9,
-    AppAssets.avatar8,
-  ];
+  String _chosenAvatar = AppAssets.avatars.first;
 
   @override
   void initState() {
@@ -79,24 +65,27 @@ class _RegisterPageState extends State<RegisterPage> {
       child: BlocListener<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is AuthLoading) {
-            DialogUtils.showLoading(s: 'LOADING...', context);
+            DialogUtils.showLoading(s: local.loading, context);
           } else if (state is AuthSuccess) {
             DialogUtils.hideLoading(context);
             DialogUtils.showMessage(
               context,
-              local.createAccount,
-              posActionName: 'Ok',
-              posAction: () =>
-                  Navigator.pushReplacementNamed(context, AppRoutes.homeScreen),
+              local.accountCreated,
+              posActionName: local.ok,
+              posAction: () => Navigator.pushNamedAndRemoveUntil(
+                context,
+                AppRoutes.homeScreen,
+                (_) => false,
+              ),
             );
           } else if (state is AuthError) {
             DialogUtils.hideLoading(context);
-            DialogUtils.showMessage(context, state.message, title: 'Error');
+            DialogUtils.showMessage(context, state.message, title: local.error);
           }
         },
         child: Scaffold(
           resizeToAvoidBottomInset: true,
-          appBar: BackAppBar(title: 'Register'),
+          appBar: BackAppBar(title: local.register),
           body: SingleChildScrollView(
             child: Form(
               key: _formKey,
@@ -115,17 +104,19 @@ class _RegisterPageState extends State<RegisterPage> {
                         enableInfiniteScroll: true,
                         enlargeFactor: 0.4,
                         onPageChanged: (index, _) {
-                          setState(() => _chosenAvatar = _avatarImages[index]);
+                          setState(
+                            () => _chosenAvatar = AppAssets.avatars[index],
+                          );
                         },
                       ),
-                      items: _avatarImages
+                      items: AppAssets.avatars
                           .map((path) => Image.asset(path, fit: BoxFit.cover))
                           .toList(),
                     ),
                     SizedBox(height: height * 0.01),
 
                     Text(
-                      'Avatar',
+                      local.avatar,
                       style: AppStyles.regular16white,
                       textAlign: TextAlign.center,
                     ),
@@ -136,7 +127,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       textInputAction: TextInputAction.next,
                       controller: _nameController,
                       hintText: local.name,
-                      validator: AppValidator.validateName,
+                      icon: FieldIcon.person,
+                      validator: (value) =>
+                          AppValidator.validateName(value, local),
                     ),
                     SizedBox(height: height * 0.02),
                     CustomTextField(
@@ -144,7 +137,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       textInputAction: TextInputAction.next,
                       controller: _emailController,
                       hintText: local.email,
-                      validator: AppValidator.validateEmail,
+                      icon: FieldIcon.email,
+                      validator: (value) =>
+                          AppValidator.validateEmail(value, local),
                     ),
                     SizedBox(height: height * 0.02),
                     CustomTextField(
@@ -153,7 +148,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       controller: _passwordController,
                       hintText: local.password,
                       isPassword: true,
-                      validator: AppValidator.validatePassword,
+                      validator: (value) =>
+                          AppValidator.validatePassword(value, local),
                     ),
                     SizedBox(height: height * 0.02),
                     CustomTextField(
@@ -166,6 +162,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           AppValidator.validateConfirmPassword(
                             value,
                             _passwordController.text,
+                            local,
                           ),
                     ),
                     SizedBox(height: height * 0.02),
@@ -174,67 +171,34 @@ class _RegisterPageState extends State<RegisterPage> {
                       textInputAction: TextInputAction.done,
                       controller: _phoneController,
                       hintText: local.phoneNumber,
-                      validator: AppValidator.validatePhone,
+                      icon: FieldIcon.phone,
+                      validator: (value) =>
+                          AppValidator.validatePhone(value, local),
                     ),
                     SizedBox(height: height * 0.02),
 
                     BlocBuilder<AuthCubit, AuthState>(
                       builder: (context, state) {
-                        return CustomElevatedButton(
-                          label: 'Create Account',
-                          textStyle: AppStyles.bold20black,
-                          onPressed: state is AuthLoading
-                              ? null
-                              : () async {
-                                  if (_formKey.currentState!.validate()) {
-                                    DialogUtils.showLoading(
-                                      s: 'LOADING...',
-                                      context,
-                                    );
-                                    try {
-                                      // Registration مع Firebase مباشرة
-                                      // عشان محتاجين نحفظ الـ name و phone في Firestore
-                                      String? error =
-                                          await FirebaseFunctions.registerUser(
-                                            name: _nameController.text,
-                                            email: _emailController.text,
-                                            password: _passwordController.text,
-                                            phone: _phoneController.text,
-                                            avatar: _chosenAvatar,
-                                          );
-                                      if (context.mounted) {
-                                        DialogUtils.hideLoading(context);
-                                        if (error == null) {
-                                          DialogUtils.showMessage(
-                                            context,
-                                            local.createAccount,
-                                            posActionName: 'Ok',
-                                            posAction: () =>
-                                                Navigator.pushReplacementNamed(
-                                                  context,
-                                                  AppRoutes.homeScreen,
-                                                ),
-                                          );
-                                        } else {
-                                          DialogUtils.showMessage(
-                                            context,
-                                            error,
-                                            title: 'Error',
-                                          );
-                                        }
-                                      }
-                                    } catch (e) {
-                                      if (context.mounted) {
-                                        DialogUtils.hideLoading(context);
-                                        DialogUtils.showMessage(
-                                          context,
-                                          e.toString(),
-                                          title: local.systemError,
-                                        );
-                                      }
+                        return SizedBox(
+                          width: double.infinity,
+                          child: CustomElevatedButton(
+                            label: local.createAccount,
+                            textStyle: AppStyles.bold20black,
+                            onPressed: state is AuthLoading
+                                ? null
+                                : () {
+                                    if (!_formKey.currentState!.validate()) {
+                                      return;
                                     }
-                                  }
-                                },
+                                    context.read<AuthCubit>().register(
+                                      name: _nameController.text.trim(),
+                                      email: _emailController.text.trim(),
+                                      password: _passwordController.text,
+                                      phone: _phoneController.text.trim(),
+                                      avatar: _chosenAvatar,
+                                    );
+                                  },
+                          ),
                         );
                       },
                     ),
@@ -262,7 +226,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ],
                     ),
                     SizedBox(height: height * 0.02),
-                    Center(child: LanguageSwitch()),
+                    const Center(child: LanguageSwitch()),
                     SizedBox(height: height * 0.02),
                   ],
                 ),

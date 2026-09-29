@@ -10,10 +10,17 @@ part 'movies_event.dart';
 part 'movies_state.dart';
 
 class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
+  /// Genre key meaning "no filter". The UI shows a translated label for it.
+  static const String allGenres = 'All';
+
   final GetMoviesUseCase _getMoviesUseCase;
   final GetMoviesUseCase _getBrowseMoviesUseCase;
 
   List<MovieEntity> _allMovies = [];
+
+  /// Genre requested (e.g. from Home's "See More") before browse movies
+  /// finished loading. Applied as soon as they arrive.
+  String? _pendingGenre;
 
   MoviesBloc(this._getMoviesUseCase, this._getBrowseMoviesUseCase)
     : super(MoviesInitial()) {
@@ -57,32 +64,35 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
   }
 
   void _emitRandomCategory(Emitter<MoviesState> emit) {
-    if (_allMovies.isEmpty) return;
+    if (_allMovies.isEmpty) {
+      emit(
+        const HomeMoviesLoaded(
+          carouselMovies: [],
+          categoryMovies: [],
+          currentCategory: allGenres,
+        ),
+      );
+      return;
+    }
 
-    final allGenres = <String>{};
+    final genres = <String>{};
     for (final movie in _allMovies) {
-      for (final g in movie.genres ?? []) {
-        allGenres.add(g);
-      }
+      genres.addAll(movie.genres ?? const []);
     }
 
     String selectedGenre;
-    if (allGenres.isEmpty) {
-      selectedGenre = 'All';
+    if (genres.isEmpty) {
+      selectedGenre = allGenres;
     } else {
-      final list = allGenres.toList();
+      final list = genres.toList();
       selectedGenre = list[Random().nextInt(list.length)];
     }
-
-    final displayName =
-        selectedGenre[0].toUpperCase() +
-        selectedGenre.substring(1).toLowerCase();
 
     emit(
       HomeMoviesLoaded(
         carouselMovies: _allMovies.take(10).toList(),
         categoryMovies: _filterByCategory(selectedGenre),
-        currentCategory: displayName,
+        currentCategory: selectedGenre,
       ),
     );
   }
@@ -106,29 +116,43 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
       for (final movie in movies) {
         genresSet.addAll(movie.genres ?? []);
       }
-      final genres = ['All', ...genresSet.toList()..sort()];
+      final genres = [allGenres, ...genresSet.toList()..sort()];
 
-      emit(
-        BrowseMoviesLoaded(
-          movies: movies,
-          allMovies: movies,
-          genres: genres,
-          selectedGenre: 'All',
-        ),
+      final loaded = BrowseMoviesLoaded(
+        movies: movies,
+        allMovies: movies,
+        genres: genres,
+        selectedGenre: allGenres,
       );
+
+      final pendingGenre = _pendingGenre;
+      _pendingGenre = null;
+      emit(pendingGenre == null ? loaded : _withGenre(loaded, pendingGenre));
     });
   }
 
   void _onSelectGenre(SelectGenreEvent event, Emitter<MoviesState> emit) {
-    if (state is! BrowseMoviesLoaded) return;
-    final current = state as BrowseMoviesLoaded;
-    final filtered = event.genre == 'All'
+    final current = state;
+    if (current is! BrowseMoviesLoaded) {
+      _pendingGenre = event.genre;
+      return;
+    }
+    emit(_withGenre(current, event.genre));
+  }
+
+  BrowseMoviesLoaded _withGenre(BrowseMoviesLoaded current, String genre) {
+    // Match case-insensitively and fall back to "All" for unknown genres.
+    final selected = current.genres.firstWhere(
+      (g) => g.toLowerCase() == genre.toLowerCase(),
+      orElse: () => allGenres,
+    );
+    final filtered = selected == allGenres
         ? current.allMovies
         : current.allMovies
-              .where((m) => m.genres?.contains(event.genre) ?? false)
+              .where((m) => m.genres?.contains(selected) ?? false)
               .toList();
 
-    emit(current.copyWith(movies: filtered, selectedGenre: event.genre));
+    return current.copyWith(movies: filtered, selectedGenre: selected);
   }
 
   Future<void> _onRefresh(
@@ -140,7 +164,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
   }
 
   List<MovieEntity> _filterByCategory(String category) {
-    if (category.toLowerCase() == 'all') return _allMovies;
+    if (category.toLowerCase() == allGenres.toLowerCase()) return _allMovies;
     return _allMovies
         .where(
           (m) =>

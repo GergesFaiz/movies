@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../domain/entities/movie_entity.dart';
+import 'cast_model.dart';
 
 part 'movie_model.g.dart';
 
@@ -67,6 +68,10 @@ class MovieModel {
   @JsonKey(name: 'medium_screenshot_image3')
   final String? mediumScreenshotImage3;
 
+  /// Only returned by `movie_details.json` when `with_cast=true`.
+  @JsonKey(name: 'cast')
+  final List<CastModel>? cast;
+
   const MovieModel({
     this.id,
     this.url,
@@ -98,6 +103,7 @@ class MovieModel {
     this.mediumScreenshotImage1,
     this.mediumScreenshotImage2,
     this.mediumScreenshotImage3,
+    this.cast,
   });
 
   factory MovieModel.fromJson(Map<String, dynamic> json) =>
@@ -148,5 +154,6 @@ class MovieModel {
     mediumScreenshotImage1: mediumScreenshotImage1,
     mediumScreenshotImage2: mediumScreenshotImage2,
     mediumScreenshotImage3: mediumScreenshotImage3,
+    cast: cast?.map((c) => c.toEntity()).toList(),
   );
 }

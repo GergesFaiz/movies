@@ -31,6 +31,19 @@ class UserMoviesRepositoryImpl implements UserMoviesRepository {
     return _remoteDataSource.isMovieInWatchlist(movieId);
   }
 
+  @override
+  Stream<List<MovieEntity>> watchWatchlist() {
+    return _remoteDataSource.watchWatchlist().map(_toEntities);
+  }
+
+  @override
+  Stream<List<MovieEntity>> watchHistory() {
+    return _remoteDataSource.watchHistory().map(_toEntities);
+  }
+
+  List<MovieEntity> _toEntities(List<MovieModel> movies) =>
+      movies.map((movie) => movie.toEntity()).toList();
+
   Future<Either<Failure, void>> _run(Future<void> Function() action) async {
     try {
       await action();

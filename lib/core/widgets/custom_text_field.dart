@@ -4,6 +4,8 @@ import '../utils/app_assets.dart';
 import '../utils/app_colors.dart';
 import '../utils/app_styles.dart';
 
+enum FieldIcon { email, person, phone, lock }
+
 class CustomTextField extends StatefulWidget {
   final TextInputType textInputType;
   final TextInputAction textInputAction;
@@ -12,7 +14,10 @@ class CustomTextField extends StatefulWidget {
   final bool isPassword;
   final String hintText;
 
-   const CustomTextField({
+  /// Leading icon. Password fields show a lock when this is left `null`.
+  final FieldIcon? icon;
+
+  const CustomTextField({
     super.key,
     required this.textInputType,
     required this.textInputAction,
@@ -20,6 +25,7 @@ class CustomTextField extends StatefulWidget {
     this.validator,
     this.isPassword = false,
     required this.hintText,
+    this.icon,
   });
 
   @override
@@ -70,21 +76,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 ),
               )
             : null,
-        prefixIcon: widget.isPassword
-            ? const Icon(Icons.lock, color: AppColors.white, size: 26)
-            : (widget.hintText.toLowerCase().contains("email"))
-            ? ImageIcon(
-                AssetImage(AppAssets.emailIcon),
-                size: 31,
-                color: AppColors.white,
-              )
-            : (widget.hintText.toLowerCase().contains("name") ||
-                  widget.hintText == "John Safwat")
-            ? const Icon(Icons.person, color: AppColors.white)
-            : (widget.hintText.toLowerCase().contains("phone") ||
-                  widget.hintText == "01200000000")
-            ? const Icon(Icons.phone, color: AppColors.white)
-            : null,
+        prefixIcon: _buildPrefixIcon(),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
@@ -100,5 +92,25 @@ class _CustomTextFieldState extends State<CustomTextField> {
         ),
       ),
     );
+  }
+
+  Widget? _buildPrefixIcon() {
+    final icon = widget.icon ?? (widget.isPassword ? FieldIcon.lock : null);
+    switch (icon) {
+      case FieldIcon.lock:
+        return const Icon(Icons.lock, color: AppColors.white, size: 26);
+      case FieldIcon.email:
+        return ImageIcon(
+          AssetImage(AppAssets.emailIcon),
+          size: 31,
+          color: AppColors.white,
+        );
+      case FieldIcon.person:
+        return const Icon(Icons.person, color: AppColors.white);
+      case FieldIcon.phone:
+        return const Icon(Icons.phone, color: AppColors.white);
+      case null:
+        return null;
+    }
   }
 }

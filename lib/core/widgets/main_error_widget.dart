@@ -1,29 +1,43 @@
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
-class MainErrorWidget extends StatelessWidget {
-  String massage;
-  VoidCallback onPressed;
+import '../l10n/app_localizations.dart';
+import '../utils/app_colors.dart';
 
-  MainErrorWidget({super.key, required this.massage, required this.onPressed});
+class MainErrorWidget extends StatelessWidget {
+  final String message;
+  final VoidCallback onPressed;
+
+  const MainErrorWidget({
+    super.key,
+    required this.message,
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(massage, style: TextStyle(color: Colors.white)),
-        ElevatedButton(
-          onPressed: onPressed,
-          child: Text(
-            "try again",
-            style: Theme.of(context).textTheme.labelLarge?.copyWith(
-              color: Theme.of(context).primaryColor,
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.white),
             ),
-          ),
+            const SizedBox(height: 12),
+            ElevatedButton(
+              onPressed: onPressed,
+              style: ElevatedButton.styleFrom(backgroundColor: AppColors.amber),
+              child: Text(
+                AppLocalizations.of(context)!.tryAgain,
+                style: const TextStyle(color: AppColors.blackColor),
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

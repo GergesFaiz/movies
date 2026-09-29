@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,6 +8,7 @@ import 'package:movies/features/movies/domain/entities/movie_entity.dart';
 import 'package:movies/features/movies/presentation/bloc/movies_bloc.dart';
 import 'package:movies/main.dart';
 
+import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/utils/app_assets.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_styles.dart';
@@ -15,13 +17,19 @@ import '../../../../core/widgets/main_loading_widget.dart';
 import '../widgets/movie_card.dart';
 
 class HomeTab extends StatefulWidget {
-  const HomeTab({super.key});
+  /// Called with the current category when "See More" is tapped.
+  final ValueChanged<String>? onSeeMore;
+
+  const HomeTab({super.key, this.onSeeMore});
 
   @override
   State<HomeTab> createState() => _HomeTabState();
 }
 
 class _HomeTabState extends State<HomeTab> with RouteAware {
+  /// Index of the centred carousel movie, whose poster fills the background.
+  int _carouselIndex = 0;
+
   @override
   void initState() {
     super.initState();
@@ -64,7 +72,7 @@ class _HomeTabState extends State<HomeTab> with RouteAware {
 
           if (state is HomeMoviesError) {
             return MainErrorWidget(
-              massage: state.message,
+              message: state.message,
               onPressed: () =>
                   context.read<MoviesBloc>().add(RefreshMoviesEvent()),
             );
@@ -81,22 +89,33 @@ class _HomeTabState extends State<HomeTab> with RouteAware {
   }
 
   Widget _buildBody(BuildContext context, HomeMoviesLoaded state) {
+    final local = AppLocalizations.of(context)!;
+
     if (state.carouselMovies.isEmpty) {
       return Center(
         child: Text(
-          'No Movies Found',
+          local.noMoviesFound,
           style: TextStyle(color: AppColors.white),
         ),
       );
     }
 
+    final backgroundMovie =
+        state.carouselMovies[_carouselIndex % state.carouselMovies.length];
+
     return Stack(
       fit: StackFit.expand,
       children: [
-        SizedBox(
-          height: 0.5.sh,
-          width: 1.sw,
-          child: Image.asset(AppAssets.available, fit: BoxFit.cover),
+        AnimatedSwitcher(
+          duration: const Duration(milliseconds: 400),
+          child: CachedNetworkImage(
+            key: ValueKey(backgroundMovie.id),
+            imageUrl: backgroundMovie.coverImage,
+            height: 1.sh,
+            width: 1.sw,
+            fit: BoxFit.cover,
+            errorWidget: (_, _, _) => const SizedBox.shrink(),
+          ),
         ),
         Container(
           decoration: BoxDecoration(
@@ -140,6 +159,8 @@ class _HomeTabState extends State<HomeTab> with RouteAware {
                     enableInfiniteScroll: true,
                     viewportFraction: 0.65,
                     enlargeFactor: 0.3,
+                    onPageChanged: (index, _) =>
+                        setState(() => _carouselIndex = index),
                   ),
                 ),
 
@@ -152,10 +173,19 @@ class _HomeTabState extends State<HomeTab> with RouteAware {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(state.currentCategory, style: AppStyles.bold18White),
+                      Text(
+                        state.currentCategory == MoviesBloc.allGenres
+                            ? local.all
+                            : state.currentCategory,
+                        style: AppStyles.bold18White,
+                      ),
                       TextButton.icon(
-                        onPressed: () {},
-                        label: Text('See More', style: AppStyles.medium15Amber),
+                        onPressed: () =>
+                            widget.onSeeMore?.call(state.currentCategory),
+                        label: Text(
+                          local.seeMore,
+                          style: AppStyles.medium15Amber,
+                        ),
                         icon: Icon(Icons.arrow_forward, color: AppColors.amber),
                         iconAlignment: IconAlignment.end,
                       ),

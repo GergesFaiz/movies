@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../../../core/utils/stream_extensions.dart';
 import '../models/movie_model.dart';
 
 abstract class UserMoviesRemoteDataSource {
@@ -9,9 +10,18 @@ abstract class UserMoviesRemoteDataSource {
   Future<void> addToHistory(MovieModel movie);
 
   Stream<bool> isMovieInWatchlist(int movieId);
+
+  /// The signed-in user's watchlist, most recently added first.
+  Stream<List<MovieModel>> watchWatchlist();
+
+  /// The signed-in user's viewing history, most recently viewed first.
+  Stream<List<MovieModel>> watchHistory();
 }
 
 class UserMoviesRemoteDataSourceImpl implements UserMoviesRemoteDataSource {
+  static const String _watchlistField = 'watchlist';
+  static const String _historyField = 'history';
+
   final FirebaseAuth _auth;
   final FirebaseFirestore _firestore;
 
@@ -28,48 +38,87 @@ class UserMoviesRemoteDataSourceImpl implements UserMoviesRemoteDataSource {
 
     final userDocument = _userDocument(user.uid);
     final snapshot = await userDocument.get();
-    final watchlist = List<Map<String, dynamic>>.from(
-      (snapshot.data()?['watchlist'] as List<dynamic>? ?? const []).map(
-        (item) => Map<String, dynamic>.from(item as Map),
-      ),
-    );
+    final watchlist = _readItems(snapshot.data(), _watchlistField);
     final existingMovie = watchlist.where((item) => item['id'] == movie.id);
 
     if (existingMovie.isNotEmpty) {
       await userDocument.update({
-        'watchlist': FieldValue.arrayRemove([existingMovie.first]),
+        _watchlistField: FieldValue.arrayRemove([existingMovie.first]),
       });
       return;
     }
 
     await userDocument.set({
-      'watchlist': FieldValue.arrayUnion([_toFirestore(movie)]),
+      _watchlistField: FieldValue.arrayUnion([_toFirestore(movie)]),
     }, SetOptions(merge: true));
   }
 
   @override
   Future<void> addToHistory(MovieModel movie) async {
     final user = _auth.currentUser;
-    if (user == null)
+    if (user == null) {
       throw StateError('Please sign in to save viewing history.');
+    }
 
-    await _userDocument(user.uid).set({
-      'history': FieldValue.arrayUnion([_toFirestore(movie)]),
-    }, SetOptions(merge: true));
+    // Re-watching a movie moves it to the end (= most recent) of the list
+    // instead of being ignored as a duplicate.
+    final userDocument = _userDocument(user.uid);
+    final snapshot = await userDocument.get();
+    final history = _readItems(snapshot.data(), _historyField)
+      ..removeWhere((item) => item['id'] == movie.id)
+      ..add(_toFirestore(movie));
+
+    await userDocument.set({_historyField: history}, SetOptions(merge: true));
   }
 
   @override
   Stream<bool> isMovieInWatchlist(int movieId) {
-    final user = _auth.currentUser;
-    if (user == null) return Stream.value(false);
+    return watchWatchlist().map(
+      (movies) => movies.any((movie) => movie.id == movieId),
+    );
+  }
 
-    return _userDocument(user.uid).snapshots().map((snapshot) {
-      final watchlist =
-          snapshot.data()?['watchlist'] as List<dynamic>? ?? const [];
-      return watchlist.any(
-        (item) => (item as Map<String, dynamic>)['id'] == movieId,
+  @override
+  Stream<List<MovieModel>> watchWatchlist() => _watchField(_watchlistField);
+
+  @override
+  Stream<List<MovieModel>> watchHistory() => _watchField(_historyField);
+
+  Stream<List<MovieModel>> _watchField(String field) {
+    return _auth.authStateChanges().switchMap((user) {
+      if (user == null) return Stream.value(const <MovieModel>[]);
+
+      return _userDocument(user.uid).snapshots().map(
+        (snapshot) => _readItems(
+          snapshot.data(),
+          field,
+        ).map(_fromFirestore).toList().reversed.toList(),
       );
     });
+  }
+
+  List<Map<String, dynamic>> _readItems(
+    Map<String, dynamic>? data,
+    String field,
+  ) {
+    final items = data?[field] as List<dynamic>? ?? const [];
+    return items
+        .whereType<Map>()
+        .map((item) => Map<String, dynamic>.from(item))
+        .toList();
+  }
+
+  MovieModel _fromFirestore(Map<String, dynamic> item) {
+    return MovieModel(
+      id: (item['id'] as num?)?.toInt(),
+      title: item['title'] as String?,
+      rating: (item['rating'] as num?)?.toDouble(),
+      mediumCoverImage:
+          (item['medium_cover_image'] ??
+                  item['poster_path'] ??
+                  item['image_url'])
+              as String?,
+    );
   }
 
   Map<String, dynamic> _toFirestore(MovieModel movie) => {

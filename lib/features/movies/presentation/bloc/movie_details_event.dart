@@ -16,6 +16,16 @@ class LoadMovieDetailsEvent extends MovieDetailsEvent {
   List<Object?> get props => [movieId];
 }
 
+/// Starts listening to whether the movie is in the user's watchlist.
+class WatchWatchlistStatusEvent extends MovieDetailsEvent {
+  final int movieId;
+
+  const WatchWatchlistStatusEvent(this.movieId);
+
+  @override
+  List<Object?> get props => [movieId];
+}
+
 class ToggleWatchlistEvent extends MovieDetailsEvent {
   final MovieEntity movie;
 

@@ -170,4 +170,151 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get removedFromWatchList => 'تمت الإزالة من قائمة المشاهدة بنجاح';
+
+  @override
+  String get register => 'إنشاء حساب';
+
+  @override
+  String get accountCreated => 'تم إنشاء الحساب بنجاح!';
+
+  @override
+  String get or => 'أو';
+
+  @override
+  String get tryAgain => 'حاول مرة أخرى';
+
+  @override
+  String get pageNotFound => 'الصفحة غير موجودة';
+
+  @override
+  String get home => 'الرئيسية';
+
+  @override
+  String get search => 'بحث';
+
+  @override
+  String get browse => 'تصفح';
+
+  @override
+  String get profile => 'الملف الشخصي';
+
+  @override
+  String get noMoviesFound => 'لا توجد أفلام';
+
+  @override
+  String get seeMore => 'عرض المزيد';
+
+  @override
+  String get all => 'الكل';
+
+  @override
+  String get screenshots => 'لقطات من الفيلم';
+
+  @override
+  String get trailerUnavailable => 'الإعلان غير متاح لهذا الفيلم.';
+
+  @override
+  String get couldNotOpenLink => 'تعذر فتح الرابط.';
+
+  @override
+  String get exit => 'خروج';
+
+  @override
+  String get cancel => 'إلغاء';
+
+  @override
+  String get delete => 'حذف';
+
+  @override
+  String get deleteAccountConfirm =>
+      'هل أنت متأكد من حذف حسابك؟ لا يمكن التراجع عن ذلك.';
+
+  @override
+  String get unknown => 'غير معروف';
+
+  @override
+  String actorName(String name) {
+    return 'الاسم: $name';
+  }
+
+  @override
+  String characterName(String name) {
+    return 'الشخصية: $name';
+  }
+
+  @override
+  String get nameRequired => 'الاسم مطلوب';
+
+  @override
+  String get invalidName => 'من فضلك أدخل اسماً صحيحاً (3 أحرف على الأقل)';
+
+  @override
+  String get invalidEmail =>
+      'أدخل بريداً إلكترونياً صحيحاً (مثال: name@example.com)';
+
+  @override
+  String get phoneRequired => 'رقم الهاتف مطلوب';
+
+  @override
+  String get invalidPhone => 'أدخل رقم هاتف مصري صحيح مكون من 11 رقماً';
+
+  @override
+  String get weakPassword =>
+      'يجب أن تحتوي على حرف كبير وحرف صغير ورقم و8 أحرف على الأقل';
+
+  @override
+  String get confirmPasswordRequired => 'من فضلك أكّد كلمة المرور';
+
+  @override
+  String get passwordsDoNotMatch => 'كلمتا المرور غير متطابقتين';
+
+  @override
+  String get exploreNow => 'استكشف الآن';
+
+  @override
+  String get next => 'التالي';
+
+  @override
+  String get back => 'رجوع';
+
+  @override
+  String get finish => 'إنهاء';
+
+  @override
+  String get onboardingTitle1 => 'اعثر على فيلمك\nالمفضل التالي هنا';
+
+  @override
+  String get onboardingDescription1 =>
+      'احصل على مكتبة ضخمة من الأفلام\nتناسب جميع الأذواق. بالتأكيد ستعجبك.';
+
+  @override
+  String get onboardingTitle2 => 'اكتشف الأفلام';
+
+  @override
+  String get onboardingDescription2 =>
+      'استكشف مجموعة ضخمة من الأفلام بكل\nالجودات والتصنيفات. اعثر على فيلمك\nالمفضل التالي بسهولة.';
+
+  @override
+  String get onboardingTitle3 => 'استكشف كل التصنيفات';
+
+  @override
+  String get onboardingDescription3 =>
+      'اكتشف أفلاماً من كل التصنيفات وبكل\nالجودات المتاحة. اعثر على شيء جديد\nومثير لتشاهده كل يوم.';
+
+  @override
+  String get onboardingTitle4 => 'أنشئ قوائم المشاهدة';
+
+  @override
+  String get onboardingDescription4 =>
+      'احفظ الأفلام في قائمة المشاهدة لتتابع\nما تريد مشاهدته لاحقاً.\nاستمتع بأفلام بجودات\nوتصنيفات متنوعة.';
+
+  @override
+  String get onboardingTitle5 => 'قيّم، راجع، وتعلّم';
+
+  @override
+  String get onboardingDescription5 =>
+      'شارك رأيك في الأفلام التي\nشاهدتها. تعمّق في تفاصيل الأفلام\nوساعد الآخرين على اكتشاف أفلام\nرائعة من خلال مراجعاتك.';
+
+  @override
+  String get onboardingTitle6 => 'ابدأ المشاهدة الآن';
 }

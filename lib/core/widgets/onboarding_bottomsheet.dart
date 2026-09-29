@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../router/app_router.dart';
+import '../l10n/app_localizations.dart';
 import '../utils/app_colors.dart';
 import '../utils/app_styles.dart';
 import 'custom_elevatedbutton.dart';
@@ -44,23 +44,20 @@ class OnboardingBottomsheet extends StatelessWidget {
             style: AppStyles.bold24White,
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 5),
-          Text(
-            bottomSheetDiscribtion,
-            style: AppStyles.bold20White,
-            textAlign: TextAlign.center,
-          ),
+          if (bottomSheetDiscribtion.isNotEmpty) ...[
+            const SizedBox(height: 5),
+            Text(
+              bottomSheetDiscribtion,
+              style: AppStyles.bold20White,
+              textAlign: TextAlign.center,
+            ),
+          ],
           const SizedBox(height: 10),
+          // The page decides what "next" means (next page or finish).
           CustomElevatedButton(
             label: buttonText,
             textStyle: AppStyles.bold20black,
-            onPressed: () {
-              if (buttonText == "Next") {
-                navigatornext();
-              } else {
-                Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
-              }
-            },
+            onPressed: navigatornext,
           ),
           if (!isFirstPage) ...[
             const SizedBox(height: 10),
@@ -75,7 +72,7 @@ class OnboardingBottomsheet extends StatelessWidget {
               ),
               onPressed: navigatorback,
               child: Text(
-                'Back',
+                AppLocalizations.of(context)!.back,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.inter(
                   color: AppColors.amber,

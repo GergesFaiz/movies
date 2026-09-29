@@ -1,3 +1,5 @@
+import 'cast_entity.dart';
+
 class MovieEntity {
   final int? id;
   final String? url;
@@ -29,6 +31,7 @@ class MovieEntity {
   final String? mediumScreenshotImage1;
   final String? mediumScreenshotImage2;
   final String? mediumScreenshotImage3;
+  final List<CastEntity>? cast;
 
   const MovieEntity({
     this.id,
@@ -61,8 +64,36 @@ class MovieEntity {
     this.mediumScreenshotImage1,
     this.mediumScreenshotImage2,
     this.mediumScreenshotImage3,
+    this.cast,
   });
 
   String get coverImage =>
       mediumCoverImage ?? largeCoverImage ?? smallCoverImage ?? '';
+
+  /// Image for the details header: the backdrop, falling back to the poster.
+  String get headerImage {
+    final background = backgroundImage;
+    if (background != null && background.isNotEmpty) return background;
+    return coverImage;
+  }
+
+  String get description {
+    for (final text in [descriptionFull, summary, synopsis]) {
+      if (text != null && text.trim().isNotEmpty) return text.trim();
+    }
+    return '';
+  }
+
+  List<String> get screenshots => [
+    mediumScreenshotImage1,
+    mediumScreenshotImage2,
+    mediumScreenshotImage3,
+  ].whereType<String>().where((url) => url.isNotEmpty).toList();
+
+  /// YouTube trailer link, or `null` when the movie has no trailer.
+  String? get trailerUrl {
+    final code = ytTrailerCode;
+    if (code == null || code.trim().isEmpty) return null;
+    return 'https://www.youtube.com/watch?v=${code.trim()}';
+  }
 }

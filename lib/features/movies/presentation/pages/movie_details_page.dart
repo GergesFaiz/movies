@@ -3,12 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies/features/movies/presentation/bloc/movie_details_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/l10n/app_localizations.dart';
+import '../../../../core/router/app_router.dart';
+import '../../../../core/utils/app_assets.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/widgets/cast_item.dart';
 import '../../../../core/widgets/custom_elevatedbutton.dart';
+import '../../../../core/widgets/custom_snack_par.dart';
 import '../../../../core/widgets/details_container.dart';
 import '../../domain/entities/movie_entity.dart';
 import '../widgets/movie_card.dart';
@@ -26,48 +30,113 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
   @override
   void initState() {
     super.initState();
-    context.read<MovieDetailsBloc>().add(
-      LoadMovieDetailsEvent(widget.movie.id ?? 0),
-    );
-    context.read<MovieDetailsBloc>().add(AddToHistoryEvent(widget.movie));
+    final movieId = widget.movie.id ?? 0;
+    context.read<MovieDetailsBloc>()
+      ..add(LoadMovieDetailsEvent(movieId))
+      ..add(WatchWatchlistStatusEvent(movieId))
+      ..add(AddToHistoryEvent(widget.movie));
+  }
+
+  /// The fully loaded movie when available, otherwise the one we were opened
+  /// with (which may only have id, title, rating and poster).
+  MovieEntity _currentMovie(MovieDetailsState state) =>
+      state.details?.movie ?? widget.movie;
+
+  Future<void> _openTrailer(MovieEntity movie) async {
+    final local = AppLocalizations.of(context)!;
+    final trailerUrl = movie.trailerUrl;
+    if (trailerUrl == null) {
+      showMyMessage(context, local.trailerUnavailable);
+      return;
+    }
+
+    var opened = false;
+    try {
+      opened = await launchUrl(
+        Uri.parse(trailerUrl),
+        mode: LaunchMode.externalApplication,
+      );
+    } catch (_) {
+      opened = false;
+    }
+    if (!opened && mounted) showMyMessage(context, local.couldNotOpenLink);
+  }
+
+  void _onStateChanged(BuildContext context, MovieDetailsState state) {
+    final local = AppLocalizations.of(context)!;
+    final error = state.watchlistError;
+    if (error != null) {
+      showMyMessage(context, error);
+      return;
+    }
+    switch (state.watchlistAction) {
+      case WatchlistAction.added:
+        showMyMessage(context, local.addedToWatchList, isError: false);
+      case WatchlistAction.removed:
+        showMyMessage(context, local.removedFromWatchList, isError: false);
+      case null:
+        break;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.gray,
-      body: BlocBuilder<MovieDetailsBloc, MovieDetailsState>(
+      body: BlocConsumer<MovieDetailsBloc, MovieDetailsState>(
+        listenWhen: (previous, current) =>
+            previous.watchlistAction != current.watchlistAction ||
+            previous.watchlistError != current.watchlistError,
+        listener: _onStateChanged,
         builder: (context, state) {
           return SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildHeader(context, state),
-                if (state is MovieDetailsLoaded) ...[
-                  _buildTitleSection(context, state),
-                  SizedBox(height: 15.h),
-                  _buildMainDetails(context, state),
-                ] else if (state is MovieDetailsLoading ||
-                    state is MovieDetailsInitial) ...[
-                  _buildTitlePlaceholder(),
-                  Center(
+                _buildTitleSection(context, state),
+                SizedBox(height: 15.h),
+                switch (state.status) {
+                  MovieDetailsStatus.loaded => _buildMainDetails(
+                    context,
+                    state,
+                  ),
+                  MovieDetailsStatus.loading => Center(
                     child: Padding(
                       padding: EdgeInsets.all(40.h),
-                      child: const CircularProgressIndicator(),
-                    ),
-                  ),
-                ] else if (state is MovieDetailsError) ...[
-                  _buildTitlePlaceholder(),
-                  Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(20.h),
-                      child: Text(
-                        state.message,
-                        style: TextStyle(color: Colors.red, fontSize: 16.sp),
+                      child: const CircularProgressIndicator(
+                        color: AppColors.amber,
                       ),
                     ),
                   ),
-                ],
+                  MovieDetailsStatus.failure => Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(20.h),
+                      child: Column(
+                        children: [
+                          Text(
+                            state.errorMessage ?? '',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 16.sp,
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () =>
+                                context.read<MovieDetailsBloc>().add(
+                                  LoadMovieDetailsEvent(widget.movie.id ?? 0),
+                                ),
+                            child: Text(
+                              AppLocalizations.of(context)!.tryAgain,
+                              style: AppStyles.medium15Amber,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                },
               ],
             ),
           );
@@ -77,16 +146,16 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
   }
 
   Widget _buildHeader(BuildContext context, MovieDetailsState state) {
-    // نحاول نجيب الـ background image من الـ state لو موجودة
-    // وإلا نعمل placeholder
+    final movie = _currentMovie(state);
+
     return Stack(
       children: [
         CachedNetworkImage(
-          imageUrl: widget.movie.backgroundImage ?? widget.movie.coverImage,
+          imageUrl: movie.headerImage,
           height: 0.60.sh,
           width: double.infinity,
           fit: BoxFit.cover,
-          errorWidget: (_, __, ___) =>
+          errorWidget: (_, _, _) =>
               Container(height: 0.60.sh, color: Colors.grey[900]),
         ),
         Container(
@@ -103,8 +172,9 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
           top: 0.2.sh,
           child: Center(
             child: InkWell(
-              onTap: () {},
-              child: Image.asset('assets/images/Group 21.png'),
+              customBorder: const CircleBorder(),
+              onTap: () => _openTrailer(movie),
+              child: Image.asset(AppAssets.playButton),
             ),
           ),
         ),
@@ -116,23 +186,19 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                 icon: Icon(Icons.arrow_back_ios, color: AppColors.white),
                 onPressed: () => Navigator.pop(context),
               ),
-              // Watchlist button with stream
-              StreamBuilder<bool>(
-                stream: context.read<MovieDetailsBloc>().isMovieInWatchlist(
-                  widget.movie.id ?? 0,
+              IconButton(
+                tooltip: state.isInWatchlist
+                    ? AppLocalizations.of(context)!.removeFromWatchList
+                    : AppLocalizations.of(context)!.addToWatchList,
+                icon: Icon(
+                  Icons.bookmark_rounded,
+                  color: state.isInWatchlist ? Colors.amber : AppColors.white,
                 ),
-                builder: (context, snapshot) {
-                  final isSaved = snapshot.data ?? false;
-                  return IconButton(
-                    icon: Icon(
-                      Icons.bookmark_rounded,
-                      color: isSaved ? Colors.amber : AppColors.white,
-                    ),
-                    onPressed: () => context.read<MovieDetailsBloc>().add(
-                      ToggleWatchlistEvent(widget.movie),
-                    ),
-                  );
-                },
+                onPressed: state.isTogglingWatchlist
+                    ? null
+                    : () => context.read<MovieDetailsBloc>().add(
+                        ToggleWatchlistEvent(movie),
+                      ),
               ),
             ],
           ),
@@ -141,8 +207,9 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
     );
   }
 
-  Widget _buildTitleSection(BuildContext context, MovieDetailsLoaded state) {
+  Widget _buildTitleSection(BuildContext context, MovieDetailsState state) {
     final loc = AppLocalizations.of(context)!;
+    final movie = _currentMovie(state);
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 0.03.sw),
@@ -151,44 +218,34 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
         children: [
           SizedBox(height: 8.h),
           Text(
-            widget.movie.title ?? 'Movie',
+            movie.title ?? '',
             textAlign: TextAlign.center,
             style: AppStyles.bold22White,
           ),
+          if (movie.year != null) ...[
+            SizedBox(height: 6.h),
+            Text(
+              movie.year.toString(),
+              textAlign: TextAlign.center,
+              style: AppStyles.medium14Gray,
+            ),
+          ],
           SizedBox(height: 10.h),
           CustomElevatedButton(
             label: loc.watch,
             backgroundColor: AppColors.red,
             textStyle: AppStyles.bold20White,
-            onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Trailer playback is coming soon.')),
-            ),
+            onPressed: () => _openTrailer(movie),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildTitlePlaceholder() {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 0.03.sw, vertical: 8.h),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SizedBox(height: 8.h),
-          Text(
-            widget.movie.title ?? 'Movie',
-            style: AppStyles.bold18White,
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildMainDetails(BuildContext context, MovieDetailsLoaded state) {
+  Widget _buildMainDetails(BuildContext context, MovieDetailsState state) {
     final loc = AppLocalizations.of(context)!;
-    final details = state.details;
+    final details = state.details!;
+    final description = details.movie.description;
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 0.03.sw),
@@ -213,7 +270,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
           // Screenshots
           if (details.screenshots.isNotEmpty) ...[
             SizedBox(height: 20.h),
-            Text('Screenshots', style: AppStyles.bold22White),
+            Text(loc.screenshots, style: AppStyles.bold22White),
             SizedBox(height: 12.h),
             ...details.screenshots.map((url) => _buildScreenshotItem(url)),
           ],
@@ -240,13 +297,22 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                   rating: movie.rating?.toString() ?? '0',
                   onTap: () => Navigator.pushReplacementNamed(
                     context,
-                    '/movie-details',
+                    AppRoutes.movieDetails,
                     arguments: movie,
                   ),
                 );
               },
             ),
           ],
+
+          // Summary
+          SizedBox(height: 20.h),
+          Text(loc.summary, style: AppStyles.bold22White),
+          SizedBox(height: 8.h),
+          Text(
+            description.isEmpty ? loc.noDescription : description,
+            style: AppStyles.regular16white,
+          ),
 
           // Cast
           if (details.cast.isNotEmpty) ...[
@@ -261,9 +327,9 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
               itemBuilder: (context, index) {
                 final actor = details.cast[index];
                 return CastItem(
-                  imageUrl: actor['url_small_image'] ?? '',
-                  actorName: actor['name'] ?? '',
-                  characterName: actor['character_name'] ?? '',
+                  imageUrl: actor.imageUrl,
+                  actorName: actor.name,
+                  characterName: actor.characterName,
                 );
               },
             ),

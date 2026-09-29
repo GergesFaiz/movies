@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movies/core/router/app_router.dart';
 import 'package:movies/features/movies/presentation/bloc/search_bloc.dart';
 
+import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/utils/app_assets.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_styles.dart';
@@ -15,6 +16,8 @@ class SearchTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final local = AppLocalizations.of(context)!;
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -31,7 +34,7 @@ class SearchTab extends StatelessWidget {
                   cursorColor: AppColors.white,
                   style: AppStyles.bold18White,
                   decoration: InputDecoration(
-                    hintText: 'Search movies...',
+                    hintText: local.search,
                     hintStyle: AppStyles.bold18White.copyWith(
                       color: AppColors.lightGreyColor,
                     ),
@@ -88,7 +91,7 @@ class SearchTab extends StatelessWidget {
                     if (state is SearchEmpty) {
                       return Center(
                         child: Text(
-                          'No movies found',
+                          local.noMoviesFound,
                           style: TextStyle(
                             color: Colors.white70,
                             fontSize: 18.sp,
