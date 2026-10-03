@@ -4,7 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies/core/router/app_router.dart';
 import 'package:movies/features/movies/domain/entities/movie_entity.dart';
-import 'package:movies/features/movies/presentation/bloc/movies_bloc.dart';
+import 'package:movies/features/movies/presentation/cubit/movies_cubit.dart';
+import 'package:movies/features/movies/presentation/cubit/movies_state.dart';
 import 'package:movies/main.dart';
 
 import '../../../../core/utils/app_assets.dart';
@@ -25,7 +26,7 @@ class _HomeTabState extends State<HomeTab> with RouteAware {
   @override
   void initState() {
     super.initState();
-    context.read<MoviesBloc>().add(LoadHomeMoviesEvent());
+    context.read<MoviesCubit>().loadHomeMovies();
   }
 
   @override
@@ -45,13 +46,13 @@ class _HomeTabState extends State<HomeTab> with RouteAware {
   void didPopNext() {
     super.didPopNext();
     // عند الرجوع، نغير الكاتيجوري randomly
-    context.read<MoviesBloc>().add(LoadHomeMoviesEvent());
+    context.read<MoviesCubit>().loadHomeMovies();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<MoviesBloc, MoviesState>(
+      body: BlocBuilder<MoviesCubit, MoviesState>(
         buildWhen: (prev, curr) =>
             curr is HomMoviesLoading ||
             curr is HomeMoviesLoaded ||
@@ -66,7 +67,7 @@ class _HomeTabState extends State<HomeTab> with RouteAware {
             return MainErrorWidget(
               massage: state.message,
               onPressed: () =>
-                  context.read<MoviesBloc>().add(RefreshMoviesEvent()),
+                  context.read<MoviesCubit>().refresh(),
             );
           }
 

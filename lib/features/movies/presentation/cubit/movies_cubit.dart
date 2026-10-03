@@ -1,37 +1,25 @@
 import 'dart:math';
 
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/entities/movie_entity.dart';
 import '../../domain/usecases/get_movies_usecase.dart';
+import 'movies_state.dart';
 
-part 'movies_event.dart';
-part 'movies_state.dart';
-
-class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
+class MoviesCubit extends Cubit<MoviesState> {
   final GetMoviesUseCase _getMoviesUseCase;
   final GetMoviesUseCase _getBrowseMoviesUseCase;
 
   List<MovieEntity> _allMovies = [];
 
-  MoviesBloc(this._getMoviesUseCase, this._getBrowseMoviesUseCase)
-    : super(MoviesInitial()) {
-    on<LoadHomeMoviesEvent>(_onLoadHomeMovies);
-    on<ChangeCategoryEvent>(_onChangeCategory);
-    on<LoadBrowseMoviesEvent>(_onLoadBrowseMovies);
-    on<SelectGenreEvent>(_onSelectGenre);
-    on<RefreshMoviesEvent>(_onRefresh);
-  }
+  MoviesCubit(this._getMoviesUseCase, this._getBrowseMoviesUseCase)
+    : super(MoviesInitial());
 
   // ─── Home ─────────────────────────────────────────────────────────────────
 
-  Future<void> _onLoadHomeMovies(
-    LoadHomeMoviesEvent event,
-    Emitter<MoviesState> emit,
-  ) async {
+  Future<void> loadHomeMovies() async {
     if (_allMovies.isNotEmpty) {
-      _emitRandomCategory(emit);
+      _emitRandomCategory();
       return;
     }
 
@@ -41,22 +29,22 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
 
     result.fold((failure) => emit(HomeMoviesError(failure.message)), (movies) {
       _allMovies = movies;
-      _emitRandomCategory(emit);
+      _emitRandomCategory();
     });
   }
 
-  void _onChangeCategory(ChangeCategoryEvent event, Emitter<MoviesState> emit) {
+  void changeCategory(String category) {
     if (state is! HomeMoviesLoaded) return;
     final current = state as HomeMoviesLoaded;
     emit(
       current.copyWith(
-        categoryMovies: _filterByCategory(event.category),
-        currentCategory: event.category,
+        categoryMovies: _filterByCategory(category),
+        currentCategory: category,
       ),
     );
   }
 
-  void _emitRandomCategory(Emitter<MoviesState> emit) {
+  void _emitRandomCategory() {
     if (_allMovies.isEmpty) return;
 
     final allGenres = <String>{};
@@ -87,12 +75,14 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     );
   }
 
+  Future<void> refresh() async {
+    _allMovies.clear();
+    await loadHomeMovies();
+  }
+
   // ─── Browse ───────────────────────────────────────────────────────────────
 
-  Future<void> _onLoadBrowseMovies(
-    LoadBrowseMoviesEvent event,
-    Emitter<MoviesState> emit,
-  ) async {
+  Future<void> loadBrowseMovies() async {
     emit(BrowseMoviesLoading());
 
     final result = await _getBrowseMoviesUseCase(
@@ -119,24 +109,16 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     });
   }
 
-  void _onSelectGenre(SelectGenreEvent event, Emitter<MoviesState> emit) {
+  void selectGenre(String genre) {
     if (state is! BrowseMoviesLoaded) return;
     final current = state as BrowseMoviesLoaded;
-    final filtered = event.genre == 'All'
+    final filtered = genre == 'All'
         ? current.allMovies
         : current.allMovies
-              .where((m) => m.genres?.contains(event.genre) ?? false)
+              .where((m) => m.genres?.contains(genre) ?? false)
               .toList();
 
-    emit(current.copyWith(movies: filtered, selectedGenre: event.genre));
-  }
-
-  Future<void> _onRefresh(
-    RefreshMoviesEvent event,
-    Emitter<MoviesState> emit,
-  ) async {
-    _allMovies.clear();
-    add(LoadHomeMoviesEvent());
+    emit(current.copyWith(movies: filtered, selectedGenre: genre));
   }
 
   List<MovieEntity> _filterByCategory(String category) {

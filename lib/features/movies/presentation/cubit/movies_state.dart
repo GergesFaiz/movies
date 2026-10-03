@@ -1,4 +1,6 @@
-part of 'movies_bloc.dart';
+import 'package:equatable/equatable.dart';
+
+import '../../domain/entities/movie_entity.dart';
 
 abstract class MoviesState extends Equatable {
   const MoviesState();

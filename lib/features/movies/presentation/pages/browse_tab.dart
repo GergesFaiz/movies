@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies/core/router/app_router.dart';
-import 'package:movies/features/movies/presentation/bloc/movies_bloc.dart';
+import 'package:movies/features/movies/presentation/cubit/movies_cubit.dart';
+import 'package:movies/features/movies/presentation/cubit/movies_state.dart';
 
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_styles.dart';
@@ -19,12 +20,12 @@ class _BrowseTabState extends State<BrowseTab> {
   @override
   void initState() {
     super.initState();
-    context.read<MoviesBloc>().add(LoadBrowseMoviesEvent());
+    context.read<MoviesCubit>().loadBrowseMovies();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MoviesBloc, MoviesState>(
+    return BlocBuilder<MoviesCubit, MoviesState>(
       buildWhen: (prev, curr) =>
           curr is BrowseMoviesLoading ||
           curr is BrowseMoviesLoaded ||
@@ -64,9 +65,7 @@ class _BrowseTabState extends State<BrowseTab> {
                           final genre = state.genres[index];
                           final isSelected = state.selectedGenre == genre;
                           return GestureDetector(
-                            onTap: () => context.read<MoviesBloc>().add(
-                              SelectGenreEvent(genre),
-                            ),
+                            onTap: () => context.read<MoviesCubit>().selectGenre(genre),
                             child: Container(
                               margin: EdgeInsets.only(right: 12.w),
                               padding: EdgeInsets.symmetric(
