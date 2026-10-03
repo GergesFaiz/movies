@@ -25,7 +25,7 @@ import '../../features/movies/domain/usecases/search_movies_usecase.dart';
 import '../../features/movies/domain/usecases/toggle_watchlist_usecase.dart';
 import '../../features/movies/presentation/bloc/movie_details_bloc.dart';
 import '../../features/movies/presentation/bloc/movies_bloc.dart';
-import '../../features/movies/presentation/bloc/search_bloc.dart';
+import '../../features/movies/presentation/cubit/search_cubit.dart';
 import '../network/api_client.dart';
 import '../network/dio_factory.dart';
 
@@ -67,7 +67,7 @@ Future<void> setupDependencies() async {
   // Blocs (factory = new instance each time)
   sl.registerFactory(() => MoviesBloc(sl(), sl()));
   sl.registerFactory(() => MovieDetailsBloc(sl(), sl(), sl(), sl()));
-  sl.registerFactory(() => SearchBloc(sl()));
+  sl.registerFactory(() => SearchCubit(sl()));
 
   // ─── Auth Feature ─────────────────────────────────────────────────────────
   // Datasource

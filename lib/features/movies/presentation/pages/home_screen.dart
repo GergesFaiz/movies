@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies/core/di/injection.dart';
 import 'package:movies/features/movies/presentation/bloc/movies_bloc.dart';
-import 'package:movies/features/movies/presentation/bloc/search_bloc.dart';
+import 'package:movies/features/movies/presentation/cubit/search_cubit.dart';
 
 import '../../../../core/utils/app_colors.dart';
 import 'browse_tab.dart';
@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final tabs = [
       const HomeTab(),
       BlocProvider.value(
-        value: context.read<SearchBloc>(),
+        value: context.read<SearchCubit>(),
         child: const SearchTab(),
       ),
       BlocProvider(create: (_) => sl<MoviesBloc>(), child: const BrowseTab()),

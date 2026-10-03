@@ -1,36 +1,25 @@
 import 'dart:async';
 
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../domain/entities/movie_entity.dart';
 import '../../domain/usecases/search_movies_usecase.dart';
+import 'search_state.dart';
 
-part 'search_event.dart';
-part 'search_state.dart';
-
-class SearchBloc extends Bloc<SearchEvent, SearchState> {
+class SearchCubit extends Cubit<SearchState> {
   final SearchMoviesUseCase _searchMoviesUseCase;
   Timer? _debounce;
 
-  SearchBloc(this._searchMoviesUseCase) : super(SearchInitial()) {
-    on<SearchQueryChangedEvent>(_onSearchQueryChanged);
-    on<ClearSearchEvent>(_onClearSearch);
-  }
+  SearchCubit(this._searchMoviesUseCase) : super(SearchInitial());
 
-  Future<void> _onSearchQueryChanged(
-    SearchQueryChangedEvent event,
-    Emitter<SearchState> emit,
-  ) async {
-    final query = event.query.trim();
+  Future<void> search(String rawQuery) async {
+    final query = rawQuery.trim();
+
+    _debounce?.cancel();
 
     if (query.isEmpty) {
-      _debounce?.cancel();
       emit(SearchInitial());
       return;
     }
-
-    _debounce?.cancel();
 
     // Debounce 500ms
     await Future.delayed(const Duration(milliseconds: 500));
@@ -49,7 +38,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     });
   }
 
-  void _onClearSearch(ClearSearchEvent event, Emitter<SearchState> emit) {
+  void clearSearch() {
     _debounce?.cancel();
     emit(SearchInitial());
   }

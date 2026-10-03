@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movies/core/router/app_router.dart';
-import 'package:movies/features/movies/presentation/bloc/search_bloc.dart';
+import 'package:movies/features/movies/presentation/cubit/search_cubit.dart';
+import 'package:movies/features/movies/presentation/cubit/search_state.dart';
 
 import '../../../../core/utils/app_assets.dart';
 import '../../../../core/utils/app_colors.dart';
@@ -53,15 +54,15 @@ class SearchTab extends StatelessWidget {
                       borderSide: BorderSide.none,
                     ),
                   ),
-                  onChanged: (value) => context.read<SearchBloc>().add(
-                    SearchQueryChangedEvent(value),
+                  onChanged: (value) => context.read<SearchCubit>().search(
+                    value,
                   ),
                 ),
               ),
 
               // Results area
               Expanded(
-                child: BlocBuilder<SearchBloc, SearchState>(
+                child: BlocBuilder<SearchCubit, SearchState>(
                   builder: (context, state) {
                     if (state is SearchInitial) {
                       return Center(

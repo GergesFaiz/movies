@@ -9,7 +9,7 @@ import '../../features/auth/presentation/pages/update_profile_page.dart';
 import '../../features/movies/domain/entities/movie_entity.dart';
 import '../../features/movies/presentation/bloc/movie_details_bloc.dart';
 import '../../features/movies/presentation/bloc/movies_bloc.dart';
-import '../../features/movies/presentation/bloc/search_bloc.dart';
+import '../../features/movies/presentation/cubit/search_cubit.dart';
 import '../../features/movies/presentation/pages/home_screen.dart';
 import '../../features/movies/presentation/pages/movie_details_page.dart';
 import '../../features/movies/presentation/pages/onboarding_page.dart';
@@ -40,7 +40,7 @@ class AppRouter {
           builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider(create: (_) => sl<MoviesBloc>()),
-              BlocProvider(create: (_) => sl<SearchBloc>()),
+              BlocProvider(create: (_) => sl<SearchCubit>()),
             ],
             child: const HomeScreen(),
           ),

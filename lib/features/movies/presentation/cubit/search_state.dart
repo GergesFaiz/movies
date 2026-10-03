@@ -1,4 +1,6 @@
-part of 'search_bloc.dart';
+import 'package:equatable/equatable.dart';
+
+import '../../domain/entities/movie_entity.dart';
 
 abstract class SearchState extends Equatable {
   const SearchState();
