@@ -54,12 +54,12 @@ class _HomeTabState extends State<HomeTab> with RouteAware {
     return Scaffold(
       body: BlocBuilder<MoviesCubit, MoviesState>(
         buildWhen: (prev, curr) =>
-            curr is HomMoviesLoading ||
+            curr is HomeMoviesLoading ||
             curr is HomeMoviesLoaded ||
             curr is HomeMoviesError ||
             curr is MoviesInitial,
         builder: (context, state) {
-          if (state is HomMoviesLoading || state is MoviesInitial) {
+          if (state is HomeMoviesLoading || state is MoviesInitial) {
             return const MainLoadingWidget();
           }
 

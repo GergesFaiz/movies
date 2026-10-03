@@ -41,11 +41,11 @@ class _ApiClient implements ApiClient {
     final _options = _setStreamType<SourceResponseModel>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
-        _dio.options,
-        '/list_movies.json',
-        queryParameters: queryParameters,
-        data: _data,
-      )
+            _dio.options,
+            '/list_movies.json',
+            queryParameters: queryParameters,
+            data: _data,
+          )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
@@ -70,11 +70,11 @@ class _ApiClient implements ApiClient {
     final _options = _setStreamType<SourceResponseModel>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
-        _dio.options,
-        '/movie_suggestions.json',
-        queryParameters: queryParameters,
-        data: _data,
-      )
+            _dio.options,
+            '/movie_suggestions.json',
+            queryParameters: queryParameters,
+            data: _data,
+          )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
@@ -105,11 +105,11 @@ class _ApiClient implements ApiClient {
     final _options = _setStreamType<HttpResponse<dynamic>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
-        _dio.options,
-        '/movie_details.json',
-        queryParameters: queryParameters,
-        data: _data,
-      )
+            _dio.options,
+            '/movie_details.json',
+            queryParameters: queryParameters,
+            data: _data,
+          )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch(_options);
@@ -132,9 +132,7 @@ class _ApiClient implements ApiClient {
   }
 
   String _combineBaseUrls(String dioBaseUrl, String? baseUrl) {
-    if (baseUrl == null || baseUrl
-        .trim()
-        .isEmpty) {
+    if (baseUrl == null || baseUrl.trim().isEmpty) {
       return dioBaseUrl;
     }
 

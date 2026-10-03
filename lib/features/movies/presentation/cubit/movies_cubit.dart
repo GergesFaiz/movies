@@ -23,7 +23,7 @@ class MoviesCubit extends Cubit<MoviesState> {
       return;
     }
 
-    emit(HomMoviesLoading());
+    emit(HomeMoviesLoading());
 
     final result = await _getMoviesUseCase(const GetMoviesParams(limit: 100));
 

@@ -13,7 +13,7 @@ class MoviesInitial extends MoviesState {}
 
 // ─── Home States ──────────────────────────────────────────────────────────────
 
-class HomMoviesLoading extends MoviesState {}
+class HomeMoviesLoading extends MoviesState {}
 
 class HomeMoviesLoaded extends MoviesState {
   final List<MovieEntity> carouselMovies;
