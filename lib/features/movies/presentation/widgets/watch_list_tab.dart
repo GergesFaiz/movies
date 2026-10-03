@@ -64,7 +64,7 @@ class WatchListTab extends StatelessWidget {
           }
 
           return GridView.builder(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h)),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
             itemCount: watchList.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
