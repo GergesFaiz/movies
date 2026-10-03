@@ -76,7 +76,8 @@ class MoviesCubit extends Cubit<MoviesState> {
   }
 
   Future<void> refresh() async {
-    _allMovies.clear();
+    // Reassign instead of clear(): the list may be shared with the repository's result.
+    _allMovies = [];
     await loadHomeMovies();
   }
 

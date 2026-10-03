@@ -82,4 +82,57 @@ void main() {
     cubit.selectGenre('Action');
     expect(cubit.state, isA<MoviesInitial>());
   });
+
+  test('selectGenre All returns every browse movie', () async {
+    repo.moviesResult = Right([
+      movie(1, genres: ['Drama']),
+      movie(2, genres: ['Action']),
+    ]);
+    await cubit.loadBrowseMovies();
+
+    cubit.selectGenre('Action');
+    cubit.selectGenre('All');
+
+    final state = cubit.state as BrowseMoviesLoaded;
+    expect(state.selectedGenre, 'All');
+    expect(state.movies.map((m) => m.id), [1, 2]);
+  });
+
+  test('loadBrowseMovies emits BrowseMoviesError on failure', () async {
+    repo.moviesResult = const Left(ServerFailure('browse failed'));
+
+    await cubit.loadBrowseMovies();
+
+    expect(cubit.state, isA<BrowseMoviesError>());
+    expect((cubit.state as BrowseMoviesError).message, 'browse failed');
+  });
+
+  test('changeCategory filters home movies by the chosen category', () async {
+    repo.moviesResult = Right([
+      movie(1, genres: ['Action']),
+      movie(2, genres: ['Drama']),
+    ]);
+    await cubit.loadHomeMovies();
+
+    cubit.changeCategory('Drama');
+
+    final state = cubit.state as HomeMoviesLoaded;
+    expect(state.currentCategory, 'Drama');
+    expect(state.categoryMovies.map((m) => m.id), [2]);
+  });
+
+  test('changeCategory is ignored when home is not loaded', () {
+    cubit.changeCategory('Drama');
+    expect(cubit.state, isA<MoviesInitial>());
+  });
+
+  test('refresh clears the cache and fetches movies again', () async {
+    repo.moviesResult = Right([movie(1, genres: ['Action'])]);
+    await cubit.loadHomeMovies();
+
+    await cubit.refresh();
+
+    expect(repo.getMoviesCalls, 2);
+    expect(cubit.state, isA<HomeMoviesLoaded>());
+  });
 }

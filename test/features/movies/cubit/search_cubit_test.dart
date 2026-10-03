@@ -47,6 +47,19 @@ void main() {
     expect((cubit.state as SearchError).message, 'No internet connection');
   });
 
+  test('search emits SearchLoading before the result', () async {
+    repo.searchResult = Right([movie(1)]);
+    final states = <SearchState>[];
+    final sub = cubit.stream.listen(states.add);
+
+    await cubit.search('movie');
+    await pumpEventQueue();
+    await sub.cancel();
+
+    expect(states.first, isA<SearchLoading>());
+    expect(states.last, isA<SearchLoaded>());
+  });
+
   test('clearSearch resets to SearchInitial', () async {
     repo.searchResult = Right([movie(1)]);
     await cubit.search('movie');
