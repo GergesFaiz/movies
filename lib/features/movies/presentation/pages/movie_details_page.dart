@@ -2,7 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:movies/features/movies/presentation/bloc/movie_details_bloc.dart';
+import 'package:movies/features/movies/presentation/cubit/movie_details_cubit.dart';
+import 'package:movies/features/movies/presentation/cubit/movie_details_state.dart';
 
 import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/utils/app_colors.dart';
@@ -26,17 +27,15 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
   @override
   void initState() {
     super.initState();
-    context.read<MovieDetailsBloc>().add(
-      LoadMovieDetailsEvent(widget.movie.id ?? 0),
-    );
-    context.read<MovieDetailsBloc>().add(AddToHistoryEvent(widget.movie));
+    context.read<MovieDetailsCubit>().loadMovieDetails(widget.movie.id ?? 0);
+    context.read<MovieDetailsCubit>().addToHistory(widget.movie);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.gray,
-      body: BlocBuilder<MovieDetailsBloc, MovieDetailsState>(
+      body: BlocBuilder<MovieDetailsCubit, MovieDetailsState>(
         builder: (context, state) {
           return SingleChildScrollView(
             child: Column(
@@ -117,7 +116,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
               ),
               // Watchlist button with stream
               StreamBuilder<bool>(
-                stream: context.read<MovieDetailsBloc>().isMovieInWatchlist(
+                stream: context.read<MovieDetailsCubit>().isMovieInWatchlist(
                   widget.movie.id ?? 0,
                 ),
                 builder: (context, snapshot) {
@@ -128,8 +127,8 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                       color: isSaved ? Colors.amber : AppColors.white,
                       size: 28.sp,
                     ),
-                    onPressed: () => context.read<MovieDetailsBloc>().add(
-                      ToggleWatchlistEvent(widget.movie),
+                    onPressed: () => context.read<MovieDetailsCubit>().toggleWatchlist(
+                      widget.movie,
                     ),
                   );
                 },

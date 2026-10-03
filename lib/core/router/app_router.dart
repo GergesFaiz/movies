@@ -7,7 +7,7 @@ import '../../features/auth/presentation/pages/register_page.dart';
 import '../../features/auth/presentation/pages/splash_page.dart';
 import '../../features/auth/presentation/pages/update_profile_page.dart';
 import '../../features/movies/domain/entities/movie_entity.dart';
-import '../../features/movies/presentation/bloc/movie_details_bloc.dart';
+import '../../features/movies/presentation/cubit/movie_details_cubit.dart';
 import '../../features/movies/presentation/bloc/movies_bloc.dart';
 import '../../features/movies/presentation/cubit/search_cubit.dart';
 import '../../features/movies/presentation/pages/home_screen.dart';
@@ -50,7 +50,7 @@ class AppRouter {
         final movie = settings.arguments as MovieEntity;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (_) => sl<MovieDetailsBloc>(),
+            create: (_) => sl<MovieDetailsCubit>(),
             child: MovieDetailsPage(movie: movie),
           ),
         );

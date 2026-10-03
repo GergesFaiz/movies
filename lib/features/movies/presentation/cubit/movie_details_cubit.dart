@@ -1,40 +1,29 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../domain/entities/movie_details_entity.dart';
 import '../../domain/entities/movie_entity.dart';
 import '../../domain/usecases/add_to_history_usecase.dart';
 import '../../domain/usecases/get_movie_details_usecase.dart';
 import '../../domain/usecases/is_movie_in_watchlist_usecase.dart';
 import '../../domain/usecases/toggle_watchlist_usecase.dart';
+import 'movie_details_state.dart';
 
-part 'movie_details_event.dart';
-part 'movie_details_state.dart';
-
-class MovieDetailsBloc extends Bloc<MovieDetailsEvent, MovieDetailsState> {
+class MovieDetailsCubit extends Cubit<MovieDetailsState> {
   final GetMovieDetailsUseCase _getMovieDetailsUseCase;
   final ToggleWatchlistUseCase _toggleWatchlistUseCase;
   final AddToHistoryUseCase _addToHistoryUseCase;
   final IsMovieInWatchlistUseCase _isMovieInWatchlistUseCase;
 
-  MovieDetailsBloc(
+  MovieDetailsCubit(
     this._getMovieDetailsUseCase,
     this._toggleWatchlistUseCase,
     this._addToHistoryUseCase,
     this._isMovieInWatchlistUseCase,
-  ) : super(MovieDetailsInitial()) {
-    on<LoadMovieDetailsEvent>(_onLoadMovieDetails);
-    on<ToggleWatchlistEvent>(_onToggleWatchlist);
-    on<AddToHistoryEvent>(_onAddToHistory);
-  }
+  ) : super(MovieDetailsInitial());
 
-  Future<void> _onLoadMovieDetails(
-    LoadMovieDetailsEvent event,
-    Emitter<MovieDetailsState> emit,
-  ) async {
+  Future<void> loadMovieDetails(int movieId) async {
     emit(MovieDetailsLoading());
 
-    final result = await _getMovieDetailsUseCase(event.movieId);
+    final result = await _getMovieDetailsUseCase(movieId);
 
     result.fold(
       (failure) => emit(MovieDetailsError(failure.message)),
@@ -42,18 +31,12 @@ class MovieDetailsBloc extends Bloc<MovieDetailsEvent, MovieDetailsState> {
     );
   }
 
-  Future<void> _onToggleWatchlist(
-    ToggleWatchlistEvent event,
-    Emitter<MovieDetailsState> emit,
-  ) async {
-    await _toggleWatchlistUseCase(event.movie);
+  Future<void> toggleWatchlist(MovieEntity movie) async {
+    await _toggleWatchlistUseCase(movie);
   }
 
-  Future<void> _onAddToHistory(
-    AddToHistoryEvent event,
-    Emitter<MovieDetailsState> emit,
-  ) async {
-    await _addToHistoryUseCase(event.movie);
+  Future<void> addToHistory(MovieEntity movie) async {
+    await _addToHistoryUseCase(movie);
   }
 
   Stream<bool> isMovieInWatchlist(int movieId) {

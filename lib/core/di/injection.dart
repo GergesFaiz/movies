@@ -23,7 +23,7 @@ import '../../features/movies/domain/usecases/get_movies_usecase.dart';
 import '../../features/movies/domain/usecases/is_movie_in_watchlist_usecase.dart';
 import '../../features/movies/domain/usecases/search_movies_usecase.dart';
 import '../../features/movies/domain/usecases/toggle_watchlist_usecase.dart';
-import '../../features/movies/presentation/bloc/movie_details_bloc.dart';
+import '../../features/movies/presentation/cubit/movie_details_cubit.dart';
 import '../../features/movies/presentation/bloc/movies_bloc.dart';
 import '../../features/movies/presentation/cubit/search_cubit.dart';
 import '../network/api_client.dart';
@@ -66,7 +66,7 @@ Future<void> setupDependencies() async {
   sl.registerLazySingleton(() => IsMovieInWatchlistUseCase(sl()));
   // Blocs (factory = new instance each time)
   sl.registerFactory(() => MoviesBloc(sl(), sl()));
-  sl.registerFactory(() => MovieDetailsBloc(sl(), sl(), sl(), sl()));
+  sl.registerFactory(() => MovieDetailsCubit(sl(), sl(), sl(), sl()));
   sl.registerFactory(() => SearchCubit(sl()));
 
   // ─── Auth Feature ─────────────────────────────────────────────────────────
