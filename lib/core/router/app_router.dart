@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../features/auth/presentation/pages/forgot_password_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
@@ -15,6 +16,9 @@ import '../../features/movies/presentation/pages/movie_details_page.dart';
 import '../../features/movies/presentation/pages/onboarding_page.dart';
 import '../di/injection.dart';
 
+final RouteObserver<ModalRoute<void>> routeObserver =
+    RouteObserver<ModalRoute<void>>();
+
 class AppRoutes {
   static const String splash = '/splash';
   static const String onBoarding = '/onboarding';
@@ -27,51 +31,53 @@ class AppRoutes {
 }
 
 class AppRouter {
-  static Route<dynamic> generateRoute(RouteSettings settings) {
-    switch (settings.name) {
-      case AppRoutes.splash:
-        return MaterialPageRoute(builder: (_) => const SplashPage());
-
-      case AppRoutes.onBoarding:
-        return MaterialPageRoute(builder: (_) => const OnboardingPage());
-
-      case AppRoutes.homeScreen:
-        return MaterialPageRoute(
-          builder: (_) => MultiBlocProvider(
-            providers: [
-              BlocProvider(create: (_) => sl<MoviesCubit>()),
-              BlocProvider(create: (_) => sl<SearchCubit>()),
-            ],
-            child: const HomeScreen(),
-          ),
-        );
-
-      case AppRoutes.movieDetails:
-        final movie = settings.arguments as MovieEntity;
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (_) => sl<MovieDetailsCubit>(),
-            child: MovieDetailsPage(movie: movie),
-          ),
-        );
-
-      case AppRoutes.loginScreen:
-        return MaterialPageRoute(builder: (_) => const LoginPage());
-
-      case AppRoutes.forgotPasswordScreen:
-        return MaterialPageRoute(builder: (_) => const ForgotPasswordPage());
-
-      case AppRoutes.registerScreen:
-        return MaterialPageRoute(builder: (_) => const RegisterPage());
-
-      case AppRoutes.updateProfileScreen:
-        return MaterialPageRoute(builder: (_) => const UpdateProfilePage());
-
-      default:
-        return MaterialPageRoute(
-          builder: (_) =>
-              const Scaffold(body: Center(child: Text('Page not found'))),
-        );
-    }
-  }
+  static final GoRouter router = GoRouter(
+    initialLocation: AppRoutes.splash,
+    observers: [routeObserver],
+    routes: [
+      GoRoute(
+        path: AppRoutes.splash,
+        builder: (context, state) => const SplashPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.onBoarding,
+        builder: (context, state) => const OnboardingPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.homeScreen,
+        builder: (context, state) => MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (_) => sl<MoviesCubit>()),
+            BlocProvider(create: (_) => sl<SearchCubit>()),
+          ],
+          child: const HomeScreen(),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.movieDetails,
+        builder: (context, state) => BlocProvider(
+          create: (_) => sl<MovieDetailsCubit>(),
+          child: MovieDetailsPage(movie: state.extra as MovieEntity),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.loginScreen,
+        builder: (context, state) => const LoginPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.forgotPasswordScreen,
+        builder: (context, state) => const ForgotPasswordPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.registerScreen,
+        builder: (context, state) => const RegisterPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.updateProfileScreen,
+        builder: (context, state) => const UpdateProfilePage(),
+      ),
+    ],
+    errorBuilder: (context, state) =>
+        const Scaffold(body: Center(child: Text('Page not found'))),
+  );
 }

@@ -11,9 +11,6 @@ import 'core/l10n/app_localizations.dart';
 import 'core/utils/app_theme.dart';
 import 'core/utils/firebase_files/firebase_options.dart';
 
-final RouteObserver<ModalRoute<void>> routeObserver =
-RouteObserver<ModalRoute<void>>();
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -46,8 +43,7 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (context, child) => BlocBuilder<AppLanguageCubit, Locale>(
         builder: (context, localeState) {
-          return MaterialApp(
-            navigatorObservers: [routeObserver],
+          return MaterialApp.router(
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
             locale: localeState,
@@ -55,8 +51,7 @@ class MyApp extends StatelessWidget {
             theme: AppTheme.darkTheme,
             darkTheme: AppTheme.darkTheme,
             themeMode: ThemeMode.dark,
-            initialRoute: AppRoutes.splash,
-            onGenerateRoute: AppRouter.generateRoute,
+            routerConfig: AppRouter.router,
           );
         },
       ),

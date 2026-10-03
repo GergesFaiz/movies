@@ -1,3 +1,4 @@
+import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -123,11 +124,7 @@ class _BrowseTabState extends State<BrowseTab> {
                               return MovieCard(
                                 imageUrl: movie.coverImage,
                                 rating: (movie.rating ?? 0).toStringAsFixed(1),
-                                onTap: () => Navigator.pushNamed(
-                                  context,
-                                  AppRoutes.movieDetails,
-                                  arguments: movie,
-                                ),
+                                onTap: () => context.push(AppRoutes.movieDetails, extra: movie),
                               );
                             },
                           ),

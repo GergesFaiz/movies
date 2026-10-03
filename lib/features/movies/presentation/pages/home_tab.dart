@@ -1,3 +1,4 @@
+import 'package:go_router/go_router.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,7 +7,6 @@ import 'package:movies/core/router/app_router.dart';
 import 'package:movies/features/movies/domain/entities/movie_entity.dart';
 import 'package:movies/features/movies/presentation/cubit/movies_cubit.dart';
 import 'package:movies/features/movies/presentation/cubit/movies_state.dart';
-import 'package:movies/main.dart';
 
 import '../../../../core/utils/app_assets.dart';
 import '../../../../core/utils/app_colors.dart';
@@ -200,6 +200,6 @@ class _HomeTabState extends State<HomeTab> with RouteAware {
   }
 
   void _navigateToDetails(BuildContext context, MovieEntity movie) {
-    Navigator.pushNamed(context, AppRoutes.movieDetails, arguments: movie);
+    context.push(AppRoutes.movieDetails, extra: movie);
   }
 }

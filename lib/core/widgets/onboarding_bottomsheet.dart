@@ -1,3 +1,4 @@
+import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -59,7 +60,7 @@ class OnboardingBottomsheet extends StatelessWidget {
               if (buttonText == "Next") {
                 navigatornext();
               } else {
-                Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
+                context.go(AppRoutes.loginScreen);
               }
             },
           ),

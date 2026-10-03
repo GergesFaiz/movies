@@ -1,3 +1,4 @@
+import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies/core/router/app_router.dart';
@@ -30,7 +31,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('seenOnboarding', true);
     if (!mounted) return;
-    Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
+    context.go(AppRoutes.loginScreen);
   }
 
   void _navigate(String direction) {

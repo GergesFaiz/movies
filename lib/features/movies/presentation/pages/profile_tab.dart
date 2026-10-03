@@ -1,3 +1,4 @@
+import 'package:go_router/go_router.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -106,8 +107,7 @@ class _ProfileTabState extends State<ProfileTab>
                               textStyle: AppStyles.regular20Black,
                               label: 'Edit Profile',
                               onPressed: () =>
-                                  Navigator.pushNamed(
-                                      context, AppRoutes.updateProfileScreen),
+                                  context.push(AppRoutes.updateProfileScreen),
                             ),
                           ),
                           SizedBox(width: 12.w),
@@ -120,12 +120,7 @@ class _ProfileTabState extends State<ProfileTab>
                               onPressed: () async {
                                 await FirebaseAuth.instance.signOut();
                                 if (context.mounted) {
-                                  Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) => const LoginPage()),
-                                        (route) => false,
-                                  );
+                                  context.go(AppRoutes.loginScreen);
                                 }
                               },
                               backgroundColor: AppColors.red,

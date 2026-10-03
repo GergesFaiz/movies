@@ -1,3 +1,4 @@
+import 'package:go_router/go_router.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -172,8 +173,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                     SizedBox(height: 10.h),
 
                     GestureDetector(
-                      onTap: () => Navigator.pushNamed(
-                          context, AppRoutes.forgotPasswordScreen),
+                      onTap: () => context.push(AppRoutes.forgotPasswordScreen),
                       child: Text(
                         'Reset Password',
                         style: TextStyle(
@@ -197,9 +197,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                                   .delete();
                               await user.delete();
                               if (context.mounted) {
-                                Navigator.pushNamedAndRemoveUntil(
-                                    context, AppRoutes.loginScreen, (
-                                    route) => false);
+                                context.go(AppRoutes.loginScreen);
                               }
                             } catch (e) {
                               if (context.mounted) {

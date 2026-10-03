@@ -1,3 +1,4 @@
+import 'package:go_router/go_router.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -77,10 +78,7 @@ class WatchListTab extends StatelessWidget {
               final String posterPath = movieData['poster_path'] ?? '';
 
               return InkWell(
-                onTap: () => Navigator.pushNamed(
-                  context,
-                  AppRoutes.movieDetails,
-                  arguments: MovieEntity(
+                onTap: () => context.push(AppRoutes.movieDetails, extra: MovieEntity(
                     id: movieData['id'] as int?,
                     title: movieData['title'] as String?,
                     rating: (movieData['rating'] as num?)?.toDouble(),

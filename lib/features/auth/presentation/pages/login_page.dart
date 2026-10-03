@@ -1,3 +1,4 @@
+import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -57,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
               local.loginSuccess,
               posActionName: local.ok,
               posAction: () =>
-                  Navigator.pushReplacementNamed(context, AppRoutes.homeScreen),
+                  context.go(AppRoutes.homeScreen),
             );
           } else if (state is AuthError) {
             DialogUtils.hideLoading(context);
@@ -116,10 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                             minimumSize: Size.zero,
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
-                          onPressed: () => Navigator.pushNamed(
-                            context,
-                            AppRoutes.forgotPasswordScreen,
-                          ),
+                          onPressed: () => context.push(AppRoutes.forgotPasswordScreen),
                           child: Text(
                             local.forgetPassword,
                             style: AppStyles.medium14Amber,
@@ -159,10 +157,7 @@ class _LoginPageState extends State<LoginPage> {
                               minimumSize: Size.zero,
                               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                             ),
-                            onPressed: () => Navigator.pushNamed(
-                              context,
-                              AppRoutes.registerScreen,
-                            ),
+                            onPressed: () => context.push(AppRoutes.registerScreen),
                             child: Text(
                               local.createOne,
                               style: AppStyles.medium14Amber.copyWith(

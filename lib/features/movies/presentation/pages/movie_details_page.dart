@@ -1,3 +1,5 @@
+import 'package:movies/core/router/app_router.dart';
+import 'package:go_router/go_router.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -237,11 +239,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                 return MovieCard(
                   imageUrl: movie.coverImage,
                   rating: movie.rating?.toString() ?? '0',
-                  onTap: () => Navigator.pushReplacementNamed(
-                    context,
-                    '/movie-details',
-                    arguments: movie,
-                  ),
+                  onTap: () => context.go(AppRoutes.movieDetails, extra: movie),
                 );
               },
             ),

@@ -1,3 +1,4 @@
+import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,16 +30,16 @@ class _SplashPageState extends State<SplashPage> {
 
     if (!seenOnboarding) {
       if (!mounted) return;
-      Navigator.pushReplacementNamed(context, AppRoutes.onBoarding);
+      context.go(AppRoutes.onBoarding);
       return;
     }
 
     final user = FirebaseAuth.instance.currentUser;
     if (!mounted) return;
     if (user != null) {
-      Navigator.pushReplacementNamed(context, AppRoutes.homeScreen);
+      context.go(AppRoutes.homeScreen);
     } else {
-      Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
+      context.go(AppRoutes.loginScreen);
     }
   }
 

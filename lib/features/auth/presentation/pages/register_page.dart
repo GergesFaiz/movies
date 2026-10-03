@@ -1,3 +1,4 @@
+import 'package:go_router/go_router.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -85,7 +86,7 @@ class _RegisterPageState extends State<RegisterPage> {
               local.createAccount,
               posActionName: 'Ok',
               posAction: () =>
-                  Navigator.pushReplacementNamed(context, AppRoutes.homeScreen),
+                  context.go(AppRoutes.homeScreen),
             );
           } else if (state is AuthError) {
             DialogUtils.hideLoading(context);
@@ -206,10 +207,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                             local.createAccount,
                                             posActionName: 'Ok',
                                             posAction: () =>
-                                                Navigator.pushReplacementNamed(
-                                                  context,
-                                                  AppRoutes.homeScreen,
-                                                ),
+                                                context.go(AppRoutes.homeScreen),
                                           );
                                         } else {
                                           DialogUtils.showMessage(
@@ -244,10 +242,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           style: AppStyles.bold14White,
                         ),
                         GestureDetector(
-                          onTap: () => Navigator.pushReplacementNamed(
-                            context,
-                            AppRoutes.loginScreen,
-                          ),
+                          onTap: () => context.go(AppRoutes.loginScreen),
                           child: Text(
                             local.login,
                             style: AppStyles.bold14White.copyWith(
