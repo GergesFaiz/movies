@@ -9,7 +9,7 @@ import 'package:movies/features/auth/presentation/cubit/auth_cubit.dart';
 import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/utils/app_assets.dart';
 import '../../../../core/utils/app_styles.dart';
-import '../../../../core/utils/firebase_files/dialog_utils.dart';
+import '../../../../core/firebase/dialog_utils.dart';
 import '../../../../core/widgets/custom_divider.dart';
 import '../../../../core/widgets/custom_elevatedbutton.dart';
 import '../../../../core/widgets/custom_text_field.dart';

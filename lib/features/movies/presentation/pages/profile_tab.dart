@@ -9,7 +9,7 @@ import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/utils/app_assets.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_styles.dart';
-import '../../../../core/utils/firebase_files/auth_function.dart';
+import '../../../../core/firebase/auth_function.dart';
 import '../../../../core/widgets/custom_elevatedbutton.dart';
 import '../../../auth/presentation/pages/login_page.dart';
 import '../widgets/history_tab.dart';

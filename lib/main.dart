@@ -9,7 +9,7 @@ import 'package:movies/features/auth/presentation/cubit/app_language_cubit.dart'
 
 import 'core/l10n/app_localizations.dart';
 import 'core/utils/app_theme.dart';
-import 'core/utils/firebase_files/firebase_options.dart';
+import 'core/firebase/firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
